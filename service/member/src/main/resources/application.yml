@@ -1,0 +1,30 @@
+###服务启动端口号
+server:
+  port: 8300
+###服务注册到eureka地址
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8100/eureka
+spring:
+  application:
+    name: app-member
+  redis:
+    host: 10.9.216.1
+    port: 6379
+    pool:
+      max-idle: 100
+      min-idle: 1
+      max-active: 1000
+      max-wait: -1
+  ###数据库相关连接
+  datasource:
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/meite_member?useUnicode=true&characterEncoding=UTF-8
+####打印MyBatias日志
+logging:
+  level:
+    ### 开发环境使用DEBUG 生产环境info或者error
+    com.lipeng.member.mapper: DEBUG

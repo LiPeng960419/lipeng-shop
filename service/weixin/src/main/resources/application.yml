@@ -1,0 +1,46 @@
+logging:
+  level:
+    org.springframework.web: INFO
+    com.github.binarywang.demo.wx.mp: DEBUG
+    me.chanjar.weixin: DEBUG
+wx:
+  mp:
+    configs:
+      - appId: wx470a2431b9b88785 #（一个公众号的appid）
+        secret: 67abdde46af2431d2545de16c1291336 #（公众号的appsecret）
+        token: lipeng #（接口配置里的Token值）
+###服务注册到eureka地址
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8100/eureka
+server:
+  port: 8200
+lipeng:
+  weixin:
+    registration:
+      code:
+        ###微信注册码消息
+        message:  您的注册码为:%s，期待你的加入，感谢！
+    ###默认提示消息
+    default:
+      registration:
+        code:
+          message: 您的消息，我们已经收到,会及时回复给您的!
+spring:
+  application:
+    name: app-weixin
+  redis:
+    host: 10.9.216.1
+    port: 6379
+    pool:
+      max-idle: 100
+      min-idle: 1
+      max-active: 1000
+      max-wait: -1
+  ###数据库相关连接
+  datasource:
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/meite_weixin
