@@ -97,7 +97,7 @@ public class MemberLoginServiceImpl extends BaseApiService<JSONObject> implement
             userToken.setLoginType(userLoginInpDTO.getLoginType());
 
             String keyPrefix = Constants.MEMBER_TOKEN_KEYPREFIX + loginType;
-            String newToken = generateToken.createToken(keyPrefix, userId + "");
+            String newToken = generateToken.createToken(keyPrefix, String.valueOf(userId));
 
             userToken.setToken(newToken);
             userToken.setDeviceInfor(deviceInfor);
