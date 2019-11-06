@@ -28,10 +28,7 @@ public class LoginController extends BaseWebController {
      * 跳转到登陆页面页面
      */
     private static final String MB_LOGIN_FTL = "member/login";
-    /**
-     * 重定向到首页
-     */
-    private static final String REDIRECT_INDEX = "redirect:/";
+
     @Autowired
     private MemberLoginServiceFeign memberLoginServiceFeign;
 
@@ -71,7 +68,7 @@ public class LoginController extends BaseWebController {
         JSONObject data = login.getData();
         String token = data.getString("token");
         CookieUtils.setCookie(request, response, WebConstants.LOGIN_TOKEN_COOKIENAME, token);
-        return REDIRECT_INDEX;
+        return BaseWebController.REDIRECT_INDEX;
     }
 
 }

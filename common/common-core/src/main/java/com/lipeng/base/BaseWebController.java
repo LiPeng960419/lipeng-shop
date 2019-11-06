@@ -14,6 +14,11 @@ public class BaseWebController {
      */
     protected static final String ERROR_500_FTL = "500.ftl";
 
+    /**
+     * 重定向到首页
+     */
+    public static final String REDIRECT_INDEX = "redirect:/";
+
     // 接口直接返回true 或者false
     public Boolean isSuccess(BaseResponse<?> baseResp) {
         if (baseResp == null) {

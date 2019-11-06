@@ -97,11 +97,16 @@ public class MemberLoginServiceImpl extends BaseApiService<JSONObject> implement
                 // 1.插入新的token
                 userToken.setToken(newToken);
                 userToken.setDeviceInfor(deviceInfor);
-                int insertUserToken = userTokenMapper.insertUserToken(userToken);
-                if (!toDaoResult(insertUserToken)) {
+                int insertResult = userTokenMapper.insertUserToken(userToken);
+                if (!toDaoResult(insertResult)) {
                     redisDataSoureceTransaction.rollback(transactionStatus);
                     return setResultError("系统错误!");
                 }
+            }
+            // 如果有传递openid参数，修改到数据中
+            String qqOpenId = userLoginInpDTO.getQqOpenId();
+            if (!StringUtils.isEmpty(qqOpenId)) {
+                userMapper.updateUserOpenId(qqOpenId, userId);
             }
             JSONObject data = new JSONObject();
             data.put("token", newToken);

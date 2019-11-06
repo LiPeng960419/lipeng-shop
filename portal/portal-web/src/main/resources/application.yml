@@ -13,6 +13,15 @@ spring:
       - classpath:/templates
   application:
     name: app-portal-web
+  redis:
+    host: 10.9.216.1
+    port: 6379
+    pool:
+      max-idle: 100
+      min-idle: 1
+      max-active: 1000
+      max-wait: -1
+    timeout: 300
 ###服务注册到eureka地址
 eureka:
   client:

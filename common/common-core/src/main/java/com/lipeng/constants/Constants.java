@@ -51,7 +51,13 @@ public interface Constants {
     // PC的登陆类型
     String MEMBER_LOGIN_TYPE_PC = "PC";
 
+    // PC的登陆类型
+    String MEMBER_LOGIN_TYPE_QQ = "QQ_LOGIN";
+
     // 登陆超时时间 有效期 90天
     Long MEMBRE_LOGIN_TOKEN_TIME = 77776000L;
+
+    // 用户信息不存在
+    Integer HTTP_RES_CODE_NOTUSER_203 = 203;
 
 }
