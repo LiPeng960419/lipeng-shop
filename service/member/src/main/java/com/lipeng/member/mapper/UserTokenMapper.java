@@ -20,7 +20,7 @@ public interface UserTokenMapper {
     /**
      * 根据userId+loginType token的状态修改为不可用
      */
-    @Update(" update meite_user_token set is_availability  ='1', update_time=now() where token=#{token}")
+    @Update("update meite_user_token set is_availability  ='1', update_time=now() where token=#{token}")
     int updateTokenAvailability(@Param("token") String token);
 
     /**
@@ -28,5 +28,9 @@ public interface UserTokenMapper {
      */
     @Insert("INSERT INTO `meite_user_token` VALUES (null, #{token},#{loginType}, #{deviceInfor}, 0, #{userId} ,now(),null ); ")
     int insertUserToken(UserTokenDo userTokenDo);
+
+    @Update("update meite_user_token set token=#{newToken}, update_time=now() where user_id=#{userId} AND login_type=#{loginType}")
+    int updateTokenByUserIdAndLoginType(@Param("userId") Long userId,
+            @Param("loginType") String loginType, @Param("newToken") String newToken);
 
 }
