@@ -109,7 +109,7 @@ public class WeixinLoginController extends BaseWebController {
                 log.error("微信授权登录获取token失败");
                 return ERROR_500_FTL;
             }
-            log.info("获取access_token:{},openId:{}成功:" + WebAccessToken + ",openId:" + openId);
+            log.info("获取access_token:{},openId:{}成功:", WebAccessToken, openId);
             // 使用openid 查询数据库是否已经关联账号信息
             BaseResponse<JSONObject> findByOpenId = weixinAuthoriFeign.findByOpenId(openId);
             if (!isSuccess(findByOpenId)) {
