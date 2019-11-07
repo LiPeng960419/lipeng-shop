@@ -23,6 +23,9 @@ spring:
     password: root
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/meite_member?useUnicode=true&characterEncoding=UTF-8
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  config-location: classpath:mybatis-config.xml
 ####打印MyBatias日志
 logging:
   level:

@@ -23,9 +23,16 @@ public interface UserMapper {
     UserDo findByUserId(@Param("userId") Long userId);
 
     @Select("SELECT * FROM meite_user WHERE QQ_OPENID=#{qqOpenId};")
-    UserDo findByOpenId(@Param("qqOpenId") String qqOpenId);
+    UserDo findByQQOpenId(@Param("qqOpenId") String qqOpenId);
+
+    @Select("SELECT * FROM meite_user WHERE WX_OPENID=#{weixinOpenId};")
+    UserDo findByWeixinOpenId(@Param("weixinOpenId") String weixinOpenId);
 
     @Update("update meite_user set QQ_OPENID =#{qqOpenId} WHERE USER_ID=#{userId}")
-    void updateUserOpenId(@Param("qqOpenId") String qqOpenId, @Param("userId") Long userId);
+    void updateUserQQOpenId(@Param("qqOpenId") String qqOpenId, @Param("userId") Long userId);
 
+    @Update("update meite_user set WX_OPENID =#{weixinOpenId} WHERE USER_ID=#{userId}")
+    void updateUserWeixinOpenId(@Param("weixinOpenId") String weixinOpenId, @Param("userId") Long userId);
+
+    int updateUserInfo(UserDo userDo);
 }

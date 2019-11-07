@@ -29,3 +29,6 @@ eureka:
       defaultZone: http://localhost:8100/eureka
 server:
   port: 80
+wechat:
+  appid: wx470a2431b9b88785
+  secret: 67abdde46af2431d2545de16c1291336

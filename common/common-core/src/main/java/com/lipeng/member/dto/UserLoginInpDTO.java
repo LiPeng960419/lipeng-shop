@@ -36,4 +36,10 @@ public class UserLoginInpDTO {
     @ApiModelProperty(value = "QQ openId")
     private String qqOpenId;
 
+    /**
+     * weixin openId
+     */
+    @ApiModelProperty(value = "weixin openId")
+    private String weixinOpenId;
+
 }

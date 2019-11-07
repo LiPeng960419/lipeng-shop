@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.lipeng.base.BaseApiService;
 import com.lipeng.base.BaseResponse;
 import com.lipeng.constants.Constants;
+import com.lipeng.core.bean.MeiteBeanUtils;
 import com.lipeng.core.token.GenerateToken;
 import com.lipeng.core.utils.MD5Util;
 import com.lipeng.member.common.transaction.RedisDataSoureceTransaction;
+import com.lipeng.member.dto.UserInpDTO;
 import com.lipeng.member.dto.UserLoginInpDTO;
 import com.lipeng.member.mapper.UserMapper;
 import com.lipeng.member.mapper.UserTokenMapper;
@@ -51,8 +53,8 @@ public class MemberLoginServiceImpl extends BaseApiService<JSONObject> implement
         }
         // 目的是限制范围
         if (!(loginType.equals(Constants.MEMBER_LOGIN_TYPE_ANDROID) || loginType
-                .equals(Constants.MEMBER_LOGIN_TYPE_IOS)
-                || loginType.equals(Constants.MEMBER_LOGIN_TYPE_PC))) {
+                .equals(Constants.MEMBER_LOGIN_TYPE_IOS) || loginType
+                .equals(Constants.MEMBER_LOGIN_TYPE_PC))) {
             return setResultError("登陆类型出现错误!");
         }
 
@@ -105,11 +107,15 @@ public class MemberLoginServiceImpl extends BaseApiService<JSONObject> implement
             }
             // 如果有传递openid参数，修改到数据中
             String qqOpenId = userLoginInpDTO.getQqOpenId();
+            String weixinOpenId = userLoginInpDTO.getWeixinOpenId();
             if (!StringUtils.isEmpty(qqOpenId)) {
-                userMapper.updateUserOpenId(qqOpenId, userId);
+                userMapper.updateUserQQOpenId(qqOpenId, userId);
+            } else if (!StringUtils.isEmpty(weixinOpenId)) {
+                userMapper.updateUserWeixinOpenId(weixinOpenId, userId);
             }
             JSONObject data = new JSONObject();
             data.put("token", newToken);
+            data.put("user", JSONObject.parseObject(JSONObject.toJSONString(userDo)));
             redisDataSoureceTransaction.commit(transactionStatus);
             return setResultSuccess(data);
         } catch (Exception e) {
@@ -122,6 +128,13 @@ public class MemberLoginServiceImpl extends BaseApiService<JSONObject> implement
             return setResultError("系统错误!");
         }
 
+    }
+
+    @Override
+    public BaseResponse<JSONObject> updateUserInfo(UserInpDTO userInpDTO) {
+        UserDo userDo = MeiteBeanUtils.dtoToDo(userInpDTO, UserDo.class);
+        return userMapper.updateUserInfo(userDo) > 0 ? setResultSuccess("修改用户信息成功")
+                : setResultError("修改用户信息失败!");
     }
 
 //    public BaseResponse<JSONObject> login(@RequestBody UserLoginInpDTO userLoginInpDTO) {

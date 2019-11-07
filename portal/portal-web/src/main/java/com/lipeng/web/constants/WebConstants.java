@@ -6,4 +6,6 @@ public interface WebConstants {
 
 	String LOGIN_QQ_OPENID = "qq_openid";
 
+	String LOGIN_WEIXIN_OPENID = "weixin_openid";
+
 }

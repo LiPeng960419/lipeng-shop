@@ -39,7 +39,7 @@ public class QQAuthoriController extends BaseWebController {
     /**
      * 跳转到qq登录页面
      */
-    private static final String MB_QQ_QQLOGIN = "member/qqlogin";
+    private static final String MB_QQ_LOGIN = "member/qqlogin";
 
     @Autowired
     private QQAuthoriFeign qqAuthoriFeign;
@@ -86,7 +86,7 @@ public class QQAuthoriController extends BaseWebController {
             // 使用openid 查询数据库是否已经关联账号信息
             BaseResponse<JSONObject> findByOpenId = qqAuthoriFeign.findByOpenId(openId);
             if (!isSuccess(findByOpenId)) {
-                log.error("根据openId获取用户信息异常!");
+                log.error("QQ根据openId获取用户信息异常!");
                 return ERROR_500_FTL;
             }
             // 如果调用接口返回203 ,跳转到关联账号页面
@@ -104,7 +104,7 @@ public class QQAuthoriController extends BaseWebController {
                 request.setAttribute("avatarURL100", avatarURL100);
                 // 需要将openid存入在session中
                 httpSession.setAttribute(WebConstants.LOGIN_QQ_OPENID, openId);
-                return MB_QQ_QQLOGIN;
+                return MB_QQ_LOGIN;
             }
             // 如果能够查询到用户信息的话,直接自动登陆
             JSONObject data = findByOpenId.getData();
@@ -126,7 +126,7 @@ public class QQAuthoriController extends BaseWebController {
         // 1.获取用户openid
         String qqOpenId = (String) request.getSession().getAttribute(WebConstants.LOGIN_QQ_OPENID);
         if (StringUtils.isEmpty(qqOpenId)) {
-            log.error("session中不存在openId!");
+            log.error("session中不存在QQopenId!");
             return ERROR_500_FTL;
         }
 
@@ -139,7 +139,7 @@ public class QQAuthoriController extends BaseWebController {
         BaseResponse<JSONObject> login = memberLoginServiceFeign.login(userLoginInpDTO);
         if (!isSuccess(login)) {
             setErrorMsg(model, login.getMsg());
-            return MB_QQ_QQLOGIN;
+            return MB_QQ_LOGIN;
         }
         // 3.登陆成功之后如何处理 保持会话信息 将token存入到cookie 里面 首页读取cookietoken 查询用户信息返回到页面展示
         JSONObject data = login.getData();
