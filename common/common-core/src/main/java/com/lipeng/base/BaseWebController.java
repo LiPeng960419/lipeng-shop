@@ -10,14 +10,17 @@ import org.springframework.ui.Model;
 public class BaseWebController {
 
     /**
-     * 500页面
-     */
-    protected static final String ERROR_500_FTL = "500.ftl";
-
-    /**
      * 重定向到首页
      */
     public static final String REDIRECT_INDEX = "redirect:/";
+    /**
+     * 重定向
+     */
+    public static final String REDIRECT = "redirect:";
+    /**
+     * 500页面
+     */
+    protected static final String ERROR_500_FTL = "500.ftl";
 
     // 接口直接返回true 或者false
     public Boolean isSuccess(BaseResponse<?> baseResp) {

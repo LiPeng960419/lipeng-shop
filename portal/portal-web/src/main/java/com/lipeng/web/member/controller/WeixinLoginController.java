@@ -16,23 +16,26 @@ import com.lipeng.web.member.feign.MemberLoginServiceFeign;
 import com.lipeng.web.member.feign.WeixinAuthoriFeign;
 import com.lipeng.web.utils.HttpClientUtil;
 import com.lipeng.web.utils.WeixinUserInfoUtil;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @Author: lipeng 910138
  * @Date: 2019/11/7 15:31
  */
-@RestController
+@Controller
 @RequestMapping("/wx")
 @Slf4j
 public class WeixinLoginController extends BaseWebController {
@@ -49,6 +52,8 @@ public class WeixinLoginController extends BaseWebController {
 
     private static final String STATE = "weixin_login";
 
+    private static final String SCOPE = "snsapi_userinfo";
+
     /**
      * 跳转到qq登录页面
      */
@@ -62,6 +67,20 @@ public class WeixinLoginController extends BaseWebController {
 
     @Autowired
     private WeixinAuthoriFeign weixinAuthoriFeign;
+
+    @GetMapping("/login")
+    public String auth() {
+        String APPID = weiXinConfig.getAppid();
+        String REDIRECT_URI = null;
+        try {
+            REDIRECT_URI = URLEncoder.encode(weiXinConfig.getReDirectUri(), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            log.error("REDIRECT_URI encode error:{}", weiXinConfig.getReDirectUri(), e);
+        }
+        String returnUrl = REDIRECT + WeixinUserInfoUtil.getCode(APPID, REDIRECT_URI, SCOPE);
+        log.info("跳转微信二维码页面:{}", returnUrl);
+        return returnUrl;
+    }
 
     @RequestMapping("/getAccessToken")
     public String getToken(@RequestParam(name = "code") String code,
@@ -154,7 +173,8 @@ public class WeixinLoginController extends BaseWebController {
             } else if (Constants.WEIXIN_SEX_FEMALE.equals(userObject.getString("sex"))) {
                 userInpDTO.setSex(Constants.FEMALE);
             }
-            BaseResponse<JSONObject> updateUserInfo = memberLoginServiceFeign.updateUserInfo(userInpDTO);
+            BaseResponse<JSONObject> updateUserInfo = memberLoginServiceFeign
+                    .updateUserInfo(userInpDTO);
         }
         // 3.登陆成功之后如何处理 保持会话信息 将token存入到cookie 里面 首页读取cookietoken 查询用户信息返回到页面展示
         String token = data.getString("token");

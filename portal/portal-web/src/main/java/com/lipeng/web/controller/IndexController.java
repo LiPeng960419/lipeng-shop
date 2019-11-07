@@ -48,4 +48,11 @@ public class IndexController extends BaseWebController {
         return INDEX_FTL;
     }
 
+    @RequestMapping("/exit")
+    public String exit(HttpServletRequest request, HttpServletResponse response, Model model) {
+        CookieUtils.deleteCookie(request, response, WebConstants.LOGIN_TOKEN_COOKIENAME);
+        request.getSession().invalidate();
+        model.addAttribute("desensMobile", null);
+        return INDEX_FTL;
+    }
 }

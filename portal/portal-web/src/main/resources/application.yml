@@ -32,3 +32,4 @@ server:
 wechat:
   appid: wx470a2431b9b88785
   secret: 67abdde46af2431d2545de16c1291336
+  reDirectUri: http://127.0.0.1:80/wx/getAccessToken

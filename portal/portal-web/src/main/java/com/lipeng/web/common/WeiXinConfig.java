@@ -15,4 +15,5 @@ public class WeiXinConfig {
 
     private String appid;
     private String secret;
+    private String reDirectUri;
 }

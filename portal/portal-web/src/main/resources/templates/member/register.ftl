@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>蚂蚁商城-注册</title>
+<title>注册</title>
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1">
 <link rel="stylesheet" href="../res/layui/css/layui.css">
@@ -70,7 +70,7 @@
 
 				<div class="layui-input-block-weixinQRcode"
 					style="text-align: center;">
-					<img alt="" src="http://mmbiz.qpic.cn/mmbiz_jpg/dl2jYR7kGMfu21HNicnmLQ2EBcPerpUxl23mniaejoyPQKv0QoZsG8JTgiahICbjwM8F1l9QukyIAWtPpJH7cKLEA/0">
+					<img alt="" src="http://mmbiz.qpic.cn/mmbiz_jpg/dl2jYR7kGMe9SMcxGibgE8aU2b9E2lJ81sCTUIeCFJhrtrAGrONribm3Y8O2ZgZibOukAs6CibicbE5LchIZy12mVPQ/0">
 
 					<div style="text-align: center; font-size: 14px; color: #FF5722;">
 						关注微信公众号,发送手机号码可获得注册码</div>
