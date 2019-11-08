@@ -123,12 +123,13 @@ public class WeixinLoginController extends BaseWebController {
                 httpSession.setAttribute(WebConstants.LOGIN_WEIXIN_OPENID, openId);
                 httpSession.setAttribute(WEIXIN_ACCESSTOKEN, WebAccessToken);
                 return MB_WEIXIN_LOGIN;
+            }else if (Constants.HTTP_RES_CODE_200.equals(findByOpenId.getCode())){
+                return REDIRECT_INDEX;
             }
         } catch (Exception e) {
             log.error("微信获取token异常", e);
-            return ERROR_500_FTL;
         }
-        return null;
+        return ERROR_500_FTL;
     }
 
 
@@ -162,10 +163,12 @@ public class WeixinLoginController extends BaseWebController {
         String userMessageUrl = WeixinUserInfoUtil.getUserMessage(weixinSessionToken, openId);
         String userResponse = HttpClientUtil.doGet(userMessageUrl);
         if (StringUtils.isNotEmpty(userResponse)) {
-            JSONObject userObject = JSON.parseObject(userResponse); //微信返回的用户信息
-            JSONObject user = (JSONObject) data.get("user"); //登录后返回的用户信息
+            //微信返回的用户信息
+            JSONObject userObject = JSON.parseObject(userResponse);
+            //登录后返回的用户信息userId
+            Long userId = data.getLong("userId");
             UserInpDTO userInpDTO = new UserInpDTO();
-            userInpDTO.setUserId(user.getLong("userId"));
+            userInpDTO.setUserId(userId);
             userInpDTO.setUserName(userObject.getString("nickname"));
             if (Constants.WEIXIN_SEX_MAN.equals(userObject.getString("sex"))) {
                 userInpDTO.setSex(Constants.MAN);
@@ -173,6 +176,11 @@ public class WeixinLoginController extends BaseWebController {
                 userInpDTO.setSex(Constants.FEMALE);
             }
             BaseResponse<JSONObject> updateUserInfo = memberLoginServiceFeign.updateUserInfo(userInpDTO);
+            if (!Constants.HTTP_RES_CODE_200.equals(updateUserInfo.getCode())) {
+                log.error(updateUserInfo.getMsg() + ",userId:" + userId);
+            }else {
+                log.info(updateUserInfo.getMsg() + ",userId:" + userId);
+            }
         }
         // 3.登陆成功之后如何处理 保持会话信息 将token存入到cookie 里面 首页读取cookietoken 查询用户信息返回到页面展示
         String token = data.getString("token");

@@ -115,7 +115,7 @@ public class MemberLoginServiceImpl extends BaseApiService<JSONObject> implement
             }
             JSONObject data = new JSONObject();
             data.put("token", newToken);
-            data.put("user", JSONObject.parseObject(JSONObject.toJSONString(userDo)));
+            data.put("userId", userDo.getUserId());
             redisDataSoureceTransaction.commit(transactionStatus);
             return setResultSuccess(data);
         } catch (Exception e) {
