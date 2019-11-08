@@ -27,7 +27,7 @@ public class BaseWebController {
         if (baseResp == null) {
             return false;
         }
-        return Constants.HTTP_RES_CODE_200.equals(baseResp.getCode());
+        return !Constants.HTTP_RES_CODE_500_VALUE.equals(baseResp.getCode());
     }
 
     /**

@@ -139,8 +139,7 @@ public class WeixinLoginController extends BaseWebController {
     public String qqJointLogin(@ModelAttribute("loginVo") LoginVo loginVo, Model model,
             HttpServletRequest request, HttpServletResponse response) {
         // 1.获取用户openid
-        String openId = (String) request.getSession()
-                .getAttribute(WebConstants.LOGIN_WEIXIN_OPENID);
+        String openId = (String) request.getSession().getAttribute(WebConstants.LOGIN_WEIXIN_OPENID);
         String weixinSessionToken = (String) request.getSession().getAttribute(WEIXIN_ACCESSTOKEN);
         if (StringUtils.isEmpty(openId)) {
             log.error("session中不存在微信openId!");
@@ -173,8 +172,7 @@ public class WeixinLoginController extends BaseWebController {
             } else if (Constants.WEIXIN_SEX_FEMALE.equals(userObject.getString("sex"))) {
                 userInpDTO.setSex(Constants.FEMALE);
             }
-            BaseResponse<JSONObject> updateUserInfo = memberLoginServiceFeign
-                    .updateUserInfo(userInpDTO);
+            BaseResponse<JSONObject> updateUserInfo = memberLoginServiceFeign.updateUserInfo(userInpDTO);
         }
         // 3.登陆成功之后如何处理 保持会话信息 将token存入到cookie 里面 首页读取cookietoken 查询用户信息返回到页面展示
         String token = data.getString("token");
