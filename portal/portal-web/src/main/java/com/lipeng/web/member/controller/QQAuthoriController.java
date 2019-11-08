@@ -128,6 +128,13 @@ public class QQAuthoriController extends BaseWebController {
     @RequestMapping("/qqJointLogin")
     public String qqJointLogin(@ModelAttribute("loginVo") LoginVo loginVo, Model model,
             HttpServletRequest request, HttpServletResponse response) {
+        //kapcha验证码校验
+        String kaptchaReceived = loginVo.getGraphicCode();
+        String kaptchaExpected = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+        if (kaptchaReceived == null || !kaptchaReceived.equals(kaptchaExpected)) {
+            setErrorMsg(model, "图形验证码不正确!");
+            return MB_QQ_LOGIN;
+        }
         // 1.获取用户openid
         String qqOpenId = (String) request.getSession().getAttribute(WebConstants.LOGIN_QQ_OPENID);
         if (StringUtils.isEmpty(qqOpenId)) {

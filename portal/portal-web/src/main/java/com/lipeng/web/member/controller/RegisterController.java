@@ -53,13 +53,19 @@ public class RegisterController extends BaseWebController {
             setErrorMsg(model, errorMsg);
             return MB_REGISTER_FTL;
         }
-        // 建议不要if lese 判断 嵌套判断统一return
         // 2.判断图形验证码是否正确
-        String graphicCode = registerVo.getGraphicCode();
-        Boolean checkVerify = RandomValidateCodeUtil.checkVerify(graphicCode, httpSession);
-        if (!checkVerify) {
+        //String graphicCode = registerVo.getGraphicCode();
+        //Boolean checkVerify = RandomValidateCodeUtil.checkVerify(graphicCode, httpSession);
+        //if (!checkVerify) {
+        //    setErrorMsg(model, "图形验证码不正确!");
+        //    return MB_REGISTER_FTL;
+        //}
+        //kapcha验证码校验
+        String kaptchaReceived = registerVo.getGraphicCode();
+        String kaptchaExpected = (String) httpSession.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+        if (kaptchaReceived == null || !kaptchaReceived.equals(kaptchaExpected)) {
             setErrorMsg(model, "图形验证码不正确!");
-            return MB_REGISTER_FTL;
+            return MB_LOGIN_FTL;
         }
         // 3.调用会员服务接口实现注册 将前端提交vo 转换dto
         UserInpDTO userInpDTO = MeiteBeanUtils.voToDto(registerVo, UserInpDTO.class);

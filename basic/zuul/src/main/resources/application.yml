@@ -1,0 +1,34 @@
+###注册 中心
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8100/eureka/
+server:
+  port: 8000
+##服务名称
+spring:
+  application:
+    name: zuul
+# 配置网关反向代理
+zuul:
+  routes:
+    APP-MEMBER:
+      path: /member/**
+      serviceId: APP-MEMBER
+    APP-WEIXIN:
+      path: /weixin/**
+      serviceId: APP-WEIXIN
+    APP-PORTAL-WEB:
+      path: /portal/**
+      serviceId: APP-PORTAL-WEB
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        exclude: env
+#用 serviceId 进行路由时，使用 ribbon.ReadTimeout 和 ribbon.SocketTimeout 设置
+#用指定 url 进行路由时，使用 zuul.host.connect-timeout-millis 和 zuul.host.socket-timeout-millis 设置
+ribbon:
+  ConnectTimeout: 3000
+  ReadTimeout: 3000

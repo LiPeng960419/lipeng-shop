@@ -72,9 +72,9 @@
 				</div>
 
 				<div class="layui-input-block getCode">
-					<input type="text" name="graphicCode" required lay-verify="required"
+					<input type="text" name="graphicCode" required lay-verify="required" value="${(loginVo.graphicCode)!''}"
 						placeholder="请输入验证码" class="layui-input"> <img alt=""
-						src="getVerify" onclick="getVerify(this);"
+						src="kaptcha.jpg" onclick="getVerify(this);"
 						style="border: 1px solid #e2e2e2;font-size: 18px;height: 48px;margin-top: -93px;width: 44%;background-color: #e8d6c0;margin-left: 166px;">
 				</div>
 				<span
@@ -114,6 +114,9 @@
 		layui.config({
 			base : '../res/static/js/'
 		}).use('house');
+    function getVerify(obj) {
+        obj.src = "kaptcha.jpg";
+    }
 	</script>
 
 </body>

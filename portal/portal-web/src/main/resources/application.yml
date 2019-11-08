@@ -38,3 +38,25 @@ qq:
   appkey: 29f89de0c6d05d8761385a004e0e5ca9
   reDirectUri: http://127.0.0.1:80/qqLoginBack
   defaultPicUrl: http://img1.imgtn.bdimg.com/it/u=4171436242,424026319&fm=26&gp=0.jpg
+###设置feign客户端超时时间
+###SpringCloud feign 默认开启支持ribbon
+ribbon:
+  ###指的是建立连接后从服务器读取到可用资源所用的时间。
+  ReadTimeout: 3000
+  ###指的是建立连接所用的时间，适用于网络状况正常的情况下，两端连接所用的时间。
+  ConnectTimeout: 3000
+###开启Hystrix断路器
+feign:
+  hystrix:
+    enabled: true
+#### hystrix开启
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+###建议 hystrix服务超时时间大致5-10  如果产生业务延迟比较长 建议使用mq 或者异步请求

@@ -70,7 +70,7 @@
 
 				<div class="layui-input-block-weixinQRcode"
 					style="text-align: center;">
-					<img alt="" src="http://mmbiz.qpic.cn/mmbiz_jpg/dl2jYR7kGMe9SMcxGibgE8aU2b9E2lJ81sCTUIeCFJhrtrAGrONribm3Y8O2ZgZibOukAs6CibicbE5LchIZy12mVPQ/0">
+					<img alt="" src="http://mmbiz.qpic.cn/mmbiz_jpg/dl2jYR7kGMdicwUSppM13uQoAbthagVZcKCyUbel0LRGdNvx2ruSw1LP1KaytloEyLOlfQOIrlc7WBogYo3fvWQ/0">
 
 					<div style="text-align: center; font-size: 14px; color: #FF5722;">
 						关注微信公众号,发送手机号码可获得注册码</div>
@@ -88,7 +88,7 @@
 				<div class="layui-input-block getCode" style="margin-top: 12px;">
 					<input type="text" name="graphicCode"
 						value="${(registerVo.graphicCode)!''}"   placeholder="请输入验证码" class="layui-input">
-					<img alt="" src="getVerify" onclick="getVerify(this);"
+					<img alt="" src="kaptcha.jpg" onclick="getVerify(this);"
 						style="border: 1px solid #e2e2e2; font-size: 18px; height: 46px; margin-top: -69px; width: 44%; background-color: #e8d6c0; margin-left: 167px;">
 
 				</div>
@@ -113,7 +113,7 @@
 
 		//获取验证码
 		function getVerify(obj) {
-			obj.src = "getVerify?" + Math.random();
+			obj.src = "kaptcha.jpg";
 		}
 	</script>
 

@@ -139,6 +139,13 @@ public class WeixinLoginController extends BaseWebController {
     @RequestMapping("/weixinJointLogin")
     public String qqJointLogin(@ModelAttribute("loginVo") LoginVo loginVo, Model model,
             HttpServletRequest request, HttpServletResponse response) {
+        //kapcha验证码校验
+        String kaptchaReceived = loginVo.getGraphicCode();
+        String kaptchaExpected = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+        if (kaptchaReceived == null || !kaptchaReceived.equals(kaptchaExpected)) {
+            setErrorMsg(model, "图形验证码不正确!");
+            return MB_WEIXIN_LOGIN;
+        }
         // 1.获取用户openid
         String openId = (String) request.getSession().getAttribute(WebConstants.LOGIN_WEIXIN_OPENID);
         String weixinSessionToken = (String) request.getSession().getAttribute(WEIXIN_ACCESSTOKEN);
@@ -146,7 +153,6 @@ public class WeixinLoginController extends BaseWebController {
             log.error("session中不存在微信openId!");
             return ERROR_500_FTL;
         }
-
         // 2.将vo转换dto调用会员登陆接口
         UserLoginInpDTO userLoginInpDTO = MeiteBeanUtils.voToDto(loginVo, UserLoginInpDTO.class);
         userLoginInpDTO.setWeixinOpenId(openId);

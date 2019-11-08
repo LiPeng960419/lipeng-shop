@@ -6,7 +6,6 @@ import com.lipeng.base.BaseWebController;
 import com.lipeng.constants.Constants;
 import com.lipeng.core.bean.MeiteBeanUtils;
 import com.lipeng.core.utils.CookieUtils;
-import com.lipeng.core.utils.RandomValidateCodeUtil;
 import com.lipeng.member.dto.UserLoginInpDTO;
 import com.lipeng.web.constants.WebConstants;
 import com.lipeng.web.member.controller.req.vo.LoginVo;
@@ -14,6 +13,7 @@ import com.lipeng.web.member.feign.MemberLoginServiceFeign;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
+@Slf4j
 public class LoginController extends BaseWebController {
 
     /**
@@ -47,9 +48,17 @@ public class LoginController extends BaseWebController {
     public String postLogin(@ModelAttribute("loginVo") LoginVo loginVo, Model model,
             HttpServletRequest request,
             HttpServletResponse response, HttpSession httpSession) {
-        // 1.图形验证码判断
-        String graphicCode = loginVo.getGraphicCode();
-        if (!RandomValidateCodeUtil.checkVerify(graphicCode, httpSession)) {
+        //图形码校验或者kapcha校验
+        //图形验证码判断
+//        String graphicCode = loginVo.getGraphicCode();
+//        if (!RandomValidateCodeUtil.checkVerify(graphicCode, httpSession)) {
+//            setErrorMsg(model, "图形验证码不正确!");
+//            return MB_LOGIN_FTL;
+//        }
+        //kapcha验证码校验
+        String kaptchaReceived = loginVo.getGraphicCode();
+        String kaptchaExpected = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+        if (kaptchaReceived == null || !kaptchaReceived.equals(kaptchaExpected)) {
             setErrorMsg(model, "图形验证码不正确!");
             return MB_LOGIN_FTL;
         }

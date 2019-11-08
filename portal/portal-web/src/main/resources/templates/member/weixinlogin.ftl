@@ -69,6 +69,12 @@
 						value="${(loginVo.password)!''}" placeholder="请输入密码"
 						class="layui-input">
 				</div>
+				<div class="layui-input-block getCode" style="margin-top: 12px;">
+					<input type="text" name="graphicCode"
+								 value="${(loginVo.graphicCode)!''}" placeholder="请输入验证码" class="layui-input">
+					<img alt="" src="kaptcha.jpg" onclick="getVerify(this);"
+							 style="border: 1px solid #e2e2e2; font-size: 18px; height: 46px; margin-top: -69px; width: 44%; background-color: #e8d6c0; margin-left: 167px;">
+				</div>
 				<span
 					style="color: red; font-size: 20px; font-weight: bold; font-family: '楷体', '楷体_GB2312';">${error!''}</span>
 				<button class="layui-btn" style="margin-top: 5px;" lay-submit
@@ -112,9 +118,9 @@
 			base : '../res/static/js/'
 		}).use('house');
 
-		function getVerify(obj) {
-			obj.src = "getVerify?" + Math.random();
-		}
+    function getVerify(obj) {
+        obj.src = "kaptcha.jpg";
+    }
 	</script>
 
 </body>
