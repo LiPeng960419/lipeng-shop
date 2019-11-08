@@ -53,7 +53,7 @@
 
 
 	<div class="layui-fulid" id="house-login">
-		<form action="wx/weixinJointLogin" method="post">
+		<form action="/wx/weixinJointLogin" method="post">
 			<div class="layui-form">
 				<span style="margin-left: 15px; color: #ff662f;"> 您正在使用
 					微信绑定蚂蚁课堂【已注册】账户</span>
@@ -74,8 +74,9 @@
 				<button class="layui-btn" style="margin-top: 5px;" lay-submit
 					lay-filter="user-login">绑定</button>
 
-				<span style="margin-left: 25%; padding-top: 30px;"> <a
-					href="register" style="color: #009100;"> 【未注册】蚂蚁课堂账户？</a></span>
+				<span style="margin-left: 25%; padding-top: 30px;">
+					<a href="/register" style="color: #009100;">【未注册】点击注册</a>
+				</span>
 			</div>
 	</div>
 	</form>

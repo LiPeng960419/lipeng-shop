@@ -1,6 +1,7 @@
 package com.lipeng.base;
 
 import com.lipeng.constants.Constants;
+import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import nl.bitwalker.useragentutils.Browser;
 import nl.bitwalker.useragentutils.UserAgent;
@@ -39,7 +40,12 @@ public class BaseWebController {
                 .getBrowser();
         // 获取浏览器版本号
         Version version = browser.getVersion(request.getHeader("User-Agent"));
-        String info = browser.getName() + "/" + version.getVersion();
+        String info = "";
+        if (Objects.isNull(version)) {
+            info = browser.getName() + "/" + version.getVersion();
+        } else {
+            info = browser.getName();
+        }
         return info;
     }
 
