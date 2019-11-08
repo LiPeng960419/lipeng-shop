@@ -15,7 +15,7 @@ public interface UserMapper {
     UserDo existMobile(@Param("mobile") String mobile);
 
     @Select("SELECT USER_ID AS USERID ,MOBILE AS MOBILE,EMAIL AS EMAIL,PASSWORD AS PASSWORD, USER_NAME AS USER_NAME ,SEX AS SEX ,AGE AS AGE ,CREATE_TIME AS CREATETIME,IS_AVALIBLE AS ISAVALIBLE,PIC_IMG AS PICIMG,QQ_OPENID AS QQOPENID,WX_OPENID AS WXOPENID "
-            + "  FROM meite_user  WHERE MOBILE=#{0} and password=#{1};")
+            + "  FROM meite_user  WHERE MOBILE=#{mobile} and password=#{password};")
     UserDo login(@Param("mobile") String mobile, @Param("password") String password);
 
     @Select("SELECT USER_ID AS USERID ,MOBILE AS MOBILE,EMAIL AS EMAIL,PASSWORD AS PASSWORD, USER_NAME AS USER_NAME ,SEX AS SEX ,AGE AS AGE ,CREATE_TIME AS CREATETIME,IS_AVALIBLE AS ISAVALIBLE,PIC_IMG AS PICIMG,QQ_OPENID AS QQOPENID,WX_OPENID AS WXOPENID"
@@ -35,4 +35,5 @@ public interface UserMapper {
     void updateUserWeixinOpenId(@Param("weixinOpenId") String weixinOpenId, @Param("userId") Long userId);
 
     int updateUserInfo(UserDo userDo);
+
 }

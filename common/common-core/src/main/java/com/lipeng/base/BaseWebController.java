@@ -41,7 +41,7 @@ public class BaseWebController {
         // 获取浏览器版本号
         Version version = browser.getVersion(request.getHeader("User-Agent"));
         String info = "";
-        if (Objects.isNull(version)) {
+        if (Objects.nonNull(version)) {
             info = browser.getName() + "/" + version.getVersion();
         } else {
             info = browser.getName();

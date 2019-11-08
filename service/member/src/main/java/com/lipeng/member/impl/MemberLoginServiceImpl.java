@@ -119,6 +119,7 @@ public class MemberLoginServiceImpl extends BaseApiService<JSONObject> implement
             redisDataSoureceTransaction.commit(transactionStatus);
             return setResultSuccess(data);
         } catch (Exception e) {
+            log.error("error", e);
             try {
                 redisDataSoureceTransaction.rollback(transactionStatus);
             } catch (Exception e2) {
