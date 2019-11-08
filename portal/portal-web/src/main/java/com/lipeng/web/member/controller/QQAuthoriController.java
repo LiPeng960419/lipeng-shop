@@ -98,14 +98,15 @@ public class QQAuthoriController extends BaseWebController {
             }
             // 不存在用户接口返回203 ,跳转到关联账号页面
             if (Constants.HTTP_RES_CODE_NOTUSER_203.equals(findByOpenId.getCode())) {
+                qqProperties.put("openId", openId);
                 QQUserInfo userInfo = getUserInfo(qqProperties);
                 if (Objects.nonNull(userInfo)) {
                     // 用户的QQ头像  大小为100×100像素的QQ空间头像URL。
                     String avatarURL100 = userInfo.getFigureurl_2();
                     request.setAttribute("avatarURL100", avatarURL100);
                 } else {
-                    request.setAttribute("avatarURL100", null);
-                    log.error("根据accessToken,openId获取QQ用户信息异常!");
+                    request.setAttribute("avatarURL100", qqConfig.getDefaultPicUrl());
+                    log.error("根据accessToken{},openId{}获取QQ用户信息异常!", accessToken, openId);
                 }
                 // 需要将openid存入在session中
                 request.getSession().setAttribute(WebConstants.LOGIN_QQ_OPENID, openId);
@@ -200,7 +201,7 @@ public class QQAuthoriController extends BaseWebController {
             // 取token
             String accessToken = (String) qqProperties.get("accessToken");
             String openId = (String) qqProperties.get("openId");
-            if (!StringUtils.isNotEmpty(accessToken) || !StringUtils.isNotEmpty(openId)) {
+            if (StringUtils.isEmpty(accessToken) || StringUtils.isEmpty(openId)) {
                 return null;
             }
             String url = QQUserInfoUtil.getUserInfo(accessToken, qqConfig.getAppid(), openId);

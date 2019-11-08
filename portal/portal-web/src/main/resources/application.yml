@@ -36,8 +36,8 @@ wechat:
 qq:
   appid: 101820705
   appkey: 29f89de0c6d05d8761385a004e0e5ca9
-  reDirectUri: http://127.0.0.1:80/qqLoginBack
-  defaultPicUrl: http://img1.imgtn.bdimg.com/it/u=4171436242,424026319&fm=26&gp=0.jpg
+  reDirectUri: http://9b009f9b.ngrok.io/qqLoginBack
+  defaultPicUrl: http://t-1.tuzhan.com/d1bf9b24b13e/c-1/m/2012/09/21/17/0772844269934cce8980bebcc76ce396.jpg
 ###设置feign客户端超时时间
 ###SpringCloud feign 默认开启支持ribbon
 ribbon:
