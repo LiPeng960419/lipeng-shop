@@ -38,11 +38,11 @@
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-data-redis</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.tengxun</groupId>
-            <artifactId>sdk4j</artifactId>
-            <version>1.0</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.tengxun</groupId>-->
+            <!--<artifactId>sdk4j</artifactId>-->
+            <!--<version>1.0</version>-->
+        <!--</dependency>-->
     </dependencies>
 
 </project>

@@ -37,7 +37,7 @@ public class QQAuthoriServiceImpl extends BaseApiService<JSONObject> implements 
         Long userId = userDo.getUserId();
         String userToken = generateToken.createToken(keyPrefix, String.valueOf(userId));
         JSONObject data = new JSONObject();
-        data.put("token", userToken);
+        data.put(Constants.TOKEN, userToken);
         return setResultSuccess(data);
     }
 

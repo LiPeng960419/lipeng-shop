@@ -33,3 +33,8 @@ wechat:
   appid: wx470a2431b9b88785
   secret: 67abdde46af2431d2545de16c1291336
   reDirectUri: http://127.0.0.1:80/wx/getAccessToken
+qq:
+  appid: 101820705
+  appkey: 29f89de0c6d05d8761385a004e0e5ca9
+  reDirectUri: http://127.0.0.1:80/qqLoginBack
+  defaultPicUrl: http://img1.imgtn.bdimg.com/it/u=4171436242,424026319&fm=26&gp=0.jpg

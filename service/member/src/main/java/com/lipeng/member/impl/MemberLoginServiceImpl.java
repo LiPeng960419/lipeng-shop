@@ -89,7 +89,7 @@ public class MemberLoginServiceImpl extends BaseApiService<JSONObject> implement
                 // 如果登陆过 清除之前redistoken
                 String token = userTokenDo.getToken();
                 // 如果开启redis事务的话，删除的时候 方法会返回false
-                Boolean removeToken = generateToken.removeToken(token);
+                generateToken.removeToken(token);
                 int updateToken = userTokenMapper.updateTokenByUserIdAndLoginType(userId, loginType, newToken);
                 if (!toDaoResult(updateToken)) {
                     return setResultError("系统错误!");
@@ -114,7 +114,7 @@ public class MemberLoginServiceImpl extends BaseApiService<JSONObject> implement
                 userMapper.updateUserWeixinOpenId(weixinOpenId, userId);
             }
             JSONObject data = new JSONObject();
-            data.put("token", newToken);
+            data.put(Constants.TOKEN, newToken);
             data.put("userId", userDo.getUserId());
             redisDataSoureceTransaction.commit(transactionStatus);
             return setResultSuccess(data);
@@ -123,12 +123,10 @@ public class MemberLoginServiceImpl extends BaseApiService<JSONObject> implement
             try {
                 redisDataSoureceTransaction.rollback(transactionStatus);
             } catch (Exception e2) {
-                //log.error("redisDataSoureceTransaction rollback error", e);
+                log.error("redisDataSoureceTransaction rollback error", e);
             }
-            log.error("error", e);
             return setResultError("系统错误!");
         }
-
     }
 
     @Override
@@ -137,6 +135,8 @@ public class MemberLoginServiceImpl extends BaseApiService<JSONObject> implement
         return userMapper.updateUserInfo(userDo) > 0 ? setResultSuccess("修改用户信息成功")
                 : setResultError("修改用户信息失败!");
     }
+
+}
 
 //    public BaseResponse<JSONObject> login(@RequestBody UserLoginInpDTO userLoginInpDTO) {
 //        // 1.验证参数
@@ -227,11 +227,9 @@ public class MemberLoginServiceImpl extends BaseApiService<JSONObject> implement
 //        }
 //
 //    }
-    // 查询用户信息的话如何实现？ redis 与数据库如何保证一致问题
+// 查询用户信息的话如何实现？ redis 与数据库如何保证一致问题
 
-    // redis 的值如何与数据库的值保持是一致性问题
-    // @Transactional 不能控制redis的事务
-    // redis 中是否存在事务 肯定是肯定是存在事务
-    // 自定义方法 使用编程事务 begin（既需要控制数据库的事务也需要控制redis） commit
-
-}
+// redis 的值如何与数据库的值保持是一致性问题
+// @Transactional 不能控制redis的事务
+// redis 中是否存在事务 肯定是肯定是存在事务
+// 自定义方法 使用编程事务 begin（既需要控制数据库的事务也需要控制redis） commit

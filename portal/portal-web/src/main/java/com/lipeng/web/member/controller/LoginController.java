@@ -66,7 +66,7 @@ public class LoginController extends BaseWebController {
         }
         // 3.登陆成功之后如何处理 保持会话信息 将token存入到cookie 里面 首页读取cookietoken 查询用户信息返回到页面展示
         JSONObject data = login.getData();
-        String token = data.getString("token");
+        String token = data.getString(Constants.TOKEN);
         CookieUtils.setCookie(request, response, WebConstants.LOGIN_TOKEN_COOKIENAME, token);
         return BaseWebController.REDIRECT_INDEX;
     }

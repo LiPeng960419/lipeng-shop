@@ -1,5 +1,6 @@
 package com.lipeng.web.member.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.lipeng.base.BaseResponse;
 import com.lipeng.base.BaseWebController;
@@ -7,19 +8,20 @@ import com.lipeng.constants.Constants;
 import com.lipeng.core.bean.MeiteBeanUtils;
 import com.lipeng.core.utils.CookieUtils;
 import com.lipeng.member.dto.UserLoginInpDTO;
+import com.lipeng.web.common.QQConfig;
+import com.lipeng.web.common.QQUserInfo;
 import com.lipeng.web.constants.WebConstants;
 import com.lipeng.web.member.controller.req.vo.LoginVo;
 import com.lipeng.web.member.feign.MemberLoginServiceFeign;
 import com.lipeng.web.member.feign.QQAuthoriFeign;
-import com.qq.connect.QQConnectException;
-import com.qq.connect.api.OpenID;
-import com.qq.connect.api.qzone.UserInfo;
-import com.qq.connect.javabeans.AccessToken;
-import com.qq.connect.javabeans.qzone.UserInfoBean;
-import com.qq.connect.oauth.Oauth;
+import com.lipeng.web.utils.HttpClientUtil;
+import com.lipeng.web.utils.QQUserInfoUtil;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,21 +43,27 @@ public class QQAuthoriController extends BaseWebController {
      */
     private static final String MB_QQ_LOGIN = "member/qqlogin";
 
+    private static final String QQ_LOGIN_STATE = "qq_login_state";
+
     @Autowired
     private QQAuthoriFeign qqAuthoriFeign;
 
     @Autowired
     private MemberLoginServiceFeign memberLoginServiceFeign;
 
+    @Autowired
+    private QQConfig qqConfig;
+
     /**
      * 生成授权链接
      */
     @RequestMapping("/qqAuth")
-    public String qqAuth(HttpServletRequest request) {
+    public String qqAuth() {
         try {
-            String authorizeURL = new Oauth().getAuthorizeURL(request);
-            log.info("QQ生成授权链接:{}", authorizeURL);
-            return "redirect:" + authorizeURL;
+            String url = QQUserInfoUtil.getAuthorization(qqConfig.getAppid(),
+                    URLEncoder.encode(qqConfig.getReDirectUri(), "UTF-8"), QQ_LOGIN_STATE);
+            log.info("QQ生成授权链接:{}", url);
+            return "redirect:" + url;
         } catch (Exception e) {
             return ERROR_500_FTL;
         }
@@ -65,50 +73,47 @@ public class QQAuthoriController extends BaseWebController {
      授权返回本地链接
      */
     @RequestMapping("/qqLoginBack")
-    public String qqLoginBack(String code, HttpServletRequest request, HttpServletResponse response,
-            HttpSession httpSession) throws QQConnectException {
+    public String qqLoginBack(String code, HttpServletRequest request,
+            HttpServletResponse response) {
         try {
-            // 1.获取授权码COde
-            // 2.使用授权码Code获取accessToken
-            AccessToken accessTokenObj = new Oauth().getAccessTokenByRequest(request);
-            if (accessTokenObj == null || StringUtils.isEmpty(accessTokenObj.getAccessToken())) {
+            // 获取授权码COde 2.使用授权码Code获取accessToken
+            Map<String, Object> qqProperties = getToken(code);
+            if (Objects.isNull(qqProperties) || StringUtils
+                    .isEmpty((String) qqProperties.get("accessToken"))) {
                 log.info("QQ登录本地回调未获取到AccessToken!");
                 return ERROR_500_FTL;
             }
+            String accessToken = (String) qqProperties.get("accessToken");
             // 使用accessToken获取用户openid
-            String accessToken = accessTokenObj.getAccessToken();
-            OpenID openIDObj = new OpenID(accessToken);
-            String openId = openIDObj.getUserOpenID();
+            String openId = getOpenId(accessToken);
             if (StringUtils.isEmpty(openId)) {
                 log.error("QQ登录本地回调未获取到openId!");
                 return ERROR_500_FTL;
             }
-            // 使用openid 查询数据库是否已经关联账号信息
+            // 使用openid 查询数据库是否已经关联账号信息 没有返回203
             BaseResponse<JSONObject> findByOpenId = qqAuthoriFeign.findByOpenId(openId);
             if (!isSuccess(findByOpenId)) {
                 log.error("QQ根据openId获取用户信息异常!");
                 return ERROR_500_FTL;
             }
-            // 如果调用接口返回203 ,跳转到关联账号页面
-            //不存在用户 跳转到关联页面
+            // 不存在用户接口返回203 ,跳转到关联账号页面
             if (Constants.HTTP_RES_CODE_NOTUSER_203.equals(findByOpenId.getCode())) {
-                // 页面需要展示 QQ头像
-                UserInfo qzoneUserInfo = new UserInfo(accessToken, openId);
-                UserInfoBean userInfoBean = qzoneUserInfo.getUserInfo();
-                if (userInfoBean == null) {
+                QQUserInfo userInfo = getUserInfo(qqProperties);
+                if (Objects.nonNull(userInfo)) {
+                    // 用户的QQ头像  大小为100×100像素的QQ空间头像URL。
+                    String avatarURL100 = userInfo.getFigureurl_2();
+                    request.setAttribute("avatarURL100", avatarURL100);
+                } else {
+                    request.setAttribute("avatarURL100", null);
                     log.error("根据accessToken,openId获取QQ用户信息异常!");
-                    return ERROR_500_FTL;
                 }
-                // 用户的QQ头像
-                String avatarURL100 = userInfoBean.getAvatar().getAvatarURL100();
-                request.setAttribute("avatarURL100", avatarURL100);
                 // 需要将openid存入在session中
-                httpSession.setAttribute(WebConstants.LOGIN_QQ_OPENID, openId);
+                request.getSession().setAttribute(WebConstants.LOGIN_QQ_OPENID, openId);
                 return MB_QQ_LOGIN;
             }
             // 如果能够查询到用户信息的话,直接自动登陆
             JSONObject data = findByOpenId.getData();
-            String token = data.getString("token");
+            String token = data.getString(Constants.TOKEN);
             CookieUtils.setCookie(request, response, WebConstants.LOGIN_TOKEN_COOKIENAME, token);
             return REDIRECT_INDEX;
         } catch (Exception e) {
@@ -129,7 +134,6 @@ public class QQAuthoriController extends BaseWebController {
             log.error("session中不存在QQopenId!");
             return ERROR_500_FTL;
         }
-
         // 2.将vo转换dto调用会员登陆接口
         UserLoginInpDTO userLoginInpDTO = MeiteBeanUtils.voToDto(loginVo, UserLoginInpDTO.class);
         userLoginInpDTO.setQqOpenId(qqOpenId);
@@ -143,9 +147,67 @@ public class QQAuthoriController extends BaseWebController {
         }
         // 3.登陆成功之后如何处理 保持会话信息 将token存入到cookie 里面 首页读取cookietoken 查询用户信息返回到页面展示
         JSONObject data = login.getData();
-        String token = data.getString("token");
+        String token = data.getString(Constants.TOKEN);
         CookieUtils.setCookie(request, response, WebConstants.LOGIN_TOKEN_COOKIENAME, token);
         return REDIRECT_INDEX;
+    }
+
+    public Map<String, Object> getToken(String code) throws Exception {
+        String url = QQUserInfoUtil.getAccessToken(qqConfig.getAppid(), qqConfig.getAppkey(), code,
+                URLEncoder.encode(qqConfig.getReDirectUri(), "UTF-8"));
+        // 获得token
+        String result = HttpClientUtil.doGet(url);
+        if (StringUtils.isEmpty(result)) {
+            return null;
+        }
+        String[] items = StringUtils.splitByWholeSeparatorPreserveAllTokens(result, "&");
+        String accessToken = StringUtils.substringAfterLast(items[0], "=");
+        Long expiresIn = new Long(StringUtils.substringAfterLast(items[1], "="));
+        String refreshToken = StringUtils.substringAfterLast(items[2], "=");
+        //token信息
+        Map<String, Object> qqProperties = new HashMap<String, Object>();
+        qqProperties.put("accessToken", accessToken);
+        qqProperties.put("expiresIn", String.valueOf(expiresIn));
+        qqProperties.put("refreshToken", refreshToken);
+        return qqProperties;
+    }
+
+    /*
+    获取用户openId（根据token）
+     */
+    public String getOpenId(String accessToken) {
+        String url = QQUserInfoUtil.getOpenId(accessToken);
+        String result = HttpClientUtil.doGet(url);
+        if (StringUtils.isEmpty(result)) {
+            return null;
+        }
+        String openId = StringUtils.substringBetween(result, "\"openid\":\"", "\"}");
+        return openId;
+    }
+
+    /**
+     * 根据token,openId获取用户信息
+     */
+    public QQUserInfo getUserInfo(Map<String, Object> qqProperties) {
+        try {
+            // 取token
+            String accessToken = (String) qqProperties.get("accessToken");
+            String openId = (String) qqProperties.get("openId");
+            if (!StringUtils.isNotEmpty(accessToken) || !StringUtils.isNotEmpty(openId)) {
+                return null;
+            }
+            String url = QQUserInfoUtil.getUserInfo(accessToken, qqConfig.getAppid(), openId);
+            // 获取qq相关数据
+            String result = HttpClientUtil.doGet(url);
+            if (StringUtils.isEmpty(result)) {
+                return null;
+            }
+            QQUserInfo userInfo = JSON.parseObject(result, QQUserInfo.class);
+            return userInfo;
+        } catch (Exception e) {
+            log.error("get QQUserInfo error", e);
+        }
+        return null;
     }
 
 }

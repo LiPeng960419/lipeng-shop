@@ -2,6 +2,8 @@ package com.lipeng.constants;
 
 public interface Constants {
 
+    String TOKEN = "token";
+
     // 响应请求成功
     String HTTP_RES_CODE_200_VALUE = "success";
 
