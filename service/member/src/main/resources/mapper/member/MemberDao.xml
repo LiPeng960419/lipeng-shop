@@ -9,34 +9,31 @@
         UPDATE meite_user
         <set>
             <if test="mobile!=null and mobile !='' ">
-                mobile = #{mobile}
+                MOBILE = #{mobile},
             </if>
             <if test="email!=null and email !='' ">
-                email = #{email}
+                EMAIL = #{email},
             </if>
             <if test="password!=null and password !='' ">
-                ,password = #{password}
+                PASSWORD = #{password},
             </if>
             <if test="userName!=null and userName !='' ">
-                ,userName = #{userName}
+                USER_NAME = #{userName},
             </if>
             <if test="sex!=null and sex !='' ">
-                ,sex = #{sex}
+                SEX = #{sex},
             </if>
             <if test="age!=null">
-                ,age = #{age}
-            </if>
-            <if test="updateTime!=null and updateTime !='' ">
-                ,updateTime = #{updateTime}
+                AGE = #{age},
             </if>
             <if test="qqOpenid!=null and qqOpenid !='' ">
-                ,qqOpenid = #{qqOpenid}
+                qqOpenid = #{qqOpenid},
             </if>
             <if test="wxOpenid!=null and wxOpenid !='' ">
-                ,wxOpenid = #{wxOpenid}
+                wxOpenid = #{wxOpenid},
             </if>
         </set>
-        WHERE userId = #{userId}
+        WHERE USER_ID = #{userId}
     </update>
 
 </mapper>

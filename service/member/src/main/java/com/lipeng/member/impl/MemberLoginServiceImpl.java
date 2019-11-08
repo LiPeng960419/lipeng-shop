@@ -130,7 +130,7 @@ public class MemberLoginServiceImpl extends BaseApiService<JSONObject> implement
     }
 
     @Override
-    public BaseResponse<JSONObject> updateUserInfo(UserInpDTO userInpDTO) {
+    public BaseResponse<JSONObject> updateUserInfo(@RequestBody UserInpDTO userInpDTO) {
         UserDo userDo = MeiteBeanUtils.dtoToDo(userInpDTO, UserDo.class);
         return userMapper.updateUserInfo(userDo) > 0 ? setResultSuccess("修改用户信息成功")
                 : setResultError("修改用户信息失败!");
