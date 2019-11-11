@@ -14,6 +14,7 @@ import com.lipeng.member.mapper.entity.UserDo;
 import com.lipeng.member.service.MemberService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -62,7 +63,7 @@ public class MemberServiceImpl extends BaseApiService<UserOutDTO> implements Mem
     }
 
     @Override
-    public BaseResponse<UserOutDTO> ssoLogin(UserLoginInpDTO userLoginInpDTO) {
+    public BaseResponse<UserOutDTO> ssoLogin(@RequestBody UserLoginInpDTO userLoginInpDTO) {
         // 1.验证参数
         String mobile = userLoginInpDTO.getMobile();
         if (StringUtils.isEmpty(mobile)) {
