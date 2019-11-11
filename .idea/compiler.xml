@@ -10,10 +10,12 @@
         <module name="api-weixin" />
         <module name="common-core" />
         <module name="eureka" />
+        <module name="meite-shop-portal-web" />
         <module name="member" />
         <module name="portal" />
         <module name="portal-web" />
         <module name="service" />
+        <module name="sso" />
         <module name="weixin" />
         <module name="xxl-sso-server" />
         <module name="zuul" />
@@ -32,11 +34,13 @@
       <module name="common-core" options="-parameters" />
       <module name="eureka" options="-parameters" />
       <module name="lipeng-shop" options="-parameters" />
+      <module name="meite-shop-portal-web" options="-parameters" />
       <module name="member" options="-parameters" />
       <module name="portal" options="-parameters" />
       <module name="portal-web" options="-parameters" />
       <module name="service" options="-parameters" />
       <module name="service-api" options="-parameters" />
+      <module name="sso" options="-parameters" />
       <module name="weixin" options="-parameters" />
       <module name="xxl-sso-server" options="-parameters" />
       <module name="zuul" options="-parameters" />

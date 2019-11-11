@@ -33,7 +33,7 @@ public class UserOutDTO {
 	 * 性别 0 男 1女
 	 */
 	@ApiModelProperty(value = "用户性别")
-	private char sex;
+	private Integer sex;
 	/**
 	 * 年龄
 	 */
@@ -54,7 +54,7 @@ public class UserOutDTO {
 	 * 账号是否可以用 1 正常 0冻结
 	 */
 	@ApiModelProperty(value = "账号是否可以用 1 正常 0冻结")
-	private char isAvalible;
+	private Integer isAvalible;
 	/**
 	 * 用户头像
 	 */

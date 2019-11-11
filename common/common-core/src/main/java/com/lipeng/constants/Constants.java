@@ -70,7 +70,7 @@ public interface Constants {
 
     String WEIXIN_SEX_UNKNOW = "0";
 
-    char MAN = '0';
+    int MAN = 0;
 
-    char FEMALE = '1';
+    int FEMALE = 1;
 }

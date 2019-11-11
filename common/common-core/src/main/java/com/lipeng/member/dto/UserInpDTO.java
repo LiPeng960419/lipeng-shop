@@ -37,7 +37,7 @@ public class UserInpDTO {
 	 * 性别 0 男 1女
 	 */
 	@ApiModelProperty(value = "用户性别")
-	private char sex;
+	private Integer sex;
 	/**
 	 * 年龄
 	 */

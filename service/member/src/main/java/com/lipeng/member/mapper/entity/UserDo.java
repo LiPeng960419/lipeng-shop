@@ -29,11 +29,11 @@ public class UserDo {
     /**
      * 性别 0 男 1女
      */
-    private char sex;
+    private Integer sex;
     /**
      * 年龄
      */
-    private Long age;
+    private Integer age;
     /**
      * 注册时间
      */
@@ -45,7 +45,7 @@ public class UserDo {
     /**
      * 账号是否可以用 1 正常 0冻结
      */
-    private char isAvalible;
+    private Integer isAvalible;
     /**
      * 用户头像
      */
