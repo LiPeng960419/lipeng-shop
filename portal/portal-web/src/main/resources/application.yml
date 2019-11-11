@@ -60,3 +60,14 @@ hystrix:
           thread:
             timeoutInMilliseconds: 10000
 ###建议 hystrix服务超时时间大致5-10  如果产生业务延迟比较长 建议使用mq 或者异步请求
+
+xxl-sso:
+  excluded:
+    paths:
+xxl:
+  sso:
+    server: http://xxlssoserver.com:8080/xxl-sso-server
+    logout:
+      path: /logout
+    redis:
+      address: 10.9.216.1:6379

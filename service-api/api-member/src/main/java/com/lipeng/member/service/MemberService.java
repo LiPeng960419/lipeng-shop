@@ -1,12 +1,14 @@
 package com.lipeng.member.service;
 
 import com.lipeng.base.BaseResponse;
+import com.lipeng.member.dto.UserLoginInpDTO;
 import com.lipeng.member.dto.UserOutDTO;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public interface MemberService {
@@ -26,5 +28,12 @@ public interface MemberService {
     @GetMapping("/getUserInfo")
     @ApiOperation(value = "/getUserInfo")
     BaseResponse<UserOutDTO> getInfo(@RequestParam("token") String token);
+
+    /**
+     * SSO认证系统登陆接口
+     */
+    @PostMapping("/ssoLogin")
+    @ApiOperation(value = "/ssoLogin")
+    BaseResponse<UserOutDTO> ssoLogin(@RequestBody UserLoginInpDTO userLoginInpDTO);
 
 }

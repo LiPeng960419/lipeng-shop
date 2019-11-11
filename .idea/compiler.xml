@@ -15,6 +15,7 @@
         <module name="portal-web" />
         <module name="service" />
         <module name="weixin" />
+        <module name="xxl-sso-server" />
         <module name="zuul" />
       </profile>
     </annotationProcessing>
@@ -37,6 +38,7 @@
       <module name="service" options="-parameters" />
       <module name="service-api" options="-parameters" />
       <module name="weixin" options="-parameters" />
+      <module name="xxl-sso-server" options="-parameters" />
       <module name="zuul" options="-parameters" />
     </option>
   </component>

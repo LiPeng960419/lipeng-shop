@@ -11,6 +11,7 @@
         <option value="$PROJECT_DIR$/service/member/pom.xml" />
         <option value="$PROJECT_DIR$/service/weixin/pom.xml" />
         <option value="$PROJECT_DIR$/portal/portal-web/pom.xml" />
+        <option value="$PROJECT_DIR$/basic/xxl-sso-server/pom.xml" />
       </list>
     </option>
   </component>
