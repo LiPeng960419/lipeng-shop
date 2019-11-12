@@ -28,7 +28,7 @@ public class LoginController extends BaseWebController {
     /**
      * 跳转到登陆页面页面
      */
-    private static final String MB_LOGIN_FTL = "member/login";
+    public static final String MB_LOGIN_FTL = "member/login";
 
     @Autowired
     private MemberLoginServiceFeign memberLoginServiceFeign;
