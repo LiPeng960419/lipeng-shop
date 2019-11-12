@@ -10,6 +10,7 @@
         <module name="api-member" />
         <module name="api-weixin" />
         <module name="common-core" />
+        <module name="elk" />
         <module name="eureka" />
         <module name="goods" />
         <module name="meite-shop-portal-web" />
@@ -35,6 +36,7 @@
       <module name="basic" options="-parameters" />
       <module name="common" options="-parameters" />
       <module name="common-core" options="-parameters" />
+      <module name="elk" options="-parameters" />
       <module name="eureka" options="-parameters" />
       <module name="goods" options="-parameters" />
       <module name="lipeng-shop" options="-parameters" />

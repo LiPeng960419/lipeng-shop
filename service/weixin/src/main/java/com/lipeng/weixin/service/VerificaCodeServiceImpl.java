@@ -1,4 +1,4 @@
-package com.lipeng.weixin.impl;
+package com.lipeng.weixin.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lipeng.base.BaseApiService;

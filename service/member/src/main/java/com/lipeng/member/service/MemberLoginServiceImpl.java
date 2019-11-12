@@ -1,4 +1,4 @@
-package com.lipeng.member.impl;
+package com.lipeng.member.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lipeng.base.BaseApiService;
@@ -14,7 +14,6 @@ import com.lipeng.member.mapper.UserMapper;
 import com.lipeng.member.mapper.UserTokenMapper;
 import com.lipeng.member.mapper.entity.UserDo;
 import com.lipeng.member.mapper.entity.UserTokenDo;
-import com.lipeng.member.service.MemberLoginService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

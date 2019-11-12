@@ -1,4 +1,4 @@
-package com.lipeng.member.impl;
+package com.lipeng.member.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lipeng.base.BaseApiService;
@@ -7,18 +7,12 @@ import com.lipeng.constants.Constants;
 import com.lipeng.core.token.GenerateToken;
 import com.lipeng.member.mapper.UserMapper;
 import com.lipeng.member.mapper.entity.UserDo;
-import com.lipeng.member.service.WeiXinAuthoriService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * @Author: lipeng 910138
- * @Date: 2019/11/7 17:06
- */
 @RestController
-public class WeiXinAuthoriServiceImpl extends BaseApiService<JSONObject> implements
-        WeiXinAuthoriService {
+public class QQAuthoriServiceImpl extends BaseApiService<JSONObject> implements QQAuthoriService {
 
     @Autowired
     private UserMapper userMapper;
@@ -27,18 +21,18 @@ public class WeiXinAuthoriServiceImpl extends BaseApiService<JSONObject> impleme
     private GenerateToken generateToken;
 
     @Override
-    public BaseResponse<JSONObject> findByOpenId(String weixinOpenId) {
+    public BaseResponse<JSONObject> findByOpenId(String qqOpenId) {
         // 1.根据qqOpenId查询用户信息
-        if (StringUtils.isEmpty(weixinOpenId)) {
-            return setResultError("weixinOpenId不能为空!");
+        if (StringUtils.isEmpty(qqOpenId)) {
+            return setResultError("qqOpenId不能为空!");
         }
         // 2.如果没有查询到 直接返回状态码203
-        UserDo userDo = userMapper.findByWeixinOpenId(weixinOpenId);
+        UserDo userDo = userMapper.findByQQOpenId(qqOpenId);
         if (userDo == null) {
-            return setResultError(Constants.HTTP_RES_CODE_NOTUSER_203, "根据weixinOpenId没有查询到用户信息");
+            return setResultError(Constants.HTTP_RES_CODE_NOTUSER_203, "根据qqOpenId没有查询到用户信息");
         }
         // 3.如果能够查询到用户信息的话 返回对应用户信息token
-        String keyPrefix = Constants.MEMBER_TOKEN_KEYPREFIX + Constants.MEMBER_LOGIN_TYPE_WEIXIN;
+        String keyPrefix = Constants.MEMBER_TOKEN_KEYPREFIX + Constants.MEMBER_LOGIN_TYPE_QQ;
         Long userId = userDo.getUserId();
         String userToken = generateToken.createToken(keyPrefix, String.valueOf(userId));
         JSONObject data = new JSONObject();

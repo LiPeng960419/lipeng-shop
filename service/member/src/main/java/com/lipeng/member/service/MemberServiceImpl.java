@@ -1,4 +1,4 @@
-package com.lipeng.member.impl;
+package com.lipeng.member.service;
 
 import com.lipeng.base.BaseApiService;
 import com.lipeng.base.BaseResponse;
@@ -11,7 +11,6 @@ import com.lipeng.member.dto.UserLoginInpDTO;
 import com.lipeng.member.dto.UserOutDTO;
 import com.lipeng.member.mapper.UserMapper;
 import com.lipeng.member.mapper.entity.UserDo;
-import com.lipeng.member.service.MemberService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -16,6 +16,11 @@
     <dependencies>
         <dependency>
             <groupId>com.lipeng</groupId>
+            <artifactId>elk</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lipeng</groupId>
             <artifactId>goods-service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>

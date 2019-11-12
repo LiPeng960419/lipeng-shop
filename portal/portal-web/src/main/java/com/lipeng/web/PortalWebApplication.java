@@ -6,7 +6,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ImportResource;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.lipeng")
 @EnableEurekaClient
 @EnableFeignClients
 @ImportResource(locations = {"classpath:mykaptcha.xml"})

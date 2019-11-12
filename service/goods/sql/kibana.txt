@@ -1,0 +1,90 @@
+GET /goods/goods/_search
+
+GET /goods/_mapping
+
+DELETE goods
+
+PUT /goods
+
+POST /goods/_mapping/goods
+{
+      "goods": {
+        "properties": {
+          "@timestamp": {
+            "type": "date"
+          },
+          "@version": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "attributeList": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "categoryId": {
+            "type": "integer"
+          },
+          "createdTime": {
+            "type": "date"
+          },
+          "detail": {
+            "type": "text",
+             "analyzer":"ik_smart",
+            "search_analyzer":"ik_smart"
+
+          },
+          "id": {
+            "type": "integer"
+          },
+          "mainImage": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "name": {
+            "type": "text",
+            "analyzer":"ik_smart",
+            "search_analyzer":"ik_smart"
+
+          },
+          "revision": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "subImages": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "subtitle": {
+            "type": "text",
+          "analyzer":"ik_smart",
+         "search_analyzer":"ik_smart"
+
+          },
+          "updatedTime": {
+            "type": "date"
+          }
+        }
+      }
+}
