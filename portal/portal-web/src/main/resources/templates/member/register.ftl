@@ -70,7 +70,7 @@
 
 				<div class="layui-input-block-weixinQRcode"
 					style="text-align: center;">
-					<img alt="" src="http://mmbiz.qpic.cn/mmbiz_jpg/dl2jYR7kGMdicwUSppM13uQoAbthagVZcKCyUbel0LRGdNvx2ruSw1LP1KaytloEyLOlfQOIrlc7WBogYo3fvWQ/0">
+					<img alt="" src="http://mmbiz.qpic.cn/mmbiz_jpg/dl2jYR7kGMeGgnYSKDWWxVsut1IHH0IFSiae5ESpDqsibApcVDKwZpd379SXJhKM9Ulce1foGPiaVr5Q7ib39Oh1DA/0">
 
 					<div style="text-align: center; font-size: 14px; color: #FF5722;">
 						关注微信公众号,发送手机号码可获得注册码</div>

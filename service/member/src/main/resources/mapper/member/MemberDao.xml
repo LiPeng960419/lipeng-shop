@@ -20,7 +20,7 @@
             <if test="userName!=null and userName !='' ">
                 USER_NAME = #{userName},
             </if>
-            <if test="sex!=null and sex !='' ">
+            <if test="sex!=null">
                 SEX = #{sex},
             </if>
             <if test="age!=null">

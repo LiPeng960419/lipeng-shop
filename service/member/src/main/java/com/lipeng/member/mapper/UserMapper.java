@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface UserMapper {
 
-    @Insert("INSERT INTO `meite_user` VALUES (null,#{mobile}, #{email}, #{password}, #{userName}, null, null, null, null, 1, null, null, null);")
+    @Insert("INSERT INTO `meite_user` VALUES (null,#{mobile}, #{email}, #{password}, #{userName}, null, null, now(), null, 1, null, null, null);")
     int register(UserDo userDo);
 
     @Select("SELECT * FROM meite_user WHERE MOBILE=#{mobile};")
