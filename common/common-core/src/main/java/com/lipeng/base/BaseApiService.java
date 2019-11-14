@@ -42,4 +42,11 @@ public class BaseApiService<T> {
         return result > 0;
     }
 
+    // 接口直接返回true 或者false
+    public Boolean isSuccess(BaseResponse<?> baseResp) {
+        if (baseResp == null) {
+            return false;
+        }
+        return !Constants.HTTP_RES_CODE_500.equals(baseResp.getCode());
+    }
 }

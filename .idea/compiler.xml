@@ -6,8 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="alipay" />
         <module name="api-goods" />
         <module name="api-member" />
+        <module name="api-pay" />
         <module name="api-weixin" />
         <module name="common-core" />
         <module name="elk" />
@@ -15,10 +17,14 @@
         <module name="goods" />
         <module name="meite-shop-portal-web" />
         <module name="member" />
+        <module name="pay" />
+        <module name="pay-plugins" />
         <module name="portal" />
+        <module name="portal-pay-web" />
         <module name="portal-web" />
         <module name="service" />
         <module name="sso" />
+        <module name="unionpay" />
         <module name="weixin" />
         <module name="xxl-sso-server" />
         <module name="zuul" />
@@ -30,8 +36,10 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="alipay" options="-parameters" />
       <module name="api-goods" options="-parameters" />
       <module name="api-member" options="-parameters" />
+      <module name="api-pay" options="-parameters" />
       <module name="api-weixin" options="-parameters" />
       <module name="basic" options="-parameters" />
       <module name="common" options="-parameters" />
@@ -42,11 +50,15 @@
       <module name="lipeng-shop" options="-parameters" />
       <module name="meite-shop-portal-web" options="-parameters" />
       <module name="member" options="-parameters" />
+      <module name="pay" options="-parameters" />
+      <module name="pay-plugins" options="-parameters" />
       <module name="portal" options="-parameters" />
+      <module name="portal-pay-web" options="-parameters" />
       <module name="portal-web" options="-parameters" />
       <module name="service" options="-parameters" />
       <module name="service-api" options="-parameters" />
       <module name="sso" options="-parameters" />
+      <module name="unionpay" options="-parameters" />
       <module name="weixin" options="-parameters" />
       <module name="xxl-sso-server" options="-parameters" />
       <module name="zuul" options="-parameters" />
