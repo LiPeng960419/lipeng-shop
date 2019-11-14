@@ -15,6 +15,7 @@
         <module name="elk" />
         <module name="eureka" />
         <module name="goods" />
+        <module name="goods-service" />
         <module name="meite-shop-portal-web" />
         <module name="member" />
         <module name="pay" />
@@ -47,6 +48,7 @@
       <module name="elk" options="-parameters" />
       <module name="eureka" options="-parameters" />
       <module name="goods" options="-parameters" />
+      <module name="goods-service" options="-parameters" />
       <module name="lipeng-shop" options="-parameters" />
       <module name="meite-shop-portal-web" options="-parameters" />
       <module name="member" options="-parameters" />
