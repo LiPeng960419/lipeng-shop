@@ -5,13 +5,7 @@ import com.alipay.api.internal.util.AlipaySignature;
 import com.lipeng.alipay.config.AlipayConfig;
 import com.lipeng.base.BaseApiService;
 import com.lipeng.pay.service.PayCallBackSyncService;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,7 +46,7 @@ public class AliPayCallBackSyncServiceImpl extends BaseApiService implements Pay
             Assert.notNull(data.get("total_amount"), "缺少参数total_amount");
             //成功回调的返回页面
             String htmlFrom = "<form name='punchout_form'"
-                    + " method='post' action='http://127.0.0.1/callBack/synSuccessPage' >"
+                    + " method='post' action='http://127.0.0.1:8050/alipay/callBack/synSuccessPage' >"
                     + "<input type='hidden' name='outTradeNo' value='" + data.get("out_trade_no")
                     + "'>"
                     + "<input type='hidden' name='tradeNo' value='" + data.get("trade_no") + "'>"
