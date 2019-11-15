@@ -12,6 +12,8 @@ public class PayAsynCallbackService {
 
     private static final String UNIONPAYCALLBACK_TEMPLATE = "unionPayCallbackTemplate";
 
+    private static final String ALIPAYCALLBACK_TEMPLATE = "aliPayCallbackTemplate";
+
     /**
      * 银联异步回调接口执行代码
      */
@@ -19,6 +21,16 @@ public class PayAsynCallbackService {
     public String unionPayAsynCallback(HttpServletRequest req, HttpServletResponse resp) {
         AbstractPayCallbackTemplate abstractPayCallbackTemplate = TemplateFactory
                 .getPayCallbackTemplate(UNIONPAYCALLBACK_TEMPLATE);
+        return abstractPayCallbackTemplate.asyncCallBack(req, resp);
+    }
+
+    /**
+     * 支付宝异步回调接口执行代码
+     */
+    @RequestMapping("/aliPayAsynCallback")
+    public String aliPayAsynCallback(HttpServletRequest req, HttpServletResponse resp) {
+        AbstractPayCallbackTemplate abstractPayCallbackTemplate = TemplateFactory
+                .getPayCallbackTemplate(ALIPAYCALLBACK_TEMPLATE);
         return abstractPayCallbackTemplate.asyncCallBack(req, resp);
     }
 

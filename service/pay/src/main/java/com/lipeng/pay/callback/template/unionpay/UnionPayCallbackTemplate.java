@@ -114,15 +114,13 @@ public class UnionPayCallbackTemplate extends AbstractPayCallbackTemplate {
         String respCode = verifySignature.get("respCode");
 
         // 判断respCode=00、A6后，对涉及资金类的交易，请再发起查询接口查询，确定交易成功后更新数据库。
-        System.out.println("orderId:" + orderId + ",respCode:" + respCode);
         // 1.判断respCode是否为已经支付成功断respCode=00、A6后，
-        if (!(respCode.equals("00") || respCode.equals("A6"))) {
+        if (!("00".equals(respCode) || "A6".equals(respCode))) {
             return failResult();
         }
         // 根据日志 手动补偿 使用支付id调用第三方支付接口查询
-        PaymentTransactionEntity paymentTransaction = paymentTransactionMapper
-                .selectByPaymentId(orderId);
-        if (paymentTransaction.getPaymentStatus().equals(PayConstant.PAY_STATUS_SUCCESS)) {
+        PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectByPaymentId(orderId);
+        if (PayConstant.PAY_STATUS_SUCCESS.equals(paymentTransaction.getPaymentStatus())) {
             // 网络重试中，之前已经支付过
             return successResult();
         }

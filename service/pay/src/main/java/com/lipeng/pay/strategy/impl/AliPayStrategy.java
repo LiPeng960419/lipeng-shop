@@ -24,17 +24,20 @@ public class AliPayStrategy implements PayStrategy {
 
 		// 设置请求参数
 		AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
-		alipayRequest.setReturnUrl(AlipayConfig.return_url);
-		alipayRequest.setNotifyUrl(AlipayConfig.notify_url);
+//		alipayRequest.setReturnUrl(AlipayConfig.return_url);
+//		alipayRequest.setNotifyUrl(AlipayConfig.notify_url);
+		//参数从数据库获取 上面是从config获取
+		alipayRequest.setReturnUrl(pymentChannel.getSyncUrl());
+		alipayRequest.setNotifyUrl(pymentChannel.getAsynUrl());
 
 		// 商户订单号，商户网站订单系统中唯一订单号，必填
 		String outTradeNo = payMentTransacDTO.getPaymentId();
 		// 付款金额，必填
-		String totalAmount = changeF2Y(payMentTransacDTO.getPayAmount() + "");
+		String totalAmount = changeF2Y(payMentTransacDTO.getPayAmount().toString());
 		// 订单名称，必填
-		String subject = "每特教育微服务电商项目";
+		String subject = "李鹏QB充值业务";
 		// 商品描述，可空
-		String body = "每特教育微服务电商项目";
+		String body = "球球比的充值业务";
 
 		alipayRequest.setBizContent("{\"out_trade_no\":\"" + outTradeNo + "\"," + "\"total_amount\":\"" + totalAmount
 				+ "\"," + "\"subject\":\"" + subject + "\"," + "\"body\":\"" + body + "\","
@@ -45,6 +48,7 @@ public class AliPayStrategy implements PayStrategy {
 			String result = alipayClient.pageExecute(alipayRequest).getBody();
 			return result;
 		} catch (Exception e) {
+			log.error("alipayClient pageExecute error,request:" + alipayRequest.getBizContent(), e);
 			return null;
 		}
 
@@ -55,7 +59,7 @@ public class AliPayStrategy implements PayStrategy {
 
 	/**
 	 * 将分为单位的转换为元 （除100）
-	 * 
+	 *
 	 * @param amount
 	 * @return
 	 * @throws Exception

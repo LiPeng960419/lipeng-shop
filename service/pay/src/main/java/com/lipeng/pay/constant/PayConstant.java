@@ -20,4 +20,13 @@ public interface PayConstant {
      * 返回银联失败通知
      */
     String YINLIAN_RESULT_FAIL = "fail";
+
+    /**
+     * 返回银联通知成功
+     */
+    String ALI_RESULT_SUCCESS = "ok";
+    /**
+     * 返回银联失败通知
+     */
+    String ALI_RESULT_FAIL = "fail";
 }

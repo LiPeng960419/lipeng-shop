@@ -11,7 +11,7 @@ import org.apache.commons.lang.StringUtils;
 public abstract class AbstractPayCallbackTemplate {
 	/**
 	 * 获取所有请求的参数，封装成Map集合 并且验证是否被篡改
-	 * 
+	 *
 	 * @param req
 	 * @param resp
 	 * @return
@@ -21,7 +21,7 @@ public abstract class AbstractPayCallbackTemplate {
 
 	/**
 	 * 异步回调执行业务逻辑
-	 * 
+	 *
 	 * @param verifySignature
 	 */
 	public abstract String asyncService(Map<String, String> verifySignature);
@@ -35,7 +35,6 @@ public abstract class AbstractPayCallbackTemplate {
 	 * 1. 验证报文参数<br>
 	 * 2. 将日志根据支付id存放到数据库中<br>
 	 * 3. 执行的异步回调业务逻辑<br>
-	 * 
 	 */
 	public String asyncCallBack(HttpServletRequest req, HttpServletResponse resp) {
 		// 1. 验证报文参数 相同点 获取所有的请求参数封装成为map集合 并且进行参数验证
@@ -50,7 +49,7 @@ public abstract class AbstractPayCallbackTemplate {
 
 		String result = verifySignature.get(PayConstant.RESULT_NAME);
 		// 4.201报文验证签名失败
-		if (result.equals(PayConstant.RESULT_PAYCODE_201)) {
+		if (PayConstant.RESULT_PAYCODE_201.equals(result)) {
 			return failResult();
 		}
 		// 5.执行的异步回调业务逻辑
@@ -58,15 +57,12 @@ public abstract class AbstractPayCallbackTemplate {
 	}
 
 	/**
-	 *
-	 * 
 	 * 采用多线程技术或者MQ形式进行存放到数据库中
-	 * 
 	 * @param paymentId
 	 * @param verifySignature
 	 */
 	private void payLog(String paymentId, Map<String, String> verifySignature) {
-		log.info(">>paymentId:{paymentId},verifySignature:{}", verifySignature);
+		log.info("PayLog>>>>>paymentId:{paymentId},verifySignature:{}", paymentId, verifySignature);
 	}
 
 }
