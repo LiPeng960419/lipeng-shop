@@ -73,4 +73,6 @@ public interface Constants {
     int MAN = 0;
 
     int FEMALE = 1;
+
+    Long PAY_TOKEN_TIME = 15 * 60L;
 }

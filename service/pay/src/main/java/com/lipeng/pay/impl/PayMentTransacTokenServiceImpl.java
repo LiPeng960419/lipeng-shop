@@ -3,6 +3,7 @@ package com.lipeng.pay.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.lipeng.base.BaseApiService;
 import com.lipeng.base.BaseResponse;
+import com.lipeng.constants.Constants;
 import com.lipeng.core.token.GenerateToken;
 import com.lipeng.core.twitter.SnowflakeIdUtils;
 import com.lipeng.pay.dto.PayCratePayTokenDto;
@@ -55,7 +56,7 @@ public class PayMentTransacTokenServiceImpl extends BaseApiService<JSONObject> i
 
 		// 3.生成对应支付令牌
 		String keyPrefix = "pay_";
-		String token = generateToken.createToken(keyPrefix, payId.toString());
+		String token = generateToken.createToken(keyPrefix, payId.toString(), Constants.PAY_TOKEN_TIME);
 		JSONObject dataResult = new JSONObject();
 		dataResult.put("token", token);
 

@@ -39,20 +39,15 @@ public abstract class AbstractPayCallbackTemplate {
 	public String asyncCallBack(HttpServletRequest req, HttpServletResponse resp) {
 		// 1. 验证报文参数 相同点 获取所有的请求参数封装成为map集合 并且进行参数验证
 		Map<String, String> verifySignature = verifySignature(req, resp);
-		// 2.将日志根据支付id存放到数据库中
-		String paymentId = verifySignature.get("paymentId");
+		// 2.将日志根据支付id存放到数据库中 out_trade_no对应paymentId
+		String paymentId = verifySignature.get("out_trade_no");
 		if (StringUtils.isEmpty(paymentId)) {
 			return failResult();
 		}
 		// 3.采用异步形式写入日志到数据库中
 		payLog(paymentId, verifySignature);
 
-		String result = verifySignature.get(PayConstant.RESULT_NAME);
-		// 4.201报文验证签名失败
-		if (PayConstant.RESULT_PAYCODE_201.equals(result)) {
-			return failResult();
-		}
-		// 5.执行的异步回调业务逻辑
+		// 4.执行的异步回调业务逻辑
 		return asyncService(verifySignature);
 	}
 
@@ -62,7 +57,7 @@ public abstract class AbstractPayCallbackTemplate {
 	 * @param verifySignature
 	 */
 	private void payLog(String paymentId, Map<String, String> verifySignature) {
-		log.info("PayLog>>>>>paymentId:{paymentId},verifySignature:{}", paymentId, verifySignature);
+		log.info("PayLog>>>>>paymentId:{},verifySignature:{}", paymentId, verifySignature);
 	}
 
 }
