@@ -4,6 +4,8 @@ public interface Constants {
 
     String TOKEN = "token";
 
+    String UTF_8 = "UTF-8";
+
     // 响应请求成功
     String HTTP_RES_CODE_200_VALUE = "success";
 
@@ -75,4 +77,8 @@ public interface Constants {
     int FEMALE = 1;
 
     Long PAY_TOKEN_TIME = 15 * 60L;
+
+    int INTEGRAL_USEABLE = 1;
+
+    int INTEGRAL_UN_USEABLE = 0;
 }

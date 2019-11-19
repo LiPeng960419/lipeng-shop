@@ -8,14 +8,17 @@
         <outputRelativeToContentRoot value="true" />
         <module name="alipay" />
         <module name="api-goods" />
+        <module name="api-integral" />
         <module name="api-member" />
         <module name="api-pay" />
         <module name="api-weixin" />
         <module name="common-core" />
+        <module name="ds-job" />
         <module name="elk" />
         <module name="eureka" />
         <module name="goods" />
         <module name="goods-service" />
+        <module name="integral" />
         <module name="meite-shop-portal-web" />
         <module name="member" />
         <module name="pay" />
@@ -39,16 +42,19 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="alipay" options="-parameters" />
       <module name="api-goods" options="-parameters" />
+      <module name="api-integral" options="-parameters" />
       <module name="api-member" options="-parameters" />
       <module name="api-pay" options="-parameters" />
       <module name="api-weixin" options="-parameters" />
       <module name="basic" options="-parameters" />
       <module name="common" options="-parameters" />
       <module name="common-core" options="-parameters" />
+      <module name="ds-job" options="-parameters" />
       <module name="elk" options="-parameters" />
       <module name="eureka" options="-parameters" />
       <module name="goods" options="-parameters" />
       <module name="goods-service" options="-parameters" />
+      <module name="integral" options="-parameters" />
       <module name="lipeng-shop" options="-parameters" />
       <module name="meite-shop-portal-web" options="-parameters" />
       <module name="member" options="-parameters" />

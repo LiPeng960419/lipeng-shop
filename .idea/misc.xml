@@ -20,6 +20,8 @@
         <option value="$PROJECT_DIR$/pay-plugins/unionpay/pom.xml" />
         <option value="$PROJECT_DIR$/pay-plugins/alipay/pom.xml" />
         <option value="$PROJECT_DIR$/portal/portal-pay-web/pom.xml" />
+        <option value="$PROJECT_DIR$/ds-job/pom.xml" />
+        <option value="$PROJECT_DIR$/service/integral/pom.xml" />
       </list>
     </option>
   </component>

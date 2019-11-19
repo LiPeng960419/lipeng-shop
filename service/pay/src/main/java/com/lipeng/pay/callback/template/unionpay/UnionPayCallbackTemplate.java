@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class UnionPayCallbackTemplate extends AbstractPayCallbackTemplate {
@@ -106,8 +107,8 @@ public class UnionPayCallbackTemplate extends AbstractPayCallbackTemplate {
     }
 
     // 异步回调中网络尝试延迟，导致异步回调重复执行 可能存在幂等性问题
-    //
     @Override
+    @Transactional
     public String asyncService(Map<String, String> verifySignature) {
 
         String orderId = verifySignature.get("orderId"); // 获取后台通知的数据，其他字段也可用类似方式获取
@@ -126,7 +127,8 @@ public class UnionPayCallbackTemplate extends AbstractPayCallbackTemplate {
         }
         // 2.将状态改为已经支付成功
         paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS + "", orderId);
-        // 3.调用积分服务接口增加积分(处理幂等性问题)
+        // 3.使用MQ调用积分服务接口增加积分(处理幂等性问题)
+        addMQIntegral(paymentTransaction);
         return successResult();
     }
 

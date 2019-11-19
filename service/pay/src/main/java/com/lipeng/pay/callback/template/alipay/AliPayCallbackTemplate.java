@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @Author: lipeng 910138
@@ -46,6 +47,7 @@ public class AliPayCallbackTemplate extends AbstractPayCallbackTemplate {
     }
 
     @Override
+    @Transactional
     public String asyncService(Map<String, String> params) {
         // 获取支付宝GET过来反馈信息
         try {
@@ -75,6 +77,9 @@ public class AliPayCallbackTemplate extends AbstractPayCallbackTemplate {
             } else {
                 return PayConstant.ALI_RESULT_FAIL;
             }
+            // 3.使用MQ调用积分服务接口增加积分(处理幂等性问题)
+            addMQIntegral(paymentTransaction);
+
             return PayConstant.ALI_RESULT_SUCCESS;
         } catch (Exception e) {
             log.info("######PayCallBackServiceImpl asynCallBack##ERROR:#####{}", e);

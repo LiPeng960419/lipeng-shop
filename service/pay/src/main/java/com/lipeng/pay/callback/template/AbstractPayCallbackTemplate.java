@@ -1,7 +1,10 @@
 package com.lipeng.pay.callback.template;
 
+import com.alibaba.fastjson.JSONObject;
 import com.lipeng.pay.mapper.PaymentTransactionLogMapper;
+import com.lipeng.pay.mapper.entity.PaymentTransactionEntity;
 import com.lipeng.pay.mapper.entity.PaymentTransactionLogEntity;
+import com.lipeng.pay.mq.producer.IntegralProducer;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import javax.servlet.http.HttpServletRequest;
@@ -9,12 +12,16 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 
 @Slf4j
 public abstract class AbstractPayCallbackTemplate {
 
     @Autowired
     private PaymentTransactionLogMapper paymentTransactionLogMapper;
+
+    @Autowired
+    private IntegralProducer integralProducer;
 
     @Autowired
     private Executor taskExecutor;
@@ -50,6 +57,19 @@ public abstract class AbstractPayCallbackTemplate {
 
         // 4.执行的异步回调业务逻辑
         return asyncService(verifySignature);
+    }
+
+    /**
+     * 基于MQ增加积分
+     */
+    @Async
+    public void addMQIntegral(PaymentTransactionEntity paymentTransaction) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("paymentId", paymentTransaction.getPaymentId());
+        jsonObject.put("userId", paymentTransaction.getUserId());
+        //自定义积分加多少
+        jsonObject.put("integral", paymentTransaction.getPayAmount());
+        integralProducer.send(jsonObject);
     }
 
     /**
