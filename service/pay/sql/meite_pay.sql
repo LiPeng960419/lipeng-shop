@@ -60,27 +60,21 @@ CREATE TABLE `payment_transaction`
 -- Records of payment_transaction
 -- ----------------------------
 
--- ----------------------------
--- Table structure for `payment_transaction_log`
--- ----------------------------
 DROP TABLE IF EXISTS `payment_transaction_log`;
 CREATE TABLE `payment_transaction_log`
 (
   `ID`             int(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `SYNCH_LOG`      text COMMENT '同步回调日志',
-  `ASYNC_LOG`      text COMMENT '异步回调日志',
-  `CHANNEL_ID`     int(11)     DEFAULT NULL COMMENT '支付渠道ID',
-  `TRANSACTION_ID` int(11)     DEFAULT NULL COMMENT '支付交易ID',
-  `REVISION`       int(11)     DEFAULT NULL COMMENT '乐观锁',
-  `CREATED_BY`     varchar(32) DEFAULT NULL COMMENT '创建人',
-  `CREATED_TIME`   datetime    DEFAULT NULL COMMENT '创建时间',
-  `UPDATED_BY`     varchar(32) DEFAULT NULL COMMENT '更新人',
-  `UPDATED_TIME`   datetime    DEFAULT NULL COMMENT '更新时间',
-  `UNTITLED`       varchar(32) DEFAULT NULL,
+  `SYNCH_LOG`      varchar(2048) DEFAULT NULL COMMENT '同步回调日志',
+  `ASYNC_LOG`      varchar(2048) DEFAULT NULL COMMENT '异步回调日志',
+  `CHANNEL_ID`     int(11)       DEFAULT NULL COMMENT '支付渠道ID',
+  `TRANSACTION_ID` varchar(64)   DEFAULT NULL COMMENT '支付交易ID',
+  `REVISION`       int(11)       DEFAULT NULL COMMENT '乐观锁',
+  `CREATED_BY`     varchar(32)   DEFAULT NULL COMMENT '创建人',
+  `CREATED_TIME`   datetime      DEFAULT NULL COMMENT '创建时间',
+  `UPDATED_BY`     varchar(32)   DEFAULT NULL COMMENT '更新人',
+  `UPDATED_TIME`   datetime      DEFAULT NULL COMMENT '更新时间',
+  `UNTITLED`       varchar(32)   DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8 COMMENT ='支付交易日志表 ';
-
--- ----------------------------
--- Records of payment_transaction_log
--- ----------------------------
