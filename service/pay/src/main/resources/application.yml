@@ -21,3 +21,19 @@ spring:
     password: root
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/meite_pay?useUnicode=true&characterEncoding=UTF-8
+  rabbitmq:
+    host: 10.9.216.1
+    port: 5672
+    username: lipeng
+    password: lipeng
+    virtual-host: /
+    publisher-confirms: true
+    publisher-returns: true
+###多线程配置
+threadPool:
+  ###核心线程数
+  corePoolSize: 10
+  ###最大线程数
+  maxPoolSize: 20
+  ##  队列容量
+  queueCapacity: 16

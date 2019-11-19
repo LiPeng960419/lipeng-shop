@@ -76,7 +76,7 @@ CREATE TABLE `payment_transaction_log`
   `CREATED_TIME`   datetime    DEFAULT NULL COMMENT '创建时间',
   `UPDATED_BY`     varchar(32) DEFAULT NULL COMMENT '更新人',
   `UPDATED_TIME`   datetime    DEFAULT NULL COMMENT '更新时间',
-  `untitled`       varchar(32) DEFAULT NULL,
+  `UNTITLED`       varchar(32) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8 COMMENT ='支付交易日志表 ';
