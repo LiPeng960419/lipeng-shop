@@ -4,6 +4,7 @@ import com.lipeng.pay.callback.template.AbstractPayCallbackTemplate;
 import com.lipeng.pay.constant.PayConstant;
 import com.lipeng.pay.mapper.PaymentTransactionMapper;
 import com.lipeng.pay.mapper.entity.PaymentTransactionEntity;
+import com.lipeng.pay.strategy.PayStrategy;
 import com.lipeng.unionpay.acp.sdk.AcpService;
 import com.lipeng.unionpay.acp.sdk.LogUtil;
 import com.lipeng.unionpay.acp.sdk.SDKConstants;
@@ -126,7 +127,8 @@ public class UnionPayCallbackTemplate extends AbstractPayCallbackTemplate {
             return successResult();
         }
         // 2.将状态改为已经支付成功
-        paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS.toString(), orderId);
+        paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS.toString(), orderId,
+                        PayStrategy.UNION_PAY_CHANNEL_ID);
         // 3.使用MQ调用积分服务接口增加积分(处理幂等性问题)
         addMQIntegral(paymentTransaction);
 

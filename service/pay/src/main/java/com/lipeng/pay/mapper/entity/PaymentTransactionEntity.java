@@ -38,4 +38,12 @@ public class PaymentTransactionEntity {
 	 */
 	private String paymentId;
 
+	/**
+	 * 支付渠道
+	 */
+	private String paymentChannel;
+
+	// 对账主动查询第三方支付系统区别：银联支付使用paymentId去调用银联支付接口查询 支付宝在异步异步回调接口时，返回partyPayId
+	// 使用第三方支付partyPayIdid查询
+
 }

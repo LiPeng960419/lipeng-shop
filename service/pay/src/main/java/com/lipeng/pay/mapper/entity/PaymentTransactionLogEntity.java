@@ -25,7 +25,7 @@ public class PaymentTransactionLogEntity {
     /**
      * 支付渠道ID
      */
-    private Integer channelId;
+    private String channelId;
     /**
      * 支付交易ID
      */

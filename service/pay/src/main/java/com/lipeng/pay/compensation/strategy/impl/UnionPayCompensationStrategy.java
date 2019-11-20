@@ -5,6 +5,7 @@ import com.lipeng.pay.constant.PayConstant;
 import com.lipeng.pay.mapper.PaymentTransactionMapper;
 import com.lipeng.pay.mapper.entity.PaymentChannelEntity;
 import com.lipeng.pay.mapper.entity.PaymentTransactionEntity;
+import com.lipeng.pay.strategy.PayStrategy;
 import com.lipeng.unionpay.acp.sdk.AcpService;
 import com.lipeng.unionpay.acp.sdk.LogUtil;
 import com.lipeng.unionpay.acp.sdk.SDKConfig;
@@ -77,7 +78,8 @@ public class UnionPayCompensationStrategy implements PaymentCompensationStrategy
                     if ("00".equals(origRespCode)) {
                         // 交易成功，更新商户订单状态
                         // 2.将状态改为已经支付成功
-                        paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS + "", orderId);
+                        paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS.toString(), orderId,
+                                PayStrategy.UNION_PAY_CHANNEL_ID);
                         // 3.调用积分服务接口增加积分(处理幂等性问题)
                         return true;
                     } else if ("03".equals(origRespCode) || "04".equals(origRespCode) || "05"

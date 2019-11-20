@@ -6,6 +6,7 @@ import com.lipeng.pay.callback.template.AbstractPayCallbackTemplate;
 import com.lipeng.pay.constant.PayConstant;
 import com.lipeng.pay.mapper.PaymentTransactionMapper;
 import com.lipeng.pay.mapper.entity.PaymentTransactionEntity;
+import com.lipeng.pay.strategy.PayStrategy;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -73,7 +74,8 @@ public class AliPayCallbackTemplate extends AbstractPayCallbackTemplate {
             // 交易状态
             String trade_status = params.get("trade_status");
             if ("TRADE_SUCCESS".equals(trade_status)) {
-                paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS.toString(), outTradeNo);
+                paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS.toString(), outTradeNo,
+                        PayStrategy.ALI_PAY_CHANNEL_ID);
             } else {
                 return PayConstant.ALI_RESULT_FAIL;
             }

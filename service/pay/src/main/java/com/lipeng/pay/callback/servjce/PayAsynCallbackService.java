@@ -2,6 +2,7 @@ package com.lipeng.pay.callback.servjce;
 
 import com.lipeng.pay.callback.template.AbstractPayCallbackTemplate;
 import com.lipeng.pay.callback.template.factory.TemplateFactory;
+import com.lipeng.pay.strategy.PayStrategy;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,7 @@ public class PayAsynCallbackService {
     public String unionPayAsynCallback(HttpServletRequest req, HttpServletResponse resp) {
         AbstractPayCallbackTemplate abstractPayCallbackTemplate = TemplateFactory
                 .getPayCallbackTemplate(UNIONPAYCALLBACK_TEMPLATE);
-        return abstractPayCallbackTemplate.asyncCallBack(req, resp);
+        return abstractPayCallbackTemplate.asyncCallBack(req, resp, PayStrategy.UNION_PAY_CHANNEL_ID);
     }
 
     /**
@@ -31,7 +32,7 @@ public class PayAsynCallbackService {
     public String aliPayAsynCallback(HttpServletRequest req, HttpServletResponse resp) {
         AbstractPayCallbackTemplate abstractPayCallbackTemplate = TemplateFactory
                 .getPayCallbackTemplate(ALIPAYCALLBACK_TEMPLATE);
-        return abstractPayCallbackTemplate.asyncCallBack(req, resp);
+        return abstractPayCallbackTemplate.asyncCallBack(req, resp, PayStrategy.ALI_PAY_CHANNEL_ID);
     }
 
 }

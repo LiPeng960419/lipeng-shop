@@ -47,7 +47,7 @@ public abstract class AbstractPayCallbackTemplate {
      * *1. 将报文数据存放到es <br> 1. 验证报文参数<br> 2. 将日志根据支付id存放到数据库中<br> 3. 执行的异步回调业务逻辑<br>
      */
     @Transactional
-    public String asyncCallBack(HttpServletRequest req, HttpServletResponse resp) {
+    public String asyncCallBack(HttpServletRequest req, HttpServletResponse resp, String channelId) {
         // 1. 验证报文参数 相同点 获取所有的请求参数封装成为map集合 并且进行参数验证
         Map<String, String> verifySignature = verifySignature(req, resp);
         // 2.将日志根据支付id存放到数据库中 out_trade_no对应paymentId
@@ -56,7 +56,7 @@ public abstract class AbstractPayCallbackTemplate {
             return failResult();
         }
         // 3.采用异步形式写入日志到数据库中
-        taskExecutor.execute(new PayLogThread(paymentId, verifySignature));
+        taskExecutor.execute(new PayLogThread(paymentId, verifySignature, channelId));
 
         // 4.执行的异步回调业务逻辑
         return asyncService(verifySignature);
@@ -72,33 +72,37 @@ public abstract class AbstractPayCallbackTemplate {
         jsonObject.put("userId", paymentTransaction.getUserId());
         //自定义积分加多少
         jsonObject.put("integral", paymentTransaction.getPayAmount());
+        jsonObject.put("paymentChannel", paymentTransaction.getPaymentChannel());
         integralProducer.send(jsonObject);
     }
 
     /**
      * 采用多线程技术或者MQ形式进行存放到数据库中
      */
-    private void payLog(String paymentId, Map<String, String> verifySignature) {
+    private void payLog(String paymentId, Map<String, String> verifySignature, String channelId) {
         log.info("PayLog>>>>>paymentId:{},verifySignature:{}", paymentId, verifySignature);
         PaymentTransactionLogEntity paymentTransactionLog = new PaymentTransactionLogEntity();
         paymentTransactionLog.setTransactionId(paymentId);
         paymentTransactionLog.setAsyncLog(verifySignature.toString());
+        paymentTransactionLog.setChannelId(channelId);
         paymentTransactionLogMapper.insertTransactionLog(paymentTransactionLog);
     }
 
     class PayLogThread implements Runnable {
 
         private String paymentId;
+        private String channelId;
         private Map<String, String> verifySignature;
 
-        public PayLogThread(String paymentId, Map<String, String> verifySignature) {
+        public PayLogThread(String paymentId, Map<String, String> verifySignature, String channelId) {
             this.paymentId = paymentId;
             this.verifySignature = verifySignature;
+            this.channelId = channelId;
         }
 
         @Override
         public void run() {
-            payLog(paymentId, verifySignature);
+            payLog(paymentId, verifySignature, channelId);
         }
 
     }
