@@ -133,7 +133,7 @@ public class UnionPayCallbackTemplate extends AbstractPayCallbackTemplate {
         // 3.使用MQ调用积分服务接口增加积分(处理幂等性问题)
         paymentTransaction.setPaymentChannel(PayStrategy.UNION_PAY_CHANNEL_ID);
         addMQIntegral(paymentTransaction);
-        int x = 1/0;
+
         return successResult();
     }
 

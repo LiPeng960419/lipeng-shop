@@ -1,6 +1,5 @@
 package com.lipeng.pay.callback.template.alipay;
 
-import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.lipeng.alipay.config.AlipayConfig;
 import com.lipeng.pay.callback.template.AbstractPayCallbackTemplate;
@@ -52,38 +51,38 @@ public class AliPayCallbackTemplate extends AbstractPayCallbackTemplate {
     @Transactional
     public String asyncService(Map<String, String> params) throws Exception {
         // 获取支付宝GET过来反馈信息
-            log.info("####Alipay异步回调开始####{}:", params);
-            boolean signVerified = AlipaySignature.rsaCheckV1(params, AlipayConfig.alipay_public_key,
-                    AlipayConfig.charset, AlipayConfig.sign_type); // 调用SDK验证签名
-            // ——请在这里编写您的程序（以下代码仅作参考）——
-            if (!signVerified) {
-                return PayConstant.ALI_RESULT_FAIL;
-            }
-            // 商户订单号
-            String outTradeNo = params.get("out_trade_no");
-            PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectByPaymentId(outTradeNo);
-            if (paymentTransaction == null) {
-                return PayConstant.ALI_RESULT_FAIL;
-            }
-            if (PayConstant.PAY_STATUS_SUCCESS.equals(paymentTransaction.getPaymentStatus())) {
-                // 网络重试中，之前已经支付过
-                return successResult();
-            }
-            // 支付宝交易号
-            String tradeNo = params.get("trade_no");
-            // 交易状态
-            String trade_status = params.get("trade_status");
-            if ("TRADE_SUCCESS".equals(trade_status)) {
-                paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS.toString(), tradeNo,
-                                outTradeNo, PayStrategy.ALI_PAY_CHANNEL_ID);
-            } else {
-                return PayConstant.ALI_RESULT_FAIL;
-            }
-            // 3.使用MQ调用积分服务接口增加积分(处理幂等性问题)
-            paymentTransaction.setPaymentChannel(PayStrategy.ALI_PAY_CHANNEL_ID);
-            addMQIntegral(paymentTransaction);
-            int x = 1/0;
-            return PayConstant.ALI_RESULT_SUCCESS;
+        log.info("####Alipay异步回调开始####{}:", params);
+        boolean signVerified = AlipaySignature.rsaCheckV1(params, AlipayConfig.alipay_public_key,
+                AlipayConfig.charset, AlipayConfig.sign_type); // 调用SDK验证签名
+        // ——请在这里编写您的程序（以下代码仅作参考）——
+        if (!signVerified) {
+            return PayConstant.ALI_RESULT_FAIL;
+        }
+        // 商户订单号
+        String outTradeNo = params.get("out_trade_no");
+        PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectByPaymentId(outTradeNo);
+        if (paymentTransaction == null) {
+            return PayConstant.ALI_RESULT_FAIL;
+        }
+        if (PayConstant.PAY_STATUS_SUCCESS.equals(paymentTransaction.getPaymentStatus())) {
+            // 网络重试中，之前已经支付过
+            return successResult();
+        }
+        // 支付宝交易号
+        String tradeNo = params.get("trade_no");
+        // 交易状态
+        String trade_status = params.get("trade_status");
+        if ("TRADE_SUCCESS".equals(trade_status)) {
+            paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS.toString(), tradeNo,
+                            outTradeNo, PayStrategy.ALI_PAY_CHANNEL_ID);
+        } else {
+            return PayConstant.ALI_RESULT_FAIL;
+        }
+        // 3.使用MQ调用积分服务接口增加积分(处理幂等性问题)
+        paymentTransaction.setPaymentChannel(PayStrategy.ALI_PAY_CHANNEL_ID);
+        addMQIntegral(paymentTransaction);
+
+        return PayConstant.ALI_RESULT_SUCCESS;
     }
 
     @Override
