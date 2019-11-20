@@ -48,13 +48,16 @@ public class MeiteAppInfo implements Serializable, Cloneable {
      * 更新时间
      */
     private Date updatedTime;
+
     public MeiteAppInfo(String appName, String appId, String appSecret) {
         super();
         this.appName = appName;
         this.appId = appId;
         this.appSecret = appSecret;
     }
+
     public MeiteAppInfo() {
 
     }
+
 }

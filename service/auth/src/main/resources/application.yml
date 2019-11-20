@@ -7,6 +7,14 @@ eureka:
 spring:
   application:
     name: app-auth
+  redis:
+    host: 10.9.216.1
+    port: 6379
+    pool:
+      max-idle: 100
+      min-idle: 1
+      max-active: 1000
+      max-wait: -1
   datasource:
     username: root
     password: root
