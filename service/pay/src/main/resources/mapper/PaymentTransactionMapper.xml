@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lipeng.pay.mapper.PaymentTransactionMapper">
+
+    <update id="updatePaymentStatus">
+        update payment_transaction
+        SET PAYMENT_STATUS=#{paymentStatus},
+        PAYMENT_CHANNEL=#{paymentChannel}
+        <if test="tradeNo!=null and tradeNo !='' ">
+            ,PARTY_PAYID = #{tradeNo}
+        </if>
+        WHERE PAYMENT_ID = #{paymentId}
+    </update>
+
+</mapper>

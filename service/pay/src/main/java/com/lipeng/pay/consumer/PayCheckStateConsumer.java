@@ -61,9 +61,7 @@ public class PayCheckStateConsumer {
 			}
 			// 安全期间 主动调用第三方接口查询
 			String paymentChannel = jsonObject.getString("paymentChannel");
-			int updatePaymentStatus = paymentTransactionMapper
-					.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS.toString(), paymentId,
-							paymentChannel);
+			int updatePaymentStatus = paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS.toString(), paymentId, paymentChannel, null);
 			if (updatePaymentStatus > 0) {
 				basicAck(message, channel);
 			}

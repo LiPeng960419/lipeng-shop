@@ -70,12 +70,12 @@ public class AliPayCallbackTemplate extends AbstractPayCallbackTemplate {
                 return successResult();
             }
             // 支付宝交易号
-            //String trade_no = params.get("trade_no");
+            String tradeNo = params.get("trade_no");
             // 交易状态
             String trade_status = params.get("trade_status");
             if ("TRADE_SUCCESS".equals(trade_status)) {
-                paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS.toString(), outTradeNo,
-                        PayStrategy.ALI_PAY_CHANNEL_ID);
+                paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS.toString(), tradeNo,
+                                outTradeNo, PayStrategy.ALI_PAY_CHANNEL_ID);
             } else {
                 return PayConstant.ALI_RESULT_FAIL;
             }

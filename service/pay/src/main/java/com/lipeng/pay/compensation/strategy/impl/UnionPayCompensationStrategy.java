@@ -79,7 +79,7 @@ public class UnionPayCompensationStrategy implements PaymentCompensationStrategy
                         // 交易成功，更新商户订单状态
                         // 2.将状态改为已经支付成功
                         paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS.toString(), orderId,
-                                PayStrategy.UNION_PAY_CHANNEL_ID);
+                                PayStrategy.UNION_PAY_CHANNEL_ID, null);
                         // 3.调用积分服务接口增加积分(处理幂等性问题)
                         return true;
                     } else if ("03".equals(origRespCode) || "04".equals(origRespCode) || "05"
