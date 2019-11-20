@@ -19,9 +19,9 @@
 
     <!--输出error文件-->
     <appender name="fileErrorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+        <com.lipeng.zuul.filter class="ch.qos.logback.classic.com.lipeng.zuul.filter.ThresholdFilter">
             <level>ERROR</level>
-        </filter>
+        </com.lipeng.zuul.filter>
         <encoder>
             <pattern>
                 %msg%n
@@ -36,12 +36,12 @@
 
     <!--输出info文件-->
     <appender name="fileInfoLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+        <com.lipeng.zuul.filter class="ch.qos.logback.classic.com.lipeng.zuul.filter.LevelFilter">
             <!--过滤error日志-->
             <level>ERROR</level>
             <onMatch>DENY</onMatch>
             <onMismatch>ACCEPT</onMismatch>
-        </filter>
+        </com.lipeng.zuul.filter>
         <encoder>
             <pattern>
                 %msg%n

@@ -1,14 +1,17 @@
-###注册 中心
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8100/eureka/
 server:
   port: 8000
-##服务名称
 spring:
   application:
     name: zuul
+  datasource:
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/meite_gateway?useUnicode=true&characterEncoding=UTF-8&useSSL=true
 # 配置网关反向代理
 zuul:
   routes:
@@ -19,8 +22,23 @@ zuul:
       path: /weixin/**
       serviceId: APP-WEIXIN
     APP-PORTAL-WEB:
-      path: /portal/**
+      path: /portal-web/**
       serviceId: APP-PORTAL-WEB
+    APP-PORTAL-PAY-WEB:
+      path: /portal-pay-web/**
+      serviceId: APP-PORTAL-PAY-WEB
+    APP-PAY:
+      path: /pay/**
+      serviceId: APP-PAY
+    APP-AUTH:
+      path: /auth/**
+      serviceId: APP-AUTH
+    APP-INTEGRAL:
+      path: /integral/**
+      serviceId: APP-INTEGRAL
+    APP-GOODS:
+      path: /goods/**
+      serviceId: APP-GOODS
 management:
   endpoints:
     web:

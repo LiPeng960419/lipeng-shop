@@ -84,7 +84,7 @@ layui.define(['element', 'carousel', 'table', 'util'], function(exports){
   });
   
   //列表页——点击切换
-  $(".house-list").children(".filter").find("ul").each(function(){
+  $(".house-list").children(".com.lipeng.zuul.filter").find("ul").each(function(){
     $(this).children("li").on('click', function(){
       $(this).addClass("active").siblings().removeClass("active");
     });

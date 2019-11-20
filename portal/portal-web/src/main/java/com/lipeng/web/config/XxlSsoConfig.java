@@ -33,7 +33,7 @@ public class XxlSsoConfig implements DisposableBean {
 		// xxl-sso, redis init
 		JedisUtil.init(xxlSsoRedisAddress);
 
-		// xxl-sso, filter init
+		// xxl-sso, com.lipeng.zuul.filter init
 		FilterRegistrationBean registration = new FilterRegistrationBean();
 
 		registration.setName("XxlSsoWebFilter");

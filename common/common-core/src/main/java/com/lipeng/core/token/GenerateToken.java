@@ -66,4 +66,9 @@ public class GenerateToken {
 
     }
 
+    public String getListKeyToken(String key) {
+        String value = redisUtil.getStringRedisTemplate().opsForList().leftPop(key);
+        return value;
+    }
+
 }

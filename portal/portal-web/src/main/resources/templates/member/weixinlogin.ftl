@@ -78,7 +78,7 @@
 				<span
 					style="color: red; font-size: 20px; font-weight: bold; font-family: '楷体', '楷体_GB2312';">${error!''}</span>
 				<button class="layui-btn" style="margin-top: 5px;" lay-submit
-					lay-filter="user-login">绑定</button>
+					lay-com.lipeng.zuul.filter="user-login">绑定</button>
 
 				<span style="margin-left: 25%; padding-top: 30px;">
 					<a href="/register" style="color: #009100;">【未注册】点击注册</a>

@@ -22,6 +22,7 @@
         <option value="$PROJECT_DIR$/portal/portal-pay-web/pom.xml" />
         <option value="$PROJECT_DIR$/ds-job/pom.xml" />
         <option value="$PROJECT_DIR$/service/integral/pom.xml" />
+        <option value="$PROJECT_DIR$/service/auth/pom.xml" />
       </list>
     </option>
   </component>

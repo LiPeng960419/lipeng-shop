@@ -93,7 +93,7 @@
 
 				</div>
 				<span style="color: red;font-size: 20px;font-weight: bold;font-family: '楷体','楷体_GB2312';">${error!''}</span>
-				<button class="layui-btn" lay-submit lay-filter="user-login" style="margin-top: 5px;">注册</button>
+				<button class="layui-btn" lay-submit lay-com.lipeng.zuul.filter="user-login" style="margin-top: 5px;">注册</button>
 			</div>
 		</div>
 	</form>

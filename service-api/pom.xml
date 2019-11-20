@@ -17,6 +17,7 @@
         <module>api-integral</module>
         <module>api-goods</module>
         <module>api-pay</module>
+        <module>api-auth</module>
     </modules>
 
 </project>
