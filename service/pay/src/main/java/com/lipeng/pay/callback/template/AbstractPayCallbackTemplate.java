@@ -7,6 +7,7 @@ import com.lipeng.pay.mapper.entity.PaymentTransactionLogEntity;
 import com.lipeng.pay.mq.producer.IntegralProducer;
 import com.lipeng.pay.strategy.PayStrategy;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -66,8 +67,9 @@ public abstract class AbstractPayCallbackTemplate {
             log.error("asyncCallBack paymentId isEmpty");
             return failResult();
         }
+        String log = verifySignature.toString();
         // 3.采用异步形式写入日志到数据库中
-        taskExecutor.execute(new PayLogThread(paymentId, verifySignature, channelId));
+        taskExecutor.execute(new PayLogThread(paymentId, log, channelId));
 
         // 4.执行的异步回调业务逻辑
         return asyncService(verifySignature);
@@ -90,11 +92,11 @@ public abstract class AbstractPayCallbackTemplate {
     /**
      * 采用多线程技术或者MQ形式进行存放到数据库中
      */
-    private void payLog(String paymentId, Map<String, String> verifySignature, String channelId) {
+    private void payLog(String paymentId, String verifySignature, String channelId) {
         log.info("PayLog>>>>>paymentId:{},verifySignature:{}", paymentId, verifySignature);
         PaymentTransactionLogEntity paymentTransactionLog = new PaymentTransactionLogEntity();
         paymentTransactionLog.setTransactionId(paymentId);
-        paymentTransactionLog.setAsyncLog(verifySignature.toString());
+        paymentTransactionLog.setAsyncLog(verifySignature);
         paymentTransactionLog.setChannelId(channelId);
         paymentTransactionLogMapper.insertTransactionLog(paymentTransactionLog);
     }
@@ -103,9 +105,9 @@ public abstract class AbstractPayCallbackTemplate {
 
         private String paymentId;
         private String channelId;
-        private Map<String, String> verifySignature;
+        private String verifySignature;
 
-        public PayLogThread(String paymentId, Map<String, String> verifySignature, String channelId) {
+        public PayLogThread(String paymentId, String verifySignature, String channelId) {
             this.paymentId = paymentId;
             this.verifySignature = verifySignature;
             this.channelId = channelId;
