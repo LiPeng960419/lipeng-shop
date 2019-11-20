@@ -126,9 +126,10 @@ public class UnionPayCallbackTemplate extends AbstractPayCallbackTemplate {
             return successResult();
         }
         // 2.将状态改为已经支付成功
-        paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS + "", orderId);
+        paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS.toString(), orderId);
         // 3.使用MQ调用积分服务接口增加积分(处理幂等性问题)
         addMQIntegral(paymentTransaction);
+
         return successResult();
     }
 
