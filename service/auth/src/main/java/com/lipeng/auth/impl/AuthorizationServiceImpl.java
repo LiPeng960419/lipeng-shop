@@ -8,6 +8,7 @@ import com.lipeng.auth.utils.Guid;
 import com.lipeng.base.BaseApiService;
 import com.lipeng.base.BaseResponse;
 import com.lipeng.core.token.GenerateToken;
+import java.util.Objects;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,10 @@ public class AuthorizationServiceImpl extends BaseApiService<JSONObject> impleme
         // 1.验证参数
         if (StringUtils.isEmpty(appName)) {
             return setResultError("机构名称不能为空!");
+        }
+        MeiteAppInfo info = appInfoMapper.findByAppInfoByAppName(appName);
+        if (Objects.nonNull(info)){
+            return setResultError("机构名重复!");
         }
         // 2.生成appid和appScrec
         Guid guid = new Guid();

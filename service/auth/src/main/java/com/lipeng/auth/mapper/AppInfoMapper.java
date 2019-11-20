@@ -17,4 +17,7 @@ public interface AppInfoMapper {
     @Select("SELECT ID AS id, APPID as appId, APPNAME AS appName, APPSECRET as appSecret, AVAILABILITY as availability, REVISION as revision, CREATED_BY as createdBy, CREATED_TIME as createdTime, UPDATED_BY as updatedBy, UPDATED_TIME as updatedTime FROM meite_app_info where APPID=#{appId}")
     MeiteAppInfo findByAppInfo(@Param("appId") String appId);
 
+    @Select("SELECT ID AS id, APPID as appId, APPNAME AS appName, APPSECRET as appSecret, AVAILABILITY as availability, REVISION as revision, CREATED_BY as createdBy, CREATED_TIME as createdTime, UPDATED_BY as updatedBy, UPDATED_TIME as updatedTime FROM meite_app_info where APPNAME=#{appName}")
+    MeiteAppInfo findByAppInfoByAppName(@Param("appName") String appName);
+
 }
