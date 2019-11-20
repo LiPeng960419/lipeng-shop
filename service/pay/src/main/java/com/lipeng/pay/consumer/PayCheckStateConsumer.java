@@ -49,13 +49,13 @@ public class PayCheckStateConsumer {
 			// 1.使用paymentId查询之前是否已经支付过
 			PaymentTransactionEntity paymentTransactionEntity = paymentTransactionMapper.selectByPaymentId(paymentId);
 			if (paymentTransactionEntity == null) {
-				log.error(">>>>支付id paymentId:{} 未查询到", paymentId);
+				log.error(">>>>支付id paymentId:{} 未查询到支付详情", paymentId);
 				basicNack(message, channel);
 				return;
 			}
 			Integer paymentStatus = paymentTransactionEntity.getPaymentStatus();
 			if (PayConstant.PAY_STATUS_SUCCESS.equals(paymentStatus)) {
-				log.error(">>>>支付id paymentId:{}已支付成功", paymentId);
+				log.info(">>>>支付id paymentId:{}已支付成功,支付回调检查无异常", paymentId);
 				basicNack(message, channel);
 				return;
 			}
