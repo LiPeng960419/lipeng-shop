@@ -14,9 +14,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
+@Component
 public abstract class AbstractPayCallbackTemplate {
 
     @Autowired
@@ -38,7 +40,8 @@ public abstract class AbstractPayCallbackTemplate {
      * 异步回调执行业务逻辑
      */
     @Transactional
-    public abstract String asyncService(Map<String, String> verifySignature);
+    public abstract String asyncService(Map<String, String> verifySignature)
+            throws Exception;
 
     public abstract String failResult();
 
@@ -48,7 +51,8 @@ public abstract class AbstractPayCallbackTemplate {
      * *1. 将报文数据存放到es <br> 1. 验证报文参数<br> 2. 将日志根据支付id存放到数据库中<br> 3. 执行的异步回调业务逻辑<br>
      */
     @Transactional
-    public String asyncCallBack(HttpServletRequest req, HttpServletResponse resp, String channelId) {
+    public String asyncCallBack(HttpServletRequest req, HttpServletResponse resp, String channelId)
+            throws Exception {
         // 1. 验证报文参数 相同点 获取所有的请求参数封装成为map集合 并且进行参数验证
         Map<String, String> verifySignature = verifySignature(req, resp);
         // 2.将日志根据支付id存放到数据库中

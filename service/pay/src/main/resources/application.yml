@@ -20,7 +20,7 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/meite_pay?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://127.0.0.1:3306/meite_pay?useUnicode=true&characterEncoding=UTF-8&useSSL=true
   rabbitmq:
     host: 10.9.216.1
     port: 5672

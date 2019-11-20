@@ -11,7 +11,7 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/meite_integral?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://127.0.0.1:3306/meite_integral?useUnicode=true&characterEncoding=UTF-8&useSSL=true
   rabbitmq:
     ####连接地址
     host: 10.9.216.1

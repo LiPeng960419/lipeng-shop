@@ -110,7 +110,7 @@ public class UnionPayCallbackTemplate extends AbstractPayCallbackTemplate {
     // 异步回调中网络尝试延迟，导致异步回调重复执行 可能存在幂等性问题
     @Override
     @Transactional
-    public String asyncService(Map<String, String> verifySignature) {
+    public String asyncService(Map<String, String> verifySignature) throws Exception{
 
         String orderId = verifySignature.get("orderId"); // 获取后台通知的数据，其他字段也可用类似方式获取
         String respCode = verifySignature.get("respCode");
@@ -131,8 +131,9 @@ public class UnionPayCallbackTemplate extends AbstractPayCallbackTemplate {
         paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS.toString(),tradeNo, orderId,
                         PayStrategy.UNION_PAY_CHANNEL_ID);
         // 3.使用MQ调用积分服务接口增加积分(处理幂等性问题)
+        paymentTransaction.setPaymentChannel(PayStrategy.UNION_PAY_CHANNEL_ID);
         addMQIntegral(paymentTransaction);
-
+        int x = 1/0;
         return successResult();
     }
 

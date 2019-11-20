@@ -1,5 +1,6 @@
 package com.lipeng.pay.callback.template.alipay;
 
+import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.lipeng.alipay.config.AlipayConfig;
 import com.lipeng.pay.callback.template.AbstractPayCallbackTemplate;
@@ -49,9 +50,8 @@ public class AliPayCallbackTemplate extends AbstractPayCallbackTemplate {
 
     @Override
     @Transactional
-    public String asyncService(Map<String, String> params) {
+    public String asyncService(Map<String, String> params) throws Exception {
         // 获取支付宝GET过来反馈信息
-        try {
             log.info("####Alipay异步回调开始####{}:", params);
             boolean signVerified = AlipaySignature.rsaCheckV1(params, AlipayConfig.alipay_public_key,
                     AlipayConfig.charset, AlipayConfig.sign_type); // 调用SDK验证签名
@@ -80,15 +80,10 @@ public class AliPayCallbackTemplate extends AbstractPayCallbackTemplate {
                 return PayConstant.ALI_RESULT_FAIL;
             }
             // 3.使用MQ调用积分服务接口增加积分(处理幂等性问题)
+            paymentTransaction.setPaymentChannel(PayStrategy.ALI_PAY_CHANNEL_ID);
             addMQIntegral(paymentTransaction);
-
+            int x = 1/0;
             return PayConstant.ALI_RESULT_SUCCESS;
-        } catch (Exception e) {
-            log.info("######PayCallBackServiceImpl asynCallBack##ERROR:#####{}", e);
-            return PayConstant.ALI_RESULT_FAIL;
-        } finally {
-            log.info("####Alipay异步回调结束####{}:", params);
-        }
     }
 
     @Override
