@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -77,9 +78,9 @@ public class UnionPayCompensationStrategy implements PaymentCompensationStrategy
                     String origRespCode = rspData.get("origRespCode");
                     if ("00".equals(origRespCode)) {
                         // 交易成功，更新商户订单状态
-                        // 2.将状态改为已经支付成功
-                        paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS.toString(), orderId,
-                                PayStrategy.UNION_PAY_CHANNEL_ID, null);
+                        // 2.将状态改为已经支付成功  rspData.get("queryId")银联查询订单id
+                        paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS.toString(),rspData.get("queryId"), orderId,
+                                PayStrategy.UNION_PAY_CHANNEL_ID);
                         // 3.调用积分服务接口增加积分(处理幂等性问题)
                         return true;
                     } else if ("03".equals(origRespCode) || "04".equals(origRespCode) || "05"

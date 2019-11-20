@@ -114,6 +114,7 @@ public class UnionPayCallbackTemplate extends AbstractPayCallbackTemplate {
 
         String orderId = verifySignature.get("orderId"); // 获取后台通知的数据，其他字段也可用类似方式获取
         String respCode = verifySignature.get("respCode");
+        String tradeNo = verifySignature.get("queryId");
 
         // 判断respCode=00、A6后，对涉及资金类的交易，请再发起查询接口查询，确定交易成功后更新数据库。
         // 1.判断respCode是否为已经支付成功断respCode=00、A6后，
@@ -127,8 +128,8 @@ public class UnionPayCallbackTemplate extends AbstractPayCallbackTemplate {
             return successResult();
         }
         // 2.将状态改为已经支付成功
-        paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS.toString(), orderId,
-                        PayStrategy.UNION_PAY_CHANNEL_ID, null);
+        paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS.toString(),tradeNo, orderId,
+                        PayStrategy.UNION_PAY_CHANNEL_ID);
         // 3.使用MQ调用积分服务接口增加积分(处理幂等性问题)
         addMQIntegral(paymentTransaction);
 

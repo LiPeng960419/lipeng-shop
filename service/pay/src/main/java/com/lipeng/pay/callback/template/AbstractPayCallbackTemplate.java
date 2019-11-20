@@ -5,6 +5,7 @@ import com.lipeng.pay.mapper.PaymentTransactionLogMapper;
 import com.lipeng.pay.mapper.entity.PaymentTransactionEntity;
 import com.lipeng.pay.mapper.entity.PaymentTransactionLogEntity;
 import com.lipeng.pay.mq.producer.IntegralProducer;
+import com.lipeng.pay.strategy.PayStrategy;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import javax.servlet.http.HttpServletRequest;
@@ -50,9 +51,15 @@ public abstract class AbstractPayCallbackTemplate {
     public String asyncCallBack(HttpServletRequest req, HttpServletResponse resp, String channelId) {
         // 1. 验证报文参数 相同点 获取所有的请求参数封装成为map集合 并且进行参数验证
         Map<String, String> verifySignature = verifySignature(req, resp);
-        // 2.将日志根据支付id存放到数据库中 out_trade_no对应paymentId
-        String paymentId = verifySignature.get("out_trade_no");
+        // 2.将日志根据支付id存放到数据库中
+        String paymentId = "";
+        if (PayStrategy.ALI_PAY_CHANNEL_ID.equals(channelId)) {
+            paymentId = verifySignature.get("out_trade_no");
+        } else if (PayStrategy.UNION_PAY_CHANNEL_ID.equals(channelId)) {
+            paymentId = verifySignature.get("paymentId");
+        }
         if (StringUtils.isEmpty(paymentId)) {
+            log.error("asyncCallBack paymentId isEmpty");
             return failResult();
         }
         // 3.采用异步形式写入日志到数据库中
