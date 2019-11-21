@@ -9,7 +9,7 @@ public interface GatewayHandler {
     /**
      * 每一个Handler执行的方法
      */
-    void service(RequestContext ctx, HttpServletRequest req, HttpServletResponse response);
+    boolean service(RequestContext ctx, HttpServletRequest req, HttpServletResponse response);
 
     /**
      * 指向下一个Handler
