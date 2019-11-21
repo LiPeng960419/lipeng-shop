@@ -16,7 +16,24 @@ CREATE TABLE `gateway_handler`
   `UPDATED_TIME`  datetime    DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 5
   DEFAULT CHARSET = utf8;
+
+-- ----------------------------
+-- Records of gateway_handler
+-- ----------------------------
+INSERT INTO `gateway_handler`
+VALUES ('1', 'blacklistHandler', 'blacklistHandler', null, 'apiAuthorityHandler', '1', null, null,
+        '2019-11-21 09:14:56', null, '2019-11-21 09:15:00');
+INSERT INTO `gateway_handler`
+VALUES ('2', 'apiAuthorityHandler', 'apiAuthorityHandler', 'blacklistHandler', 'toVerifyMapHandler',
+        '1', null, null, '2019-11-21 09:15:26', null, '2019-11-21 09:15:28');
+INSERT INTO `gateway_handler`
+VALUES ('3', 'toVerifyMapHandler', 'toVerifyMapHandler', 'apiAuthorityHandler',
+        'currentLimitHandler', '1', null, null, '2019-11-21 09:16:06', null, '2019-11-21 09:16:08');
+INSERT INTO `gateway_handler`
+VALUES ('4', 'currentLimitHandler', 'currentLimitHandler', 'toVerifyMapHandler', null, '1', null,
+        null, '2019-11-21 09:16:29', null, '2019-11-21 09:16:31');
 
 DROP TABLE IF EXISTS `meite_app_info`;
 CREATE TABLE `meite_app_info`

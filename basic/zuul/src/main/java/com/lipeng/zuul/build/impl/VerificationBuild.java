@@ -37,6 +37,12 @@ public class VerificationBuild implements GatewayBuild {
         return true;
     }
 
+    /*
+    本地测试
+    Map<String, String> sParaTemp = new HashMap<String, String>();
+    sParaTemp.put("accessToken", "auth1f3511bf53ef4759bd19365ae014dbbb");
+    System.out.println(SignUtil.sign(sParaTemp).toString());
+     */
     @Override
     public Boolean toVerifyMap(RequestContext ctx, String ipAddres, HttpServletRequest request) {
         // 4.验证签名拦截
@@ -48,13 +54,10 @@ public class VerificationBuild implements GatewayBuild {
         return true;
     }
 
-    private void resultError(RequestContext ctx, String errorMsg) {
-        ctx.setResponseStatusCode(401);
-        // 网关响应为false 不会转发服务
-        ctx.setSendZuulResponse(false);
-        ctx.setResponseBody(errorMsg);
-    }
-
+    /*
+    accessToken是auth的token
+    可以用来登录校验token
+     */
     @Override
     public Boolean apiAuthority(RequestContext ctx, HttpServletRequest request) {
         String accessToken = request.getParameter("accessToken");
@@ -78,6 +81,13 @@ public class VerificationBuild implements GatewayBuild {
             return false;
         }
         return Constants.HTTP_RES_CODE_200.equals(baseResp.getCode());
+    }
+
+    private void resultError(RequestContext ctx, String errorMsg) {
+        ctx.setResponseStatusCode(401);
+        // 网关响应为false 不会转发服务
+        ctx.setSendZuulResponse(false);
+        ctx.setResponseBody(errorMsg);
     }
 
 }
