@@ -17,6 +17,7 @@
     <file url="file://$PROJECT_DIR$/portal" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/portal/portal-pay-web" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/portal/portal-web" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/portal/spike-web" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service-api" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service-api/api-auth" charset="UTF-8" />
@@ -24,6 +25,7 @@
     <file url="file://$PROJECT_DIR$/service-api/api-integral" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service-api/api-member" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service-api/api-pay" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-api/api-spike" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service-api/api-weixin" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service/auth" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service/goods" charset="UTF-8" />
@@ -31,6 +33,7 @@
     <file url="file://$PROJECT_DIR$/service/integral" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service/member" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service/pay" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service/spike" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/service/weixin" charset="UTF-8" />
   </component>
 </project>

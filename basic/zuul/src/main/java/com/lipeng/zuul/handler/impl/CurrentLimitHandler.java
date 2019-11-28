@@ -38,7 +38,6 @@ public class CurrentLimitHandler extends BaseHandler implements GatewayHandler {
             resultError(500, ctx, "现在抢购的人数过多，请稍等一下下哦！");
             return false;
         }
-        // 2.使用redis限制用户访问频率
         String seckillId = req.getParameter("seckillId");
         String seckillToken = generateToken.getListKeyToken(seckillId);
         if (StringUtils.isEmpty(seckillToken)) {
@@ -46,7 +45,6 @@ public class CurrentLimitHandler extends BaseHandler implements GatewayHandler {
             resultError(500, ctx, "亲，该秒杀已经售空，请下次再来!");
             return false;
         }
-        // 3.执行修改库存操作
         if (Objects.isNull(nextGatewayHandler)) {
             return true;
         }

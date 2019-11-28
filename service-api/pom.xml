@@ -18,6 +18,7 @@
         <module>api-goods</module>
         <module>api-pay</module>
         <module>api-auth</module>
+        <module>api-spike</module>
     </modules>
 
 </project>

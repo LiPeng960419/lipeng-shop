@@ -1,5 +1,6 @@
 package com.lipeng.core.utils;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -87,4 +88,9 @@ public class RedisUtil {
         return stringRedisTemplate.delete(key);
 
     }
+
+    public void setList(String key, List<String> listToken) {
+        stringRedisTemplate.opsForList().leftPushAll(key, listToken);
+    }
+
 }

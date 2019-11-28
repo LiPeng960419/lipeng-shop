@@ -1,0 +1,34 @@
+spring:
+  freemarker:
+    cache: false
+    charset: UTF-8
+    check-template-location: true
+    content-type: text/html
+    expose-request-attributes: true
+    expose-session-attributes: true
+    request-context-attribute: request
+    suffix: .ftl
+    template-loader-path:
+      - classpath:/templates
+  application:
+    name: app-spike-web
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8100/eureka
+server:
+  port: 9600
+###开启Hystrix断路器
+feign:
+  hystrix:
+    enabled: true
+#### hystrix开启
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000

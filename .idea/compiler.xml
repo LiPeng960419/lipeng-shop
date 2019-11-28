@@ -12,6 +12,7 @@
         <module name="api-integral" />
         <module name="api-member" />
         <module name="api-pay" />
+        <module name="api-spike" />
         <module name="api-weixin" />
         <module name="auth" />
         <module name="common-core" />
@@ -29,6 +30,8 @@
         <module name="portal-pay-web" />
         <module name="portal-web" />
         <module name="service" />
+        <module name="spike" />
+        <module name="spike-web" />
         <module name="sso" />
         <module name="unionpay" />
         <module name="weixin" />
@@ -48,6 +51,7 @@
       <module name="api-integral" options="-parameters" />
       <module name="api-member" options="-parameters" />
       <module name="api-pay" options="-parameters" />
+      <module name="api-spike" options="-parameters" />
       <module name="api-weixin" options="-parameters" />
       <module name="auth" options="-parameters" />
       <module name="basic" options="-parameters" />
@@ -69,6 +73,8 @@
       <module name="portal-web" options="-parameters" />
       <module name="service" options="-parameters" />
       <module name="service-api" options="-parameters" />
+      <module name="spike" options="-parameters" />
+      <module name="spike-web" options="-parameters" />
       <module name="sso" options="-parameters" />
       <module name="unionpay" options="-parameters" />
       <module name="weixin" options="-parameters" />

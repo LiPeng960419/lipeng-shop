@@ -1,6 +1,8 @@
 package com.lipeng.core.token;
 
 import com.lipeng.core.utils.RedisUtil;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +71,21 @@ public class GenerateToken {
     public String getListKeyToken(String key) {
         String value = redisUtil.getStringRedisTemplate().opsForList().leftPop(key);
         return value;
+    }
+
+    public void createListToken(String keyPrefix, String redisKey, Long tokenQuantity) {
+        List<String> listToken = getListToken(keyPrefix, tokenQuantity);
+        redisUtil.setList(redisKey, listToken);
+    }
+
+    public List<String> getListToken(String keyPrefix, Long tokenQuantity) {
+        List<String> listToken = new ArrayList<>();
+        for (int i = 0; i < tokenQuantity; i++) {
+            String token = keyPrefix + UUID.randomUUID().toString().replace("-", "");
+            listToken.add(token);
+        }
+        return listToken;
+
     }
 
 }

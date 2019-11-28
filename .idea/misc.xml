@@ -23,6 +23,8 @@
         <option value="$PROJECT_DIR$/ds-job/pom.xml" />
         <option value="$PROJECT_DIR$/service/integral/pom.xml" />
         <option value="$PROJECT_DIR$/service/auth/pom.xml" />
+        <option value="$PROJECT_DIR$/portal/spike-web/pom.xml" />
+        <option value="$PROJECT_DIR$/service/spike/pom.xml" />
       </list>
     </option>
   </component>
