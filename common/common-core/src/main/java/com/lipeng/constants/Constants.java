@@ -81,4 +81,13 @@ public interface Constants {
     int INTEGRAL_USEABLE = 1;
 
     int INTEGRAL_UN_USEABLE = 0;
+
+    String SENDING = "0"; //发送中
+
+    String SEND_SUCCESS = "1"; //成功
+
+    String SEND_FAILURE = "2"; //失败
+
+    int INTEGRAL_TIMEOUT = 1; /*分钟超时单位：min*/
+
 }

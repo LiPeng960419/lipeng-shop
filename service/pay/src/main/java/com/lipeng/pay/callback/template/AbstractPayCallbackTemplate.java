@@ -1,18 +1,22 @@
 package com.lipeng.pay.callback.template;
 
 import com.alibaba.fastjson.JSONObject;
+import com.lipeng.constants.Constants;
+import com.lipeng.pay.mapper.BrokerMessageLogMapper;
 import com.lipeng.pay.mapper.PaymentTransactionLogMapper;
+import com.lipeng.pay.mapper.entity.BrokerMessageLog;
 import com.lipeng.pay.mapper.entity.PaymentTransactionEntity;
 import com.lipeng.pay.mapper.entity.PaymentTransactionLogEntity;
 import com.lipeng.pay.mq.producer.IntegralProducer;
 import com.lipeng.pay.strategy.PayStrategy;
+import java.util.Date;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -27,6 +31,9 @@ public abstract class AbstractPayCallbackTemplate {
 
     @Autowired
     private IntegralProducer integralProducer;
+
+    @Autowired
+    private BrokerMessageLogMapper brokerMessageLogMapper;
 
     @Autowired
     private Executor taskExecutor;
@@ -86,6 +93,21 @@ public abstract class AbstractPayCallbackTemplate {
         //自定义积分加多少
         jsonObject.put("integral", paymentTransaction.getPayAmount());
         jsonObject.put("paymentChannel", paymentTransaction.getPaymentChannel());
+        // 使用当前时间当做创建时间
+        Date now = new Date();
+        // 插入消息记录表数据
+        BrokerMessageLog brokerMessageLog = new BrokerMessageLog();
+        // 消息唯一ID
+        brokerMessageLog.setMessageId(paymentTransaction.getPaymentId());
+        // 保存消息整体 转为JSON 格式存储入库
+        brokerMessageLog.setMessage(jsonObject.toJSONString());
+        // 设置消息状态为0 表示发送中
+        brokerMessageLog.setStatus(Constants.SENDING);
+        // 设置消息未确认超时时间窗口为 一分钟
+        brokerMessageLog.setNextRetry(DateUtils.addMinutes(now, Constants.INTEGRAL_TIMEOUT));
+        brokerMessageLog.setCreateTime(new Date());
+        brokerMessageLog.setUpdateTime(new Date());
+        brokerMessageLogMapper.insert(brokerMessageLog);
         integralProducer.send(jsonObject);
     }
 
