@@ -26,13 +26,10 @@ public class PayCheckStateConsumer {
 	@Autowired
 	private PaymentTransactionMapper paymentTransactionMapper;
 
-	// 死信队列（备胎） 消息被拒绝、队列长度满了 定时任务 人工补偿
-
-	//@RabbitListener(queues = "integral_create_queue")
 	@RabbitListener(bindings = @QueueBinding(
-			value = @Queue(name = "integral_create_queue", durable = "true"),
-			exchange = @Exchange(value = "integral_exchange_name", type = "topic", ignoreDeclarationExceptions = "true"),
-			key = "integralRoutingKey"))
+			value = @Queue(name = "pay_queue", durable = "true"),
+			exchange = @Exchange(value = "pay_exchange_name", type = "topic", ignoreDeclarationExceptions = "true"),
+			key = "payRoutingKey"))
 	@RabbitHandler
 	public void process(Message message, @Headers Map<String, Object> headers, Channel channel) throws IOException {
 		try {

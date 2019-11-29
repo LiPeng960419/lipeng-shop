@@ -3,8 +3,6 @@ package com.lipeng.pay.mq.producer;
 import com.alibaba.fastjson.JSONObject;
 import com.lipeng.constants.Constants;
 import com.lipeng.pay.config.RabbitmqConfig;
-import com.lipeng.pay.mapper.BrokerMessageLogMapper;
-import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageBuilder;
@@ -18,14 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Slf4j
-public class IntegralProducer implements RabbitTemplate.ConfirmCallback {
+public class PayCheckProducer implements RabbitTemplate.ConfirmCallback {
 
     @Autowired
-    @Qualifier("integralRabbitTemplate")
+    @Qualifier("payRabbitTemplate")
     private RabbitTemplate rabbitTemplate;
-
-    @Autowired
-    private BrokerMessageLogMapper brokerMessageLogMapper;
 
     @Transactional
     public void send(JSONObject jsonObject) {
@@ -38,11 +33,12 @@ public class IntegralProducer implements RabbitTemplate.ConfirmCallback {
                 .setMessageId(paymentId)
                 .build();
         // 构建回调返回的数据（消息id）
+        this.rabbitTemplate.setMandatory(true);
         this.rabbitTemplate.setConfirmCallback(this);
         CorrelationData correlationData = new CorrelationData(jsonString);
-        //发送积分消息
-        rabbitTemplate.convertAndSend(RabbitmqConfig.INTEGRAL_EXCHANGE_NAME,
-                RabbitmqConfig.INTEGRAL_ROUTING_KEY, message,
+        //支付补偿消息
+        rabbitTemplate.convertAndSend(RabbitmqConfig.PAY_EXCHANGE_NAME,
+                RabbitmqConfig.PAY_ROUTING_KEY, message,
                 correlationData);
     }
 
@@ -52,17 +48,8 @@ public class IntegralProducer implements RabbitTemplate.ConfirmCallback {
         if (ack) {
             JSONObject jsonObject = JSONObject.parseObject(correlationData.getId());
             String paymentId = jsonObject.getString("paymentId");
-            log.info(">>>MQ消息投递到积分系统积分队列,消息消费成功,paymentId:{}", paymentId);
-            int result = brokerMessageLogMapper.changeBrokerMessageLogStatus(paymentId,
-                    Constants.SEND_SUCCESS, new Date());
-            if (toDaoResult(result)) {
-                log.info(">>>修改MessageLog日志记录状态成功,paymentId:{}", paymentId);
-            }
+            log.info(">>>MQ消息投递到支付系统支付补偿队列,消息消费成功,paymentId:{}", paymentId);
         }
-    }
-
-    public boolean toDaoResult(int result) {
-        return result > 0;
     }
 
 }

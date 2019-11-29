@@ -8,6 +8,7 @@ import com.lipeng.pay.mapper.entity.BrokerMessageLog;
 import com.lipeng.pay.mapper.entity.PaymentTransactionEntity;
 import com.lipeng.pay.mapper.entity.PaymentTransactionLogEntity;
 import com.lipeng.pay.mq.producer.IntegralProducer;
+import com.lipeng.pay.mq.producer.PayCheckProducer;
 import com.lipeng.pay.strategy.PayStrategy;
 import java.util.Date;
 import java.util.Map;
@@ -31,6 +32,9 @@ public abstract class AbstractPayCallbackTemplate {
 
     @Autowired
     private IntegralProducer integralProducer;
+
+    @Autowired
+    private PayCheckProducer payCheckProducer;
 
     @Autowired
     private BrokerMessageLogMapper brokerMessageLogMapper;
@@ -83,7 +87,7 @@ public abstract class AbstractPayCallbackTemplate {
     }
 
     /**
-     * 基于MQ增加积分
+     * 基于MQ增加积分以及支付补偿检查
      */
     @Async
     public void addMQIntegral(PaymentTransactionEntity paymentTransaction) {
@@ -108,7 +112,8 @@ public abstract class AbstractPayCallbackTemplate {
         brokerMessageLog.setCreateTime(new Date());
         brokerMessageLog.setUpdateTime(new Date());
         brokerMessageLogMapper.insert(brokerMessageLog);
-        //integralProducer.send(jsonObject);
+        integralProducer.send(jsonObject);
+        payCheckProducer.send(jsonObject);
     }
 
     /**
