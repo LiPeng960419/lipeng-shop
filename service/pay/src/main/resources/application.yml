@@ -40,3 +40,15 @@ threadPool:
   maxPoolSize: 20
   ##  队列容量
   queueCapacity: 16
+xxl:
+  job:
+    executor:
+      logpath: /data/applogs/xxl-job/jobhandler
+      appname: xxl-job-executor-lipeng-pay
+      port: 9999
+      logretentiondays: 1
+      ip:
+    admin:
+      #admin的地址 如果admin有context-path 要加上
+      addresses: http://127.0.0.1:8080
+    accessToken:
