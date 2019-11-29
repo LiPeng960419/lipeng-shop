@@ -73,6 +73,7 @@ public class IntegralConsumer {
             int insertIntegral = integralMapper.insertIntegral(integralEntity);
             if (insertIntegral > 0) {
                 // 手动签收消息,通知mq服务器端删除该消息
+                log.info(">>>>paymentId:{}积分增加成功", paymentId);
                 basicAck(message, channel);
             }
             // 采用重试机制
