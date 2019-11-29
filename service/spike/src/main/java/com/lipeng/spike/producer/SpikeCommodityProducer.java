@@ -19,7 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Component
 @Slf4j
-public class SpikeCommodityProducer implements RabbitTemplate.ConfirmCallback {
+public class SpikeCommodityProducer implements RabbitTemplate.ConfirmCallback,
+        RabbitTemplate.ReturnCallback {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
@@ -47,15 +48,16 @@ public class SpikeCommodityProducer implements RabbitTemplate.ConfirmCallback {
     // 生产消息确认机制 生产者往服务器端发送消息的时候，采用应答机制
     @Override
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {
-        String jsonString = correlationData.getId();
         if (ack) {
-            log.info(">>>使用MQ消息确认机制确保消息一定要投递到MQ中成功");
-            return;
+            log.info(">>>使用MQ消息确认机制确保秒杀消息投递到MQ中成功");
         }
-        JSONObject jsonObject = JSONObject.parseObject(jsonString);
-        // 生产者消息投递失败的话，采用递归重试机制
-        send(jsonObject);
-        log.info(">>>使用MQ消息确认机制投递到MQ中失败");
+    }
+
+    @Override
+    public void returnedMessage(Message message, int replyCode, String replyText, String exchange,
+            String routingKey) {
+        log.info("秒杀消息:return exchange:" + exchange + ", routingKey:" + routingKey +
+                ", replyText:" + replyText);
     }
 
 }

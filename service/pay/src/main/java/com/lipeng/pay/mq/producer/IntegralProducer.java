@@ -26,7 +26,8 @@ public class IntegralProducer implements RabbitTemplate.ConfirmCallback {
         String paymentId = jsonObject.getString("paymentId");
         // 封装消息
         Message message = MessageBuilder.withBody(jsonString.getBytes())
-                .setContentType(MessageProperties.CONTENT_TYPE_JSON).setContentEncoding(Constants.UTF_8)
+                .setContentType(MessageProperties.CONTENT_TYPE_JSON)
+                .setContentEncoding(Constants.UTF_8)
                 .setMessageId(paymentId)
                 .build();
         // 构建回调返回的数据（消息id）
@@ -41,16 +42,9 @@ public class IntegralProducer implements RabbitTemplate.ConfirmCallback {
     // 生产消息确认机制 生产者往服务器端发送消息的时候，采用应答机制
     @Override
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {
-        String jsonString = correlationData.getId();
-        log.info("消息id:" + correlationData.getId());
         if (ack) {
-            log.info(">>>使用MQ消息确认机制确保消息一定要投递到MQ中成功");
-            return;
+            log.info(">>>使用MQ消息确认机制确保消息投递到积分系统MQ中成功");
         }
-        JSONObject jsonObject = JSONObject.parseObject(jsonString);
-        // 生产者消息投递失败的话，采用递归重试机制
-        send(jsonObject);
-        log.info(">>>使用MQ消息确认机制投递到MQ中失败");
     }
 
 }

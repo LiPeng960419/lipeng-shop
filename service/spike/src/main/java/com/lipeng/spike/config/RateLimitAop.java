@@ -50,7 +50,7 @@ public class RateLimitAop extends BaseApiService<JSONObject> {
             if (flag) {
                 obj = joinPoint.proceed();
             } else {
-                String result = JSONObject.toJSONString(setResult(Constants.HTTP_RES_CODE_200, "接口暂时限流", null));
+                String result = JSONObject.toJSONString(setResult(Constants.HTTP_RES_CODE_500, "接口暂时限流", null));
                 String methodUrl = joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName();
                 log.info("方法:[{}]调用接口暂时限流,返回结果:{}", methodUrl, result);
                 HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
