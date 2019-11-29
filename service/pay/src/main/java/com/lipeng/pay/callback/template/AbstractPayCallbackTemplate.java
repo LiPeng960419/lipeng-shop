@@ -108,7 +108,7 @@ public abstract class AbstractPayCallbackTemplate {
         brokerMessageLog.setCreateTime(new Date());
         brokerMessageLog.setUpdateTime(new Date());
         brokerMessageLogMapper.insert(brokerMessageLog);
-        integralProducer.send(jsonObject);
+        //integralProducer.send(jsonObject);
     }
 
     /**

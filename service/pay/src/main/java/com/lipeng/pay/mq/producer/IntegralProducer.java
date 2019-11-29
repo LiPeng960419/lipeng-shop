@@ -3,6 +3,8 @@ package com.lipeng.pay.mq.producer;
 import com.alibaba.fastjson.JSONObject;
 import com.lipeng.constants.Constants;
 import com.lipeng.pay.config.RabbitmqConfig;
+import com.lipeng.pay.mapper.BrokerMessageLogMapper;
+import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageBuilder;
@@ -19,6 +21,9 @@ public class IntegralProducer implements RabbitTemplate.ConfirmCallback {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    private BrokerMessageLogMapper brokerMessageLogMapper;
 
     @Transactional
     public void send(JSONObject jsonObject) {
@@ -43,8 +48,19 @@ public class IntegralProducer implements RabbitTemplate.ConfirmCallback {
     @Override
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {
         if (ack) {
-            log.info(">>>使用MQ消息确认机制确保消息投递到积分系统MQ中成功");
+            JSONObject jsonObject = JSONObject.parseObject(correlationData.getId());
+            String paymentId = jsonObject.getString("paymentId");
+            log.info(">>>MQ消息确认机制投递到积分系统MQ,消息消费成功,paymentId:{}", paymentId);
+            int result = brokerMessageLogMapper.changeBrokerMessageLogStatus(paymentId,
+                    Constants.SEND_SUCCESS, new Date());
+            if (toDaoResult(result)) {
+                log.info(">>>修改MessageLog日志记录状态成功,paymentId:{}", paymentId);
+            }
         }
+    }
+
+    public boolean toDaoResult(int result) {
+        return result > 0;
     }
 
 }

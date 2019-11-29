@@ -28,7 +28,7 @@ public interface BrokerMessageLogMapper {
      * @param status
      * @param updateTime
      */
-    void changeBrokerMessageLogStatus(@Param("messageId") String messageId,
+    int changeBrokerMessageLogStatus(@Param("messageId") String messageId,
             @Param("status") String status, @Param("updateTime") Date updateTime);
 
 }

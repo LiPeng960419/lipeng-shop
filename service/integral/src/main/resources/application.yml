@@ -23,6 +23,8 @@ spring:
     password: lipeng
     ### 地址
     virtual-host: /
+    publisher-confirms: true
+    publisher-returns: true
     listener:
       simple:
         retry:

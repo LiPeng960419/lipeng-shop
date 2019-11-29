@@ -61,7 +61,7 @@ public class IntegralConsumer {
             }
             Long integral = jsonObject.getLong("integral");
             if (integral == null) {
-                log.error(">>>>paymentId:{},对应的用户integral参数为空", integral);
+                log.error(">>>>paymentId:{},对应的用户integral参数为空", paymentId);
                 return;
             }
             IntegralEntity integralEntity = new IntegralEntity();
