@@ -10,6 +10,10 @@ import com.lipeng.member.dto.UserLoginInpDTO;
 import com.lipeng.web.constants.WebConstants;
 import com.lipeng.web.member.controller.req.vo.LoginVo;
 import com.lipeng.web.member.feign.MemberLoginServiceFeign;
+import com.lipeng.web.utils.SlidingImage;
+import java.io.IOException;
+import java.util.Map;
+import java.util.WeakHashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -29,6 +33,8 @@ public class LoginController extends BaseWebController {
      * 跳转到登陆页面页面
      */
     public static final String MB_LOGIN_FTL = "member/login";
+    // 保存对应的位置，以作对比
+    WeakHashMap<String, Localtion> localtion = new WeakHashMap<>();
 
     @Autowired
     private MemberLoginServiceFeign memberLoginServiceFeign;
@@ -37,7 +43,21 @@ public class LoginController extends BaseWebController {
      * 跳转页面
      */
     @GetMapping("/login")
-    public String getLogin() {
+    public String getLogin(HttpServletRequest request, Model model) {
+        String sessionId = request.getSession().getId();
+
+        // 位置需要随机生成，并且需要注意最大值 原图大小 - 滑动大小 还有就是估计得尽量靠右一些
+        localtion.put(sessionId, new Localtion(30, 40));
+
+        Map<String, String> images = null;
+        try {
+            images = SlidingImage.create(30, 40);
+        } catch (IOException e) {
+            log.error("create image error", e);
+        }
+
+        model.addAttribute("backImage", images.get("backImage"));
+        model.addAttribute("slidingImage", images.get("slidingImage"));
         return MB_LOGIN_FTL;
     }
 
@@ -78,6 +98,39 @@ public class LoginController extends BaseWebController {
         String token = data.getString(Constants.TOKEN);
         CookieUtils.setCookie(request, response, WebConstants.LOGIN_TOKEN_COOKIENAME, token);
         return BaseWebController.REDIRECT_INDEX;
+    }
+
+    /**
+     * 位置(左上角)
+     */
+    class Localtion {
+
+        private int x;
+        private int y;
+
+        public Localtion() {
+        }
+
+        public Localtion(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public void setX(int x) {
+            this.x = x;
+        }
+
+        public int getY() {
+            return y;
+        }
+
+        public void setY(int y) {
+            this.y = y;
+        }
     }
 
 }

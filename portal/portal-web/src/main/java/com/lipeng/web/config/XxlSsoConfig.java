@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * @author xuxueli 2018-11-15
  */
-@Configuration
+//@Configuration
 public class XxlSsoConfig implements DisposableBean {
 
 	@Value("${xxl.sso.server}")
