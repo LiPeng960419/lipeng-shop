@@ -6,7 +6,6 @@ import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -83,12 +82,6 @@ public class SlidingImage {
                 BufferedImage.TYPE_4BYTE_ABGR);
         cutByTemplate(oriImage, targetImage, blockData, x, y);
 
-        FileOutputStream outputStream1 = new FileOutputStream("F:\\test\\1.png");
-        ImageIO.write(oriImage, "png", outputStream1);
-        FileOutputStream outputStream2 = new FileOutputStream("F:\\test\\2.png");
-        ImageIO.write(targetImage, "png", outputStream2);
-        outputStream1.close();
-        outputStream2.close();
         Map<String, String> result = new HashMap<>();
 
         result.put("backImage", getImageBASE64(oriImage));

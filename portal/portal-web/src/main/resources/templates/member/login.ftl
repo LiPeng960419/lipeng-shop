@@ -79,8 +79,8 @@
 				</div>
 
 				<div>
-					<img alt="" src="data:image/png;${backImage}"/>
-					<img alt="" src="data:image/png;${slidingImage}"/>
+					<img alt="" src="data:image/png;base64,${backImage}"/>
+					<img alt="" src="data:image/png;base64,${slidingImage}"/>
 				</div>
 				<span
 					style="color: red; font-size: 20px; font-weight: bold; font-family: '楷体', '楷体_GB2312';">${error!''}</span>

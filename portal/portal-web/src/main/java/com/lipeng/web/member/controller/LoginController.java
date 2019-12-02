@@ -12,6 +12,7 @@ import com.lipeng.web.member.controller.req.vo.LoginVo;
 import com.lipeng.web.member.feign.MemberLoginServiceFeign;
 import com.lipeng.web.utils.SlidingImage;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +35,8 @@ public class LoginController extends BaseWebController {
      */
     public static final String MB_LOGIN_FTL = "member/login";
     // 保存对应的位置，以作对比
-    WeakHashMap<String, Localtion> localtion = new WeakHashMap<>();
+    public static Map<String, Localtion> localtion = Collections
+            .synchronizedMap(new WeakHashMap<>());
 
     @Autowired
     private MemberLoginServiceFeign memberLoginServiceFeign;
