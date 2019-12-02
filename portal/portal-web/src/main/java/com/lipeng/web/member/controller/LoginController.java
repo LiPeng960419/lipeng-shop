@@ -10,10 +10,12 @@ import com.lipeng.member.dto.UserLoginInpDTO;
 import com.lipeng.web.constants.WebConstants;
 import com.lipeng.web.member.controller.req.vo.LoginVo;
 import com.lipeng.web.member.feign.MemberLoginServiceFeign;
+import com.lipeng.web.utils.RandomUtil;
 import com.lipeng.web.utils.SlidingImage;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.WeakHashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,15 +51,19 @@ public class LoginController extends BaseWebController {
         String sessionId = request.getSession().getId();
 
         // 位置需要随机生成，并且需要注意最大值 原图大小 - 滑动大小 还有就是估计得尽量靠右一些
-        localtion.put(sessionId, new Localtion(30, 40));
+        Localtion mylocation = localtion.get(sessionId);
+        if (Objects.isNull(mylocation)) {
+            int width = RandomUtil.getRandomRange(30, 180);
+            int height = RandomUtil.getRandomRange(10, 60);
+            localtion.put(sessionId, new Localtion(width, height));
+        }
 
         Map<String, String> images = null;
         try {
-            images = SlidingImage.create(30, 40);
+            images = SlidingImage.create(mylocation.getX(), mylocation.getY());
         } catch (IOException e) {
-            log.error("create image error", e);
+            log.error("create slide image error", e);
         }
-
         model.addAttribute("backImage", images.get("backImage"));
         model.addAttribute("slidingImage", images.get("slidingImage"));
         return MB_LOGIN_FTL;
@@ -79,7 +85,8 @@ public class LoginController extends BaseWebController {
 //        }
         //kapcha验证码校验
         String kaptchaReceived = loginVo.getGraphicCode();
-        String kaptchaExpected = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+        String kaptchaExpected = (String) request.getSession()
+                .getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
         if (kaptchaReceived == null || !kaptchaReceived.equals(kaptchaExpected)) {
             setErrorMsg(model, "图形验证码不正确!");
             return MB_LOGIN_FTL;
