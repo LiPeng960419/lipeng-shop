@@ -2,14 +2,19 @@ package com.lipeng.web.utils;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
+import java.awt.image.ColorModel;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import sun.misc.BASE64Encoder;
@@ -59,11 +64,6 @@ public class SlidingImage {
         return new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
     }
 
-    public static void simpleBlur(BufferedImage src, BufferedImage dest) {
-        BufferedImageOp op = getGaussianBlurFilter(2, false);
-        op.filter(src, dest);
-    }
-
     /**
      * 生成滑动对应图片
      *
@@ -80,12 +80,20 @@ public class SlidingImage {
 
         BufferedImage targetImage = new BufferedImage(targetWidth, targetHeight,
                 BufferedImage.TYPE_4BYTE_ABGR);
-        cutByTemplate(oriImage, targetImage, blockData, x, y);
+
+        BufferedImage oriImageAfter = new BufferedImage(oriImage.getWidth(), oriImage.getHeight(),
+                BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage targetImageAfter = new BufferedImage(targetWidth, targetHeight,
+                BufferedImage.TYPE_4BYTE_ABGR);
+        simpleBlur(oriImage, oriImageAfter);
+        simpleBlur(targetImage, targetImageAfter);
+
+        cutByTemplate(oriImageAfter, targetImageAfter, blockData, x, y);
 
         Map<String, String> result = new HashMap<>();
+        result.put("backImage", getImageBASE64(oriImageAfter));
+        result.put("slidingImage", getImageBASE64(targetImageAfter));
 
-        result.put("backImage", getImageBASE64(oriImage));
-        result.put("slidingImage", getImageBASE64(targetImage));
         return result;
     }
 
@@ -137,12 +145,47 @@ public class SlidingImage {
         }
     }
 
-    public static String getImageBASE64(BufferedImage image) throws IOException {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ImageIO.write(image, "png", out);
-        byte[] b = out.toByteArray();//转成byte数组
+    public static byte[] fromBufferedImage2(BufferedImage img, String imagType) throws IOException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        // 得到指定Format图片的writer
+        Iterator<ImageWriter> iter = ImageIO.getImageWritersByFormatName(imagType);
+        ImageWriter writer = iter.next();
+
+        // 得到指定writer的输出参数设置(ImageWriteParam )
+        ImageWriteParam iwp = writer.getDefaultWriteParam();
+        iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT); // 设置可否压缩
+        iwp.setCompressionQuality(1f); // 设置压缩质量参数
+
+        iwp.setProgressiveMode(ImageWriteParam.MODE_DISABLED);
+
+        ColorModel colorModel = ColorModel.getRGBdefault();
+        // 指定压缩时使用的色彩模式
+        iwp.setDestinationType(new javax.imageio.ImageTypeSpecifier(colorModel,
+                colorModel.createCompatibleSampleModel(16, 16)));
+
+        writer.setOutput(ImageIO.createImageOutputStream(bos));
+        IIOImage iIamge = new IIOImage(img, null, null);
+        writer.write(null, iIamge, iwp);
+
+        byte[] d = bos.toByteArray();
+        return d;
+    }
+
+    public static String getImageBASE64(byte[] b) {
         BASE64Encoder encoder = new BASE64Encoder();
         return encoder.encode(b);//生成base64编码
+    }
+
+    public static String getImageBASE64(BufferedImage image) throws IOException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ImageIO.write(image, "PNG", bos);
+        BASE64Encoder encoder = new BASE64Encoder();
+        return encoder.encode(bos.toByteArray());//生成base64编码
+    }
+
+    public static void simpleBlur(BufferedImage src, BufferedImage dest) {
+        BufferedImageOp op = getGaussianBlurFilter(2, false);
+        op.filter(src, dest);
     }
 
 }
