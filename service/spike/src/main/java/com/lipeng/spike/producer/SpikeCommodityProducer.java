@@ -13,7 +13,6 @@ import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 秒杀生产者
@@ -26,7 +25,6 @@ public class SpikeCommodityProducer implements RabbitTemplate.ConfirmCallback,
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    @Transactional
     @Async
     public void send(JSONObject jsonObject) {
         String jsonString = jsonObject.toJSONString();
