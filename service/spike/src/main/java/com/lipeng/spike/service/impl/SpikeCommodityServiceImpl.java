@@ -16,7 +16,6 @@ import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -59,7 +58,6 @@ public class SpikeCommodityServiceImpl extends BaseApiService<JSONObject> implem
         }
         // 3.获取到秒杀token之后，异步放入mq中实现修改商品的库存
         sendSeckillMsg(seckillId, phone);
-
         return setResultSuccess("正在排队中.......");
     }
 
@@ -70,7 +68,6 @@ public class SpikeCommodityServiceImpl extends BaseApiService<JSONObject> implem
     /**
      * 获取到秒杀token之后，异步放入mq中实现修改商品的库存
      */
-    @Async
     public void sendSeckillMsg(Long seckillId, String phone) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("seckillId", seckillId);
@@ -97,7 +94,6 @@ public class SpikeCommodityServiceImpl extends BaseApiService<JSONObject> implem
         return setResultSuccess("令牌正在生成中.....");
     }
 
-    @Async
     public void createSeckillToken(Long seckillId, Long tokenQuantity) {
         generateToken.createListToken("seckill_", seckillId + "", tokenQuantity);
     }

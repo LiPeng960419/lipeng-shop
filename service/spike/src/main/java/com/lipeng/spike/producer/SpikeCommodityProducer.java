@@ -11,6 +11,7 @@ import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +27,8 @@ public class SpikeCommodityProducer implements RabbitTemplate.ConfirmCallback,
     private RabbitTemplate rabbitTemplate;
 
     @Transactional
+    @Async
     public void send(JSONObject jsonObject) {
-
         String jsonString = jsonObject.toJSONString();
         String messAgeId = UUID.randomUUID().toString().replace("-", "");
         // 封装消息

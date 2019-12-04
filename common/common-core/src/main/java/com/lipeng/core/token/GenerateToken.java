@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -73,6 +74,7 @@ public class GenerateToken {
         return value;
     }
 
+    @Async
     public void createListToken(String keyPrefix, String redisKey, Long tokenQuantity) {
         List<String> listToken = getListToken(keyPrefix, tokenQuantity);
         redisUtil.setList(redisKey, listToken);
