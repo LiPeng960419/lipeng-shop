@@ -5,6 +5,7 @@ import com.lipeng.base.BaseResponse;
 import com.lipeng.base.BaseWebController;
 import com.lipeng.pay.dto.PayMentTransacDTO;
 import com.lipeng.pay.dto.PaymentChannelDTO;
+import com.lipeng.portalpay.feign.AliMobilePayCallBackFeign;
 import com.lipeng.portalpay.feign.PayCallBackFeign;
 import com.lipeng.portalpay.feign.PayContextFeign;
 import com.lipeng.portalpay.feign.PayMentTransacInfoFeign;
@@ -42,6 +43,9 @@ public class PayController extends BaseWebController {
     @Autowired
     private PayCallBackFeign payCallBackFeign;
 
+    @Autowired
+    private AliMobilePayCallBackFeign aliMobilePayCallBackFeign;
+
     @RequestMapping("/pay")
     public String pay(String payToken, Model model) {
         // 1.验证payToken参数
@@ -65,9 +69,6 @@ public class PayController extends BaseWebController {
         return "index";
     }
 
-    /**
-     *
-     */
     @RequestMapping("/payHtml")
     public void payHtml(String channelId, String payToken, HttpServletResponse response)
             throws IOException {
@@ -82,10 +83,9 @@ public class PayController extends BaseWebController {
 
     // 同步回调,解决隐藏参数
     @RequestMapping(value = "/alipay/callBack/synSuccessPage", method = RequestMethod.POST)
-    public String synSuccessPage(HttpServletRequest request, String outTradeNo, String tradeNo,
+    public String synSuccessPagePost(HttpServletRequest request, String outTradeNo, String tradeNo,
             String totalAmount) {
-        log.info(
-                "alipay callBack synSuccessPage post method,params>>>outTradeNo:{},tradeNo:{},totalAmount{}",
+        log.info("alipay callBack synSuccessPage post method,params>>>outTradeNo:{},tradeNo:{},totalAmount{}",
                 outTradeNo, tradeNo, totalAmount);
         request.setAttribute("outTradeNo", outTradeNo);
         request.setAttribute("tradeNo", tradeNo);
@@ -94,10 +94,9 @@ public class PayController extends BaseWebController {
     }
 
     @RequestMapping(value = "/alipay/callBack/synSuccessPage", method = RequestMethod.GET)
-    public String hello(HttpServletRequest request, String outTradeNo, String tradeNo,
+    public String synSuccessPageGet(HttpServletRequest request, String outTradeNo, String tradeNo,
             String totalAmount) {
-        log.info(
-                "alipay callBack synSuccessPage get method,params>>>outTradeNo:{},tradeNo:{},totalAmount{}",
+        log.info("alipay callBack synSuccessPage get method,params>>>outTradeNo:{},tradeNo:{},totalAmount{}",
                 outTradeNo, tradeNo, totalAmount);
         request.setAttribute("outTradeNo", outTradeNo);
         request.setAttribute("tradeNo", tradeNo);
@@ -110,6 +109,50 @@ public class PayController extends BaseWebController {
             throws IOException {
         response.setContentType("text/html;charset=utf-8");
         PrintWriter writer = response.getWriter();
+        String html = payCallBackFeign.synCallBack(verifyRequest(request));
+        if (StringUtils.isNotEmpty(html)) {
+            writer.println(html);
+            writer.close();
+        }
+    }
+
+
+    // 同步回调,解决隐藏参数
+    @RequestMapping(value = "/alipay/callBack/synMobileSuccessPage", method = RequestMethod.POST)
+    public String synMobileSuccessPagePost(HttpServletRequest request, String outTradeNo, String tradeNo,
+            String totalAmount) {
+        log.info("alipay callBack synSuccessPage post method,params>>>outTradeNo:{},tradeNo:{},totalAmount{}",
+                outTradeNo, tradeNo, totalAmount);
+        request.setAttribute("outTradeNo", outTradeNo);
+        request.setAttribute("tradeNo", tradeNo);
+        request.setAttribute("totalAmount", totalAmount);
+        return PAY_SUCCESS;
+    }
+
+    @RequestMapping(value = "/alipay/callBack/synMobileSuccessPage", method = RequestMethod.GET)
+    public String synMobileSuccessPageGet(HttpServletRequest request, String outTradeNo, String tradeNo,
+            String totalAmount) {
+        log.info("alipay callBack synSuccessPage get method,params>>>outTradeNo:{},tradeNo:{},totalAmount{}",
+                outTradeNo, tradeNo, totalAmount);
+        request.setAttribute("outTradeNo", outTradeNo);
+        request.setAttribute("tradeNo", tradeNo);
+        request.setAttribute("totalAmount", totalAmount);
+        return PAY_SUCCESS;
+    }
+
+    @RequestMapping("/alipay/callBack/synMobileCallBack")
+    public void synMobileCallBack(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter writer = response.getWriter();
+        String html = aliMobilePayCallBackFeign.synMobileCallBack(verifyRequest(request));
+        if (StringUtils.isNotEmpty(html)) {
+            writer.println(html);
+            writer.close();
+        }
+    }
+
+    private Map<String, String> verifyRequest(HttpServletRequest request) {
         Map<String, String[]> requestParams = request.getParameterMap();
         Map<String, String> params = new HashMap<String, String>();
         for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext(); ) {
@@ -125,15 +168,10 @@ public class PayController extends BaseWebController {
                 valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
             } catch (UnsupportedEncodingException e) {
                 log.error("alipay parse params error", e);
-                return;
             }
             params.put(name, valueStr);
         }
-        String html = payCallBackFeign.synCallBack(params);
-        if (StringUtils.isNotEmpty(html)){
-            writer.println(html);
-            writer.close();
-        }
+        return params;
     }
 
 }

@@ -9,6 +9,8 @@ public interface PayStrategy {
 
     String UNION_PAY_CHANNEL_ID = "yinlian_pay";
 
+    String ALI_MOBILE_PAY_CHANNEL_ID = "ali_mobile_pay";
+
     /**
      * @param pymentChannel 渠道参数
      * @param payMentTransacDTO 支付参数
