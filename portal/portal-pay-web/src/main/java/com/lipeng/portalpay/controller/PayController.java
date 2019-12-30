@@ -10,6 +10,8 @@ import com.lipeng.portalpay.feign.PayCallBackFeign;
 import com.lipeng.portalpay.feign.PayContextFeign;
 import com.lipeng.portalpay.feign.PayMentTransacInfoFeign;
 import com.lipeng.portalpay.feign.PaymentChannelFeign;
+import com.lipeng.portalpay.utils.PayUtil;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -17,6 +19,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +33,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @Slf4j
 public class PayController extends BaseWebController {
+
+//    public static final String ALI_PAY_CHANNEL_ID = "alipay";
+//
+//    public static final String UNION_PAY_CHANNEL_ID = "yinlian_pay";
+//
+//    public static final String ALI_MOBILE_PAY_CHANNEL_ID = "ali_mobile_pay";
+
+    public static final String ALI_F2F_PAY_CHANNEL_ID = "ali_f2f_pay";
+
 
     @Autowired
     private PayMentTransacInfoFeign payMentTransacInfoFeign;
@@ -70,14 +82,26 @@ public class PayController extends BaseWebController {
     }
 
     @RequestMapping("/payHtml")
-    public void payHtml(String channelId, String payToken, HttpServletResponse response)
-            throws IOException {
-        response.setContentType("text/html; charset=utf-8");
-        BaseResponse<JSONObject> payHtmlData = payContextFeign.toPayHtml(channelId, payToken);
-        if (isSuccess(payHtmlData)) {
-            JSONObject data = payHtmlData.getData();
-            String payHtml = data.getString("payHtml");
-            response.getWriter().print(payHtml);
+    public void payHtml(String channelId, String payToken, HttpServletResponse response) {
+        try {
+            response.setContentType("text/html; charset=utf-8");
+            BaseResponse<JSONObject> payHtmlData = payContextFeign.toPayHtml(channelId, payToken);
+            if (isSuccess(payHtmlData)) {
+                if (ALI_F2F_PAY_CHANNEL_ID.equals(channelId)) {
+                    BufferedImage image = PayUtil.getQRCodeImge(payHtmlData.getData().getString("payHtml"));
+                    response.setContentType("image/jpeg");
+                    response.setHeader("Pragma", "no-cache");
+                    response.setHeader("Cache-Control", "no-cache");
+                    response.setIntHeader("Expires", -1);
+                    ImageIO.write(image, "JPEG", response.getOutputStream());
+                } else {
+                    JSONObject data = payHtmlData.getData();
+                    String payHtml = data.getString("payHtml");
+                    response.getWriter().print(payHtml);
+                }
+            }
+        }catch (Exception e){
+            log.error("to payHtml error", e);
         }
     }
 
