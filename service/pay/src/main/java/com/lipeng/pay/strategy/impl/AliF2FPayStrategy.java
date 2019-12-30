@@ -9,7 +9,7 @@ import com.lipeng.alipay.config.AlipayConfig;
 import com.lipeng.pay.dto.PayMentTransacDTO;
 import com.lipeng.pay.mapper.entity.PaymentChannelEntity;
 import com.lipeng.pay.strategy.PayStrategy;
-import java.math.BigDecimal;
+import com.lipeng.pay.utils.PayUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -35,7 +35,7 @@ public class AliF2FPayStrategy implements PayStrategy {
 		// 商户订单号，商户网站订单系统中唯一订单号，必填
 		String outTradeNo = payMentTransacDTO.getPaymentId();
 		// 付款金额，必填
-		String totalAmount = changeF2Y(payMentTransacDTO.getPayAmount().toString());
+		String totalAmount = PayUtil.changeF2Y(payMentTransacDTO.getPayAmount().toString());
 		// 订单名称，必填
 		String subject = "李鹏QB扫码充值业务";
 		// 商品描述，可空
@@ -62,23 +62,6 @@ public class AliF2FPayStrategy implements PayStrategy {
             return null;
         }
 
-	}
-
-	/** 金额为分的格式 */
-	public static final String CURRENCY_FEN_REGEX = "\\-?[0-9]+";
-
-	/**
-	 * 将分为单位的转换为元 （除100）
-	 *
-	 * @param amount
-	 * @return
-	 * @throws Exception
-	 */
-	public static String changeF2Y(String amount) {
-		if (!amount.matches(CURRENCY_FEN_REGEX)) {
-			return null;
-		}
-		return BigDecimal.valueOf(Long.valueOf(amount)).divide(new BigDecimal(100)).toString();
 	}
 
 }

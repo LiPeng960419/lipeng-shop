@@ -74,12 +74,12 @@ public class AliMobilePayCallbackTemplate extends AbstractPayCallbackTemplate {
         String trade_status = params.get("trade_status");
         if ("TRADE_SUCCESS".equals(trade_status)) {
             paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS.toString(), tradeNo,
-                            outTradeNo, PayStrategy.ALI_PAY_CHANNEL_ID);
+                            outTradeNo, PayStrategy.ALI_MOBILE_PAY_CHANNEL_ID);
         } else {
             return PayConstant.ALI_RESULT_FAIL;
         }
         // 3.使用MQ调用积分服务接口增加积分(处理幂等性问题)
-        paymentTransaction.setPaymentChannel(PayStrategy.ALI_PAY_CHANNEL_ID);
+        paymentTransaction.setPaymentChannel(PayStrategy.ALI_MOBILE_PAY_CHANNEL_ID);
         addMQIntegral(paymentTransaction);
 
         return PayConstant.ALI_RESULT_SUCCESS;
