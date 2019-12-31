@@ -12,6 +12,11 @@ import com.lipeng.pay.strategy.PayStrategy;
 import com.lipeng.pay.utils.PayUtil;
 import lombok.extern.slf4j.Slf4j;
 
+/*
+商户通过该接口进行交易的创建下单
+返回二维码客户端
+暂未实现回调接口
+ */
 @Slf4j
 public class AliF2FPayStrategy implements PayStrategy {
 

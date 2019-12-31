@@ -39,6 +39,10 @@ INSERT INTO `payment_channel`
 VALUES ('4', '支付宝扫码支付', 'ali_f2f_pay', '0', 'http://14320ed2.ngrok.io/alipay/callBack/synF2FCallBack',
         'http://b7e244bb.ngrok.io/aliPayF2FAsynCallback', null, null, '0',
         'com.lipeng.pay.strategy.impl.AliF2FPayStrategy', null, null, null, null, null);
+INSERT INTO `payment_channel`
+VALUES ('5', '支付宝app支付', 'ali_app_pay', '0', 'http://14320ed2.ngrok.io/alipay/callBack/synAppCallBack',
+        'http://b7e244bb.ngrok.io/aliPayAppAsynCallback', null, null, '0',
+        'com.lipeng.pay.strategy.impl.AliAppPayStrategy', null, null, null, null, null);
 
 DROP TABLE IF EXISTS `payment_transaction`;
 CREATE TABLE `payment_transaction`
