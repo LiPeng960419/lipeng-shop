@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  *
  * @author xuxueli 2017-04-28
  */
-@Configuration
+//@Configuration
 @Slf4j
 public class XxlJobConfig {
 

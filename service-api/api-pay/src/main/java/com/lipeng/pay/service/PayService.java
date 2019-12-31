@@ -25,4 +25,10 @@ public interface PayService {
     @GetMapping("/cancel")
     BaseResponse<JSONObject> cancel(@RequestParam("id") Long id);
 
+    @GetMapping("/close")
+    BaseResponse<JSONObject> close(@RequestParam("id") Long id);
+
+    @GetMapping("/settle")
+    BaseResponse<JSONObject> settle(@RequestParam("id") Long id);
+
 }

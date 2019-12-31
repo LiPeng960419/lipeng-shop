@@ -5,15 +5,22 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayTradeCancelModel;
+import com.alipay.api.domain.AlipayTradeCloseModel;
 import com.alipay.api.domain.AlipayTradeFastpayRefundQueryModel;
+import com.alipay.api.domain.AlipayTradeOrderSettleModel;
 import com.alipay.api.domain.AlipayTradeQueryModel;
 import com.alipay.api.domain.AlipayTradeRefundModel;
+import com.alipay.api.domain.OpenApiRoyaltyDetailInfoPojo;
 import com.alipay.api.request.AlipayTradeCancelRequest;
+import com.alipay.api.request.AlipayTradeCloseRequest;
 import com.alipay.api.request.AlipayTradeFastpayRefundQueryRequest;
+import com.alipay.api.request.AlipayTradeOrderSettleRequest;
 import com.alipay.api.request.AlipayTradeQueryRequest;
 import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.alipay.api.response.AlipayTradeCancelResponse;
+import com.alipay.api.response.AlipayTradeCloseResponse;
 import com.alipay.api.response.AlipayTradeFastpayRefundQueryResponse;
+import com.alipay.api.response.AlipayTradeOrderSettleResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.lipeng.alipay.config.AlipayConfig;
@@ -25,6 +32,8 @@ import com.lipeng.pay.mapper.PaymentTransactionMapper;
 import com.lipeng.pay.mapper.entity.PaymentTransactionEntity;
 import com.lipeng.pay.service.PayService;
 import com.lipeng.pay.utils.PayUtil;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -45,7 +54,7 @@ public class PayServiceImpl extends BaseApiService<JSONObject>
 
     //trade_no是支付宝支付id对应partyPayId
     //out_trade_no对应我本地的paymentId
-    //http://127.0.0.1:8600/queryPayment?orderNo=2019112922001486281000065472
+    //查询订单信息http://127.0.0.1:8600/queryPayment?orderNo=2019112922001486281000065472
     @Override
     public BaseResponse<JSONObject> queryF2F(String paymentId) {
         // 获得初始化的AlipayClient
@@ -75,7 +84,7 @@ public class PayServiceImpl extends BaseApiService<JSONObject>
     }
 
     /*
-
+    当交易发生之后一段时间内，由于买家或者卖家的原因需要退款时，卖家可以通过退款接口将支付款退还给买家
      */
     @Override
     public BaseResponse<JSONObject> refund(Long id) {
@@ -145,6 +154,9 @@ public class PayServiceImpl extends BaseApiService<JSONObject>
         return null;
     }
 
+    /*
+    支付交易返回失败或支付系统超时，调用该接口撤销交易
+     */
     @Override
     public BaseResponse<JSONObject> cancel(Long id) {
         PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectById(id);
@@ -169,6 +181,78 @@ public class PayServiceImpl extends BaseApiService<JSONObject>
             }
         } catch (AlipayApiException e) {
             log.error("cancel error", e);
+        }
+        return null;
+    }
+
+    /*
+    用于交易创建后，用户在一定时间内未进行支付，可调用该接口直接将未付款的交易进行关闭。
+     */
+    @Override
+    public BaseResponse<JSONObject> close(Long id) {
+        PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectById(id);
+        PayMentTransacDTO dto = MeiteBeanUtils.doToDto(paymentTransaction, PayMentTransacDTO.class);
+        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl,
+                AlipayConfig.app_id,
+                AlipayConfig.merchant_private_key, "json", AlipayConfig.charset,
+                AlipayConfig.alipay_public_key,
+                AlipayConfig.sign_type);
+
+        AlipayTradeCloseRequest request = new AlipayTradeCloseRequest();
+        AlipayTradeCloseModel model = new AlipayTradeCloseModel();
+        model.setTradeNo(dto.getPartyPayId());
+        model.setOutTradeNo(dto.getPaymentId());
+        request.setBizModel(model);
+        try {
+            AlipayTradeCloseResponse response = alipayClient.execute(request);
+            if (response.isSuccess()) {
+                return setResultSuccess(response.getBody());
+            } else {
+                log.error(response.getSubMsg());
+            }
+        } catch (AlipayApiException e) {
+            log.error("close error", e);
+        }
+        return null;
+    }
+
+    /*
+    用于在线下场景交易支付后，进行卖家与第三方（如供应商或平台商）基于交易金额的结算。
+     */
+    @Override
+    public BaseResponse<JSONObject> settle(Long id) {
+        PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectById(id);
+        PayMentTransacDTO dto = MeiteBeanUtils.doToDto(paymentTransaction, PayMentTransacDTO.class);
+        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl,
+                AlipayConfig.app_id,
+                AlipayConfig.merchant_private_key, "json", AlipayConfig.charset,
+                AlipayConfig.alipay_public_key,
+                AlipayConfig.sign_type);
+
+        AlipayTradeOrderSettleRequest request = new AlipayTradeOrderSettleRequest();
+        AlipayTradeOrderSettleModel model = new AlipayTradeOrderSettleModel();
+        model.setTradeNo(dto.getPartyPayId());
+        model.setOutRequestNo(dto.getPaymentId());
+        List<OpenApiRoyaltyDetailInfoPojo> royaltyParameters = new ArrayList<>();
+        OpenApiRoyaltyDetailInfoPojo infoPojo = new OpenApiRoyaltyDetailInfoPojo();
+        infoPojo.setRoyaltyType("transfer");
+        infoPojo.setTransOut("yxysqq6514@sandbox.com"); //userId 唯一用户号16位数字 或者 loginName支付宝登录号
+        infoPojo.setTransOutType("loginName");
+        infoPojo.setTransIn("15671564665");
+        infoPojo.setTransInType("loginName");
+        infoPojo.setDesc("支付平台给卖家转账");
+        royaltyParameters.add(infoPojo);
+        model.setRoyaltyParameters(royaltyParameters);
+        request.setBizModel(model);
+        try {
+            AlipayTradeOrderSettleResponse response = alipayClient.execute(request);
+            if (response.isSuccess()) {
+                return setResultSuccess(response.getBody());
+            } else {
+                log.error(response.getSubMsg());
+            }
+        } catch (AlipayApiException e) {
+            log.error("close error", e);
         }
         return null;
     }
