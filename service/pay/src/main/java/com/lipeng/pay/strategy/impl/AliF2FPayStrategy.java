@@ -58,7 +58,7 @@ public class AliF2FPayStrategy implements PayStrategy {
             }
             return null;
         } catch (Exception e) {
-            log.error("alipayClient pageExecute error,request:" + alipayRequest.getBizContent(), e);
+            log.error("alipayClient execute error,request:" + alipayRequest.getBizContent(), e);
             return null;
         }
 
