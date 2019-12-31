@@ -52,7 +52,7 @@ public class PayServiceImpl extends BaseApiService<JSONObject>
 
     //trade_no是支付宝支付id对应partyPayId
     //out_trade_no对应我本地的paymentId
-    //查询订单信息http://127.0.0.1:8600/queryPayment?orderNo=2019112922001486281000065472
+    //查询订单信息http://127.0.0.1:8600/pay/queryPayment?paymentId=371553545205452800
     @Override
     public BaseResponse<JSONObject> queryF2F(String paymentId) {
         // 获得初始化的AlipayClient

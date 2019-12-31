@@ -2,6 +2,7 @@ package com.lipeng.pay.service.bill;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lipeng.base.BaseResponse;
+import com.lipeng.pay.dto.BillAccountlogQueryModel;
 import com.lipeng.pay.dto.BillSellQueryModel;
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,5 +17,7 @@ public interface BillService {
     BaseResponse<JSONObject> queryBill(String billType, String billDate);
 
     BaseResponse<JSONObject> querySell(BillSellQueryModel model);
+
+    BaseResponse<JSONObject> queryAccountLog(BillAccountlogQueryModel model);
 
 }

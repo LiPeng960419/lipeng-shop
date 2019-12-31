@@ -3,15 +3,20 @@ package com.lipeng.pay.impl.bill;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
+import com.alipay.api.domain.AccountLogItemResult;
+import com.alipay.api.domain.AlipayDataBillAccountlogQueryModel;
 import com.alipay.api.domain.AlipayDataBillSellQueryModel;
 import com.alipay.api.domain.AlipayDataDataserviceBillDownloadurlQueryModel;
 import com.alipay.api.domain.TradeItemResult;
+import com.alipay.api.request.AlipayDataBillAccountlogQueryRequest;
 import com.alipay.api.request.AlipayDataBillSellQueryRequest;
 import com.alipay.api.request.AlipayDataDataserviceBillDownloadurlQueryRequest;
+import com.alipay.api.response.AlipayDataBillAccountlogQueryResponse;
 import com.alipay.api.response.AlipayDataBillSellQueryResponse;
 import com.alipay.api.response.AlipayDataDataserviceBillDownloadurlQueryResponse;
 import com.lipeng.base.BaseApiService;
 import com.lipeng.base.BaseResponse;
+import com.lipeng.pay.dto.BillAccountlogQueryModel;
 import com.lipeng.pay.dto.BillSellQueryModel;
 import com.lipeng.pay.service.bill.BillService;
 import com.lipeng.pay.utils.BillUtil;
@@ -103,6 +108,31 @@ public class BillServiceImpl extends BaseApiService<JSONObject>
             if (response.isSuccess()) {
                 JSONObject jsonObject = new JSONObject();
                 List<TradeItemResult> detailList = response.getDetailList();
+                jsonObject.put("detailList", detailList);
+                return setResultSuccess(jsonObject);
+            } else {
+                log.error(response.getSubMsg());
+            }
+        } catch (AlipayApiException e) {
+            log.error("querySell error", e);
+        }
+        return null;
+    }
+
+    @Override
+    @PostMapping("/queryAccountLog")
+    public BaseResponse<JSONObject> queryAccountLog(@RequestBody @Valid BillAccountlogQueryModel queryModel) {
+        AlipayClient alipayClient = PayUtil.getAlipayClient();
+        AlipayDataBillAccountlogQueryRequest request = new AlipayDataBillAccountlogQueryRequest();
+        AlipayDataBillAccountlogQueryModel model = new AlipayDataBillAccountlogQueryModel();
+        BeanCopier copier = BeanCopier.create(BillAccountlogQueryModel.class, AlipayDataBillAccountlogQueryModel.class, false);
+        copier.copy(queryModel, model, null);
+        request.setBizModel(model);
+        try {
+            AlipayDataBillAccountlogQueryResponse response = alipayClient.execute(request);
+            if (response.isSuccess()) {
+                JSONObject jsonObject = new JSONObject();
+                List<AccountLogItemResult> detailList = response.getDetailList();
                 jsonObject.put("detailList", detailList);
                 return setResultSuccess(jsonObject);
             } else {
