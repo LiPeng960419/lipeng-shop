@@ -3,20 +3,33 @@ package com.lipeng.pay.impl.bill;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
+import com.alipay.api.domain.AlipayDataBillSellQueryModel;
 import com.alipay.api.domain.AlipayDataDataserviceBillDownloadurlQueryModel;
+import com.alipay.api.domain.TradeItemResult;
+import com.alipay.api.request.AlipayDataBillSellQueryRequest;
 import com.alipay.api.request.AlipayDataDataserviceBillDownloadurlQueryRequest;
+import com.alipay.api.response.AlipayDataBillSellQueryResponse;
 import com.alipay.api.response.AlipayDataDataserviceBillDownloadurlQueryResponse;
 import com.lipeng.base.BaseApiService;
 import com.lipeng.base.BaseResponse;
+import com.lipeng.pay.dto.BillSellQueryModel;
 import com.lipeng.pay.service.bill.BillService;
 import com.lipeng.pay.utils.BillUtil;
 import com.lipeng.pay.utils.PayUtil;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.Objects;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.cglib.beans.BeanCopier;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -25,11 +38,14 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
+@RequestMapping("/bill")
 public class BillServiceImpl extends BaseApiService<JSONObject>
         implements BillService {
 
     @Override
-    public void downloadBill(String billType, String billDate, HttpServletResponse response) {
+    @GetMapping("/downloadBill")
+    public void downloadBill(@RequestParam("billType") String billType,
+            @RequestParam("billDate") String billDate, HttpServletResponse response) {
         BaseResponse<JSONObject> result = queryBill(billType, billDate);
         if (Objects.isNull(result)) {
             throw new RuntimeException("获取账单地址失败，请稍后重试!");
@@ -49,7 +65,9 @@ public class BillServiceImpl extends BaseApiService<JSONObject>
         参数示例 trade 2016-04-05
          */
     @Override
-    public BaseResponse<JSONObject> queryBill(String billType, String billDate) {
+    @GetMapping("/queryBill")
+    public BaseResponse<JSONObject> queryBill(@RequestParam("billType") String billType,
+            @RequestParam("billDate") String billDate) {
         AlipayClient alipayClient = PayUtil.getAlipayClient();
         AlipayDataDataserviceBillDownloadurlQueryRequest request = new AlipayDataDataserviceBillDownloadurlQueryRequest();
         AlipayDataDataserviceBillDownloadurlQueryModel model = new AlipayDataDataserviceBillDownloadurlQueryModel();
@@ -67,6 +85,31 @@ public class BillServiceImpl extends BaseApiService<JSONObject>
             }
         } catch (AlipayApiException e) {
             log.error("queryBill error", e);
+        }
+        return null;
+    }
+
+    @Override
+    @PostMapping("/querySell")
+    public BaseResponse<JSONObject> querySell(@RequestBody @Valid BillSellQueryModel queryModel) {
+        AlipayClient alipayClient = PayUtil.getAlipayClient();
+        AlipayDataBillSellQueryRequest request = new AlipayDataBillSellQueryRequest();
+        AlipayDataBillSellQueryModel model = new AlipayDataBillSellQueryModel();
+        BeanCopier copier = BeanCopier.create(BillSellQueryModel.class, AlipayDataBillSellQueryModel.class, false);
+        copier.copy(queryModel, model, null);
+        request.setBizModel(model);
+        try {
+            AlipayDataBillSellQueryResponse response = alipayClient.execute(request);
+            if (response.isSuccess()) {
+                JSONObject jsonObject = new JSONObject();
+                List<TradeItemResult> detailList = response.getDetailList();
+                jsonObject.put("detailList", detailList);
+                return setResultSuccess(jsonObject);
+            } else {
+                log.error(response.getSubMsg());
+            }
+        } catch (AlipayApiException e) {
+            log.error("querySell error", e);
         }
         return null;
     }

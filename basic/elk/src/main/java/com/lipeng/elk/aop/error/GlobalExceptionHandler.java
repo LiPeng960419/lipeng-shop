@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     @ResponseBody
     public JSONObject exceptionHandler(Exception e) {
-        log.error("###全局捕获异常###,error:{}", e);
+        log.error("###全局捕获异常###", e);
 
         // 1.封装异常日志信息
         JSONObject errorJson = new JSONObject();
