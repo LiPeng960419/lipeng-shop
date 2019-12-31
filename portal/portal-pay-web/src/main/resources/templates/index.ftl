@@ -121,7 +121,7 @@
 <div class="head">
   <div class="head-center">
     <img class="head-center-logo"
-         src="http://static.itmayiedu.com/20181024142946.png"/>
+         src="http://dmimg.5054399.com/allimg/pkm/pk/22.jpg"/>
     <div class="head-center-font">充值中心</div>
     <div class="head-center-user">用户名：921403443@qq.com</div>
   </div>

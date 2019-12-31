@@ -17,7 +17,7 @@ public class AliF2FPayStrategy implements PayStrategy {
 
 	@Override
 	public String toPayHtml(PaymentChannelEntity pymentChannel, PayMentTransacDTO payMentTransacDTO) {
-		log.info(">>>>>支付宝手机支付参数封装开始<<<<<<<<");
+		log.info(">>>>>支付宝扫码支付参数封装开始<<<<<<<<");
 
 		// 获得初始化的AlipayClient
 		AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.app_id,
