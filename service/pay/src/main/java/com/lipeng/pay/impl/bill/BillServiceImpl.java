@@ -9,9 +9,11 @@ import com.alipay.api.domain.AlipayDataBillSellQueryModel;
 import com.alipay.api.domain.AlipayDataDataserviceBillDownloadurlQueryModel;
 import com.alipay.api.domain.TradeItemResult;
 import com.alipay.api.request.AlipayDataBillAccountlogQueryRequest;
+import com.alipay.api.request.AlipayDataBillBalanceQueryRequest;
 import com.alipay.api.request.AlipayDataBillSellQueryRequest;
 import com.alipay.api.request.AlipayDataDataserviceBillDownloadurlQueryRequest;
 import com.alipay.api.response.AlipayDataBillAccountlogQueryResponse;
+import com.alipay.api.response.AlipayDataBillBalanceQueryResponse;
 import com.alipay.api.response.AlipayDataBillSellQueryResponse;
 import com.alipay.api.response.AlipayDataDataserviceBillDownloadurlQueryResponse;
 import com.lipeng.base.BaseApiService;
@@ -135,6 +137,24 @@ public class BillServiceImpl extends BaseApiService<JSONObject>
                 List<AccountLogItemResult> detailList = response.getDetailList();
                 jsonObject.put("detailList", detailList);
                 return setResultSuccess(jsonObject);
+            } else {
+                log.error(response.getSubMsg());
+            }
+        } catch (AlipayApiException e) {
+            log.error("querySell error", e);
+        }
+        return null;
+    }
+
+    @Override
+    @GetMapping("/queryBalance")
+    public BaseResponse<JSONObject> queryBalance() {
+        AlipayClient alipayClient = PayUtil.getAlipayClient();
+        AlipayDataBillBalanceQueryRequest request = new AlipayDataBillBalanceQueryRequest();
+        try {
+            AlipayDataBillBalanceQueryResponse response = alipayClient.execute(request);
+            if (response.isSuccess()) {
+                return setResultSuccess(response.getMsg());
             } else {
                 log.error(response.getSubMsg());
             }

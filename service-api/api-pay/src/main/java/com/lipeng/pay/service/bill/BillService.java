@@ -20,4 +20,6 @@ public interface BillService {
 
     BaseResponse<JSONObject> queryAccountLog(BillAccountlogQueryModel model);
 
+    BaseResponse<JSONObject> queryBalance();
+
 }
