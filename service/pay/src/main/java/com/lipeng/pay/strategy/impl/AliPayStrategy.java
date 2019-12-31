@@ -1,9 +1,7 @@
 package com.lipeng.pay.strategy.impl;
 
 import com.alipay.api.AlipayClient;
-import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
-import com.lipeng.alipay.config.AlipayConfig;
 import com.lipeng.pay.dto.PayMentTransacDTO;
 import com.lipeng.pay.mapper.entity.PaymentChannelEntity;
 import com.lipeng.pay.strategy.PayStrategy;
@@ -18,9 +16,7 @@ public class AliPayStrategy implements PayStrategy {
 		log.info(">>>>>支付宝参数封装开始<<<<<<<<");
 
 		// 获得初始化的AlipayClient
-		AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.app_id,
-				AlipayConfig.merchant_private_key, "json", AlipayConfig.charset, AlipayConfig.alipay_public_key,
-				AlipayConfig.sign_type);
+		AlipayClient alipayClient = PayUtil.getAlipayClient();
 
 		// 设置请求参数
 		AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();

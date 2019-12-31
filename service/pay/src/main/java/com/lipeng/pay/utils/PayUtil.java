@@ -1,5 +1,8 @@
 package com.lipeng.pay.utils;
 
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.lipeng.alipay.config.AlipayConfig;
 import java.math.BigDecimal;
 
 /**
@@ -21,6 +24,15 @@ public class PayUtil {
             return null;
         }
         return BigDecimal.valueOf(Long.valueOf(amount)).divide(new BigDecimal(100)).toString();
+    }
+
+    public static AlipayClient getAlipayClient() {
+        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl,
+                AlipayConfig.app_id,
+                AlipayConfig.merchant_private_key, "json", AlipayConfig.charset,
+                AlipayConfig.alipay_public_key,
+                AlipayConfig.sign_type);
+        return alipayClient;
     }
 
 }

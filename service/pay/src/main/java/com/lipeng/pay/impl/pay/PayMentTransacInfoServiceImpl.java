@@ -1,4 +1,4 @@
-package com.lipeng.pay.impl;
+package com.lipeng.pay.impl.pay;
 
 import com.lipeng.base.BaseApiService;
 import com.lipeng.base.BaseResponse;
@@ -7,7 +7,7 @@ import com.lipeng.core.token.GenerateToken;
 import com.lipeng.pay.dto.PayMentTransacDTO;
 import com.lipeng.pay.mapper.PaymentTransactionMapper;
 import com.lipeng.pay.mapper.entity.PaymentTransactionEntity;
-import com.lipeng.pay.service.PayMentTransacInfoService;
+import com.lipeng.pay.service.pay.PayMentTransacInfoService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;

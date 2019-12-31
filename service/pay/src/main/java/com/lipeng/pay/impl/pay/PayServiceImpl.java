@@ -1,9 +1,8 @@
-package com.lipeng.pay.impl;
+package com.lipeng.pay.impl.pay;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
-import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayTradeCancelModel;
 import com.alipay.api.domain.AlipayTradeCloseModel;
 import com.alipay.api.domain.AlipayTradeFastpayRefundQueryModel;
@@ -23,14 +22,13 @@ import com.alipay.api.response.AlipayTradeFastpayRefundQueryResponse;
 import com.alipay.api.response.AlipayTradeOrderSettleResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
-import com.lipeng.alipay.config.AlipayConfig;
 import com.lipeng.base.BaseApiService;
 import com.lipeng.base.BaseResponse;
 import com.lipeng.core.bean.MeiteBeanUtils;
 import com.lipeng.pay.dto.PayMentTransacDTO;
 import com.lipeng.pay.mapper.PaymentTransactionMapper;
 import com.lipeng.pay.mapper.entity.PaymentTransactionEntity;
-import com.lipeng.pay.service.PayService;
+import com.lipeng.pay.service.pay.PayService;
 import com.lipeng.pay.utils.PayUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,11 +56,7 @@ public class PayServiceImpl extends BaseApiService<JSONObject>
     @Override
     public BaseResponse<JSONObject> queryF2F(String paymentId) {
         // 获得初始化的AlipayClient
-        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl,
-                AlipayConfig.app_id,
-                AlipayConfig.merchant_private_key, "json", AlipayConfig.charset,
-                AlipayConfig.alipay_public_key,
-                AlipayConfig.sign_type);
+        AlipayClient alipayClient = PayUtil.getAlipayClient();
         AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
         AlipayTradeQueryModel model = new AlipayTradeQueryModel();
         //通过trade_no或者out_trade_no可以查询到订单信息
@@ -96,12 +90,7 @@ public class PayServiceImpl extends BaseApiService<JSONObject>
             return setResultError(msg);
         }
 
-        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl,
-                AlipayConfig.app_id,
-                AlipayConfig.merchant_private_key, "json", AlipayConfig.charset,
-                AlipayConfig.alipay_public_key,
-                AlipayConfig.sign_type);
-
+        AlipayClient alipayClient = PayUtil.getAlipayClient();
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
         AlipayTradeRefundModel model = new AlipayTradeRefundModel();
         model.setTradeNo(dto.getPartyPayId());
@@ -129,11 +118,7 @@ public class PayServiceImpl extends BaseApiService<JSONObject>
     public BaseResponse<JSONObject> refundQuery(Long id) {
         PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectById(id);
         PayMentTransacDTO dto = MeiteBeanUtils.doToDto(paymentTransaction, PayMentTransacDTO.class);
-        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl,
-                AlipayConfig.app_id,
-                AlipayConfig.merchant_private_key, "json", AlipayConfig.charset,
-                AlipayConfig.alipay_public_key,
-                AlipayConfig.sign_type);
+        AlipayClient alipayClient = PayUtil.getAlipayClient();
 
         AlipayTradeFastpayRefundQueryRequest request = new AlipayTradeFastpayRefundQueryRequest();
         AlipayTradeFastpayRefundQueryModel model = new AlipayTradeFastpayRefundQueryModel();
@@ -161,11 +146,7 @@ public class PayServiceImpl extends BaseApiService<JSONObject>
     public BaseResponse<JSONObject> cancel(Long id) {
         PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectById(id);
         PayMentTransacDTO dto = MeiteBeanUtils.doToDto(paymentTransaction, PayMentTransacDTO.class);
-        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl,
-                AlipayConfig.app_id,
-                AlipayConfig.merchant_private_key, "json", AlipayConfig.charset,
-                AlipayConfig.alipay_public_key,
-                AlipayConfig.sign_type);
+        AlipayClient alipayClient = PayUtil.getAlipayClient();
 
         AlipayTradeCancelRequest request = new AlipayTradeCancelRequest ();
         AlipayTradeCancelModel model = new AlipayTradeCancelModel();
@@ -192,11 +173,7 @@ public class PayServiceImpl extends BaseApiService<JSONObject>
     public BaseResponse<JSONObject> close(Long id) {
         PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectById(id);
         PayMentTransacDTO dto = MeiteBeanUtils.doToDto(paymentTransaction, PayMentTransacDTO.class);
-        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl,
-                AlipayConfig.app_id,
-                AlipayConfig.merchant_private_key, "json", AlipayConfig.charset,
-                AlipayConfig.alipay_public_key,
-                AlipayConfig.sign_type);
+        AlipayClient alipayClient = PayUtil.getAlipayClient();
 
         AlipayTradeCloseRequest request = new AlipayTradeCloseRequest();
         AlipayTradeCloseModel model = new AlipayTradeCloseModel();
@@ -223,11 +200,7 @@ public class PayServiceImpl extends BaseApiService<JSONObject>
     public BaseResponse<JSONObject> settle(Long id) {
         PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectById(id);
         PayMentTransacDTO dto = MeiteBeanUtils.doToDto(paymentTransaction, PayMentTransacDTO.class);
-        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl,
-                AlipayConfig.app_id,
-                AlipayConfig.merchant_private_key, "json", AlipayConfig.charset,
-                AlipayConfig.alipay_public_key,
-                AlipayConfig.sign_type);
+        AlipayClient alipayClient = PayUtil.getAlipayClient();
 
         AlipayTradeOrderSettleRequest request = new AlipayTradeOrderSettleRequest();
         AlipayTradeOrderSettleModel model = new AlipayTradeOrderSettleModel();

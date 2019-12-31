@@ -1,11 +1,11 @@
-package com.lipeng.pay.impl;
+package com.lipeng.pay.impl.pay;
 
 import com.lipeng.base.BaseApiService;
 import com.lipeng.core.mapper.MapperUtils;
 import com.lipeng.pay.dto.PaymentChannelDTO;
 import com.lipeng.pay.mapper.PaymentChannelMapper;
 import com.lipeng.pay.mapper.entity.PaymentChannelEntity;
-import com.lipeng.pay.service.PaymentChannelService;
+import com.lipeng.pay.service.pay.PaymentChannelService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;

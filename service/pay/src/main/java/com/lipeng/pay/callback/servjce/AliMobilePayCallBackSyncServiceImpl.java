@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.lipeng.alipay.config.AlipayConfig;
 import com.lipeng.base.BaseApiService;
-import com.lipeng.pay.service.PayMobileCallBackSyncService;
+import com.lipeng.pay.service.pay.PayMobileCallBackSyncService;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;

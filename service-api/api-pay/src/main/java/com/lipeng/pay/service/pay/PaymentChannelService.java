@@ -1,4 +1,4 @@
-package com.lipeng.pay.service;
+package com.lipeng.pay.service.pay;
 
 import com.lipeng.pay.dto.PaymentChannelDTO;
 import java.util.List;

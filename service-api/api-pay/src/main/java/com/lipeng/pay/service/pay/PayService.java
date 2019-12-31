@@ -1,9 +1,10 @@
-package com.lipeng.pay.service;
+package com.lipeng.pay.service.pay;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lipeng.base.BaseResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @Date: 2019/12/30 16:13
  */
 @Controller
+@RequestMapping("/pay")
 public interface PayService {
 
     @GetMapping("/queryPayment")

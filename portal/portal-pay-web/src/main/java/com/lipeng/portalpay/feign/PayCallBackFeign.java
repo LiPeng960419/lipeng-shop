@@ -1,6 +1,6 @@
 package com.lipeng.portalpay.feign;
 
-import com.lipeng.pay.service.PayCallBackSyncService;
+import com.lipeng.pay.service.pay.PayCallBackSyncService;
 import org.springframework.cloud.openfeign.FeignClient;
 
 /**
