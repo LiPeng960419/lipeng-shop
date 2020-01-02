@@ -5,11 +5,11 @@ import com.lipeng.base.BaseApiService;
 import com.lipeng.base.BaseResponse;
 import com.lipeng.constants.Constants;
 import com.lipeng.core.token.GenerateToken;
-import com.lipeng.core.twitter.SnowflakeIdUtils;
 import com.lipeng.pay.dto.PayCratePayTokenDto;
 import com.lipeng.pay.mapper.PaymentTransactionMapper;
 import com.lipeng.pay.mapper.entity.PaymentTransactionEntity;
 import com.lipeng.pay.service.pay.PayMentTransacTokenService;
+import com.lipeng.pay.worker.impl.UidGenerator;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +22,9 @@ public class PayMentTransacTokenServiceImpl extends BaseApiService<JSONObject> i
 
 	@Autowired
 	private GenerateToken generateToken;
+
+	@Autowired
+	private UidGenerator cachedUidGenerator;
 
 	@Override
 	public BaseResponse<JSONObject> cratePayToken(PayCratePayTokenDto payCratePayTokenDto) {
@@ -43,7 +46,9 @@ public class PayMentTransacTokenServiceImpl extends BaseApiService<JSONObject> i
 		paymentTransactionEntity.setPayAmount(payAmount);
 		paymentTransactionEntity.setUserId(userId);
 		// 使用雪花算法 生成全局id
-		paymentTransactionEntity.setPaymentId(SnowflakeIdUtils.nextId());
+		//paymentTransactionEntity.setPaymentId(SnowflakeIdUtils.nextId());
+		//百度 UidGenerator
+		paymentTransactionEntity.setPaymentId(String.valueOf(cachedUidGenerator.getUID()));
 		int result = paymentTransactionMapper.insertPaymentTransaction(paymentTransactionEntity);
 		if (!toDaoResult(result)) {
 			return setResultError("系统错误!");
