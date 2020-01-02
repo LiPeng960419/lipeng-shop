@@ -29,7 +29,7 @@ VALUES ('1', '银联支付', 'yinlian_pay', '777290058175497', 'http://www.coshi
         'com.lipeng.pay.strategy.impl.UnionPayStrategy', null, null, null, null, null);
 INSERT INTO `payment_channel`
 VALUES ('2', '银联扫码支付', 'yinlian_f2f_pay', '777290058175497', 'http://www.coship.com',
-        'http://b7e244bb.ngrok.io/unionPayAsynCallback', null, null, '0',
+        'http://b7e244bb.ngrok.io/unionF2FPayAsynCallback', null, null, '0',
         'com.lipeng.pay.strategy.impl.UnionF2FPayStrategy', null, null, null, null, null);
 INSERT INTO `payment_channel`
 VALUES ('3', '支付宝支付', 'alipay', '0', 'http://14320ed2.ngrok.io/alipay/callBack/synCallBack',

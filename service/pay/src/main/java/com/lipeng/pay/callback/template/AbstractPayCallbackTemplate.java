@@ -74,7 +74,8 @@ public abstract class AbstractPayCallbackTemplate {
                 || PayStrategy.ALI_F2F_PAY_CHANNEL_ID.equals(channelId)
                 || PayStrategy.ALI_APP_PAY_CHANNEL_ID.equals(channelId)) {
             paymentId = verifySignature.get("out_trade_no");
-        } else if (PayStrategy.UNION_PAY_CHANNEL_ID.equals(channelId)) {
+        } else if (PayStrategy.UNION_PAY_CHANNEL_ID.equals(channelId)
+                || PayStrategy.UNION_F2F_PAY_CHANNEL_ID.equals(channelId)) {
             paymentId = verifySignature.get("paymentId");
         }
         if (StringUtils.isEmpty(paymentId)) {

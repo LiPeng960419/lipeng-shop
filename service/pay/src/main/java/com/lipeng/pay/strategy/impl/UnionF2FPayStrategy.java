@@ -53,9 +53,9 @@ public class UnionF2FPayStrategy implements PayStrategy {
 
 		//后台返回商户结果时使用
 		//如果不需要发后台通知，可以固定上送 http://www.specialUrl.com
-		//String asynUrl = paymentChannel.getAsynUrl();
-		//requestData.put("backUrl", asynUrl);
-		requestData.put("backUrl", "http://www.specialUrl.com");
+		//requestData.put("backUrl", "http://www.specialUrl.com");
+		String asynUrl = paymentChannel.getAsynUrl();
+		requestData.put("backUrl", asynUrl);
 
 		// 订单超时时间。
 		// 超过此时间后，除网银交易外，其他交易银联系统会拒绝受理，提示超时。
