@@ -51,17 +51,17 @@ public class AliF2FPayStrategy implements PayStrategy {
         alipayRequest.setBizModel(model);
 
 		// 请求
-        try {
-            //通过alipayClient调用API，获得对应的response类
-            AlipayTradePrecreateResponse response = alipayClient.execute(alipayRequest);
-            if ("Success".equals(response.getMsg())) {
-                return response.getQrCode();
-            }
-            return null;
-        } catch (Exception e) {
-            log.error("alipayClient execute error,request:" + alipayRequest.getBizContent(), e);
-            return null;
-        }
+		try {
+			//通过alipayClient调用API，获得对应的response类
+			AlipayTradePrecreateResponse response = alipayClient.execute(alipayRequest);
+			if (response.isSuccess()) {
+				return response.getQrCode();
+			}
+			return null;
+		} catch (Exception e) {
+			log.error("alipayClient execute error,request:" + alipayRequest.getBizContent(), e);
+			return null;
+		}
 
 	}
 

@@ -27,7 +27,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -42,6 +41,8 @@ public class PayController extends BaseWebController {
 //    public static final String ALI_MOBILE_PAY_CHANNEL_ID = "ali_mobile_pay";
 
     public static final String ALI_F2F_PAY_CHANNEL_ID = "ali_f2f_pay";
+
+    public static final String UNION_F2F_PAY_CHANNEL_ID = "yinlian_f2f_pay";
 
 
     @Autowired
@@ -88,7 +89,8 @@ public class PayController extends BaseWebController {
             response.setContentType("text/html; charset=utf-8");
             BaseResponse<JSONObject> payHtmlData = payContextFeign.toPayHtml(channelId, payToken);
             if (isSuccess(payHtmlData)) {
-                if (ALI_F2F_PAY_CHANNEL_ID.equals(channelId)) {
+                if (ALI_F2F_PAY_CHANNEL_ID.equals(channelId)
+                        || UNION_F2F_PAY_CHANNEL_ID.equals(channelId)) {
                     BufferedImage image = PayUtil.getQRCodeImge(payHtmlData.getData().getString("payHtml"));
                     response.setContentType("image/jpeg");
                     response.setHeader("Pragma", "no-cache");

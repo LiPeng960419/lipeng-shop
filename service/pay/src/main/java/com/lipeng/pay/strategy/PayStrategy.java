@@ -9,6 +9,8 @@ public interface PayStrategy {
 
     String UNION_PAY_CHANNEL_ID = "yinlian_pay";
 
+    String UNION_F2F_PAY_CHANNEL_ID = "yinlian_f2f_pay";
+
     String ALI_MOBILE_PAY_CHANNEL_ID = "ali_mobile_pay";
 
     String ALI_F2F_PAY_CHANNEL_ID = "ali_f2f_pay";

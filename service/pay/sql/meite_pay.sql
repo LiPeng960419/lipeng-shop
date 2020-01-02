@@ -20,27 +20,31 @@ CREATE TABLE `payment_channel`
   `UPDATED_TIME`  datetime    DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`ID`, `CHANNEL_ID`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 3
+  AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8 COMMENT ='支付渠道';
 
 INSERT INTO `payment_channel`
-VALUES ('1', '银联支付', 'yinlian_pay', '777290058110048', 'http://www.coship.com',
+VALUES ('1', '银联支付', 'yinlian_pay', '777290058175497', 'http://www.coship.com',
         'http://b7e244bb.ngrok.io/unionPayAsynCallback', null, null, '0',
         'com.lipeng.pay.strategy.impl.UnionPayStrategy', null, null, null, null, null);
 INSERT INTO `payment_channel`
-VALUES ('2', '支付宝支付', 'alipay', '0', 'http://14320ed2.ngrok.io/alipay/callBack/synCallBack',
+VALUES ('2', '银联扫码支付', 'yinlian_f2f_pay', '777290058175497', 'http://www.coship.com',
+        'http://b7e244bb.ngrok.io/unionPayAsynCallback', null, null, '0',
+        'com.lipeng.pay.strategy.impl.UnionF2FPayStrategy', null, null, null, null, null);
+INSERT INTO `payment_channel`
+VALUES ('3', '支付宝支付', 'alipay', '0', 'http://14320ed2.ngrok.io/alipay/callBack/synCallBack',
         'http://b7e244bb.ngrok.io/aliPayAsynCallback', null, null, '0',
         'com.lipeng.pay.strategy.impl.AliPayStrategy', null, null, null, null, null);
 INSERT INTO `payment_channel`
-VALUES ('3', '支付宝手机支付', 'ali_mobile_pay', '0', 'http://14320ed2.ngrok.io/alipay/callBack/synMobileCallBack',
+VALUES ('4', '支付宝手机支付', 'ali_mobile_pay', '0', 'http://14320ed2.ngrok.io/alipay/callBack/synMobileCallBack',
         'http://b7e244bb.ngrok.io/aliMobilePayAsynCallback', null, null, '0',
         'com.lipeng.pay.strategy.impl.AliMobilePayStrategy', null, null, null, null, null);
 INSERT INTO `payment_channel`
-VALUES ('4', '支付宝扫码支付', 'ali_f2f_pay', '0', 'http://14320ed2.ngrok.io/alipay/callBack/synF2FCallBack',
+VALUES ('5', '支付宝扫码支付', 'ali_f2f_pay', '0', 'http://14320ed2.ngrok.io/alipay/callBack/synF2FCallBack',
         'http://b7e244bb.ngrok.io/aliPayF2FAsynCallback', null, null, '0',
         'com.lipeng.pay.strategy.impl.AliF2FPayStrategy', null, null, null, null, null);
 INSERT INTO `payment_channel`
-VALUES ('5', '支付宝app支付', 'ali_app_pay', '0', 'http://14320ed2.ngrok.io/alipay/callBack/synAppCallBack',
+VALUES ('6', '支付宝app支付', 'ali_app_pay', '0', 'http://14320ed2.ngrok.io/alipay/callBack/synAppCallBack',
         'http://b7e244bb.ngrok.io/aliPayAppAsynCallback', null, null, '0',
         'com.lipeng.pay.strategy.impl.AliAppPayStrategy', null, null, null, null, null);
 
