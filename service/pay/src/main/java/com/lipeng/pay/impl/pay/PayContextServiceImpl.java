@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.lipeng.base.BaseApiService;
 import com.lipeng.base.BaseResponse;
 import com.lipeng.pay.dto.PayMentTransacDTO;
-import com.lipeng.pay.factory.StrategyFactory;
+import com.lipeng.pay.strategy.StrategyFactory;
 import com.lipeng.pay.mapper.PaymentChannelMapper;
 import com.lipeng.pay.mapper.entity.PaymentChannelEntity;
 import com.lipeng.pay.service.pay.PayContextService;

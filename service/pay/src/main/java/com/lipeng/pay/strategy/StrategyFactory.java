@@ -1,6 +1,5 @@
-package com.lipeng.pay.factory;
+package com.lipeng.pay.strategy;
 
-import com.lipeng.pay.strategy.PayStrategy;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.extern.slf4j.Slf4j;
