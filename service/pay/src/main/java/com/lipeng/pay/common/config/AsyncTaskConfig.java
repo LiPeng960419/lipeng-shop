@@ -1,4 +1,4 @@
-package com.lipeng.pay.config;
+package com.lipeng.pay.common.config;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.Executor;

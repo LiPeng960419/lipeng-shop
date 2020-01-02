@@ -2,7 +2,7 @@ package com.lipeng.pay.mq.producer;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lipeng.constants.Constants;
-import com.lipeng.pay.config.RabbitmqConfig;
+import com.lipeng.pay.common.config.RabbitmqConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageBuilder;

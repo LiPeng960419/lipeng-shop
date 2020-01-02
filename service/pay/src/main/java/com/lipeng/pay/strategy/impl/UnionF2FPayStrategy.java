@@ -3,6 +3,7 @@ package com.lipeng.pay.strategy.impl;
 import com.lipeng.pay.dto.PayMentTransacDTO;
 import com.lipeng.pay.mapper.entity.PaymentChannelEntity;
 import com.lipeng.pay.strategy.PayStrategy;
+import com.lipeng.pay.utils.UnionPayUtil;
 import com.lipeng.unionpay.acp.sdk.AcpService;
 import com.lipeng.unionpay.acp.sdk.LogUtil;
 import com.lipeng.unionpay.acp.sdk.SDKConfig;
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 
 /*
 申请二维码
@@ -41,7 +43,7 @@ public class UnionF2FPayStrategy implements PayStrategy {
 		String paymentId = payMentTransacDTO.getPaymentId();
 		// 在微服务电商项目中 订单系统(orderId)   支付系统 支付id
 		requestData.put("orderId", paymentId); // 商户订单号，8-40位数字字母，不能含“-”或“_”，可以自行定制规则
-		requestData.put("txnTime", format(payMentTransacDTO.getCreatedTime())); // 订单发送时间，取系统时间，格式为YYYYMMDDhhmmss，必须取当前时间，否则会报txnTime无效
+		requestData.put("txnTime", UnionPayUtil.formatTxnTime(payMentTransacDTO.getCreatedTime())); // 订单发送时间，取系统时间，格式为YYYYMMDDhhmmss，必须取当前时间，否则会报txnTime无效
 		requestData.put("currencyCode", "156"); // 交易币种（境内商户一般是156 人民币）
 		Long payAmount = payMentTransacDTO.getPayAmount();
 		requestData.put("txnAmt", String.valueOf(payAmount)); // 交易金额，单位分，不要带小数点
@@ -75,9 +77,16 @@ public class UnionF2FPayStrategy implements PayStrategy {
 				if (("00").equals(respCode)) {
 					//成功,获取tn号
 					//String tn = resmap.get("tn");
-					return rspData.get("qrCode");
+					String qrCode = rspData.get("qrCode");
+					if (StringUtils.isNotEmpty(qrCode)) {
+						log.info("UnionF2FPayStrategy get qrCode: " + qrCode);
+						return qrCode;
+					} else {
+						LogUtil.writeErrorLog("获取验证码失败");
+					}
 				} else {
 					//其他应答码为失败请排查原因或做失败处理
+					LogUtil.writeErrorLog("接口调用返回异常 respCode:" + respCode);
 				}
 			} else {
 				LogUtil.writeErrorLog("验证签名失败");
@@ -90,11 +99,6 @@ public class UnionF2FPayStrategy implements PayStrategy {
 		String rspMessage = UnionPayBase.genHtmlResult(rspData);
 		LogUtil.writeLog("请求报文:<br/>" + reqMessage + "<br/>" + "应答报文:</br>" + rspMessage + "");
 		return null;
-	}
-
-	private String format(Date timeDate) {
-		String date = new SimpleDateFormat("yyyyMMddHHmmss").format(timeDate);
-		return date;
 	}
 
 }

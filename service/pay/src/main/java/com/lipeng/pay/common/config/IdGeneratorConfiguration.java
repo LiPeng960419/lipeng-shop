@@ -1,4 +1,4 @@
-package com.lipeng.pay.config;
+package com.lipeng.pay.common.config;
 
 import com.lipeng.pay.worker.impl.CachedUidGenerator;
 import com.lipeng.pay.worker.impl.DisposableWorkerIdAssigner;

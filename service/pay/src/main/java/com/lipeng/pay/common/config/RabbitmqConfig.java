@@ -1,4 +1,4 @@
-package com.lipeng.pay.config;
+package com.lipeng.pay.common.config;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;

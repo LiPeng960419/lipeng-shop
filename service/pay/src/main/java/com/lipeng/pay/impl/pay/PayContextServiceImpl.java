@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class PayContextServiceImpl extends BaseApiService<JSONObject> implements PayContextService {
+
 	@Autowired
 	private PaymentChannelMapper paymentChannelMapper;
+
 	@Autowired
 	private PayMentTransacInfoService payMentTransacInfoService;
 

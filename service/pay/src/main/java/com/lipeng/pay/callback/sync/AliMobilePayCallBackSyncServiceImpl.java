@@ -1,4 +1,4 @@
-package com.lipeng.pay.callback.servjce;
+package com.lipeng.pay.callback.sync;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.internal.util.AlipaySignature;

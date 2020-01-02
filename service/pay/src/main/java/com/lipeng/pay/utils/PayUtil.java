@@ -16,6 +16,9 @@ public class PayUtil {
      */
     public static final String CURRENCY_FEN_REGEX = "\\-?[0-9]+";
 
+    private PayUtil() {
+    }
+
     /**
      * 将分为单位的转换为元 （除100）
      */

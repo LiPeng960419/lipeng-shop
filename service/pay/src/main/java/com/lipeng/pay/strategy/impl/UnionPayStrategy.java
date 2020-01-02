@@ -3,6 +3,7 @@ package com.lipeng.pay.strategy.impl;
 import com.lipeng.pay.dto.PayMentTransacDTO;
 import com.lipeng.pay.mapper.entity.PaymentChannelEntity;
 import com.lipeng.pay.strategy.PayStrategy;
+import com.lipeng.pay.utils.UnionPayUtil;
 import com.lipeng.unionpay.acp.sdk.AcpService;
 import com.lipeng.unionpay.acp.sdk.LogUtil;
 import com.lipeng.unionpay.acp.sdk.SDKConfig;
@@ -15,9 +16,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class UnionPayStrategy implements PayStrategy {
+
 	@Override
 	public String toPayHtml(PaymentChannelEntity paymentChannel, PayMentTransacDTO payMentTransacDTO) {
-		log.info(">>>>>>>>银联支付组装参数开始<<<<<<<<<<<<");
+		log.info(">>>>>>>>银联网关支付组装参数开始<<<<<<<<<<<<");
 
 		Map<String, String> requestData = new HashMap<String, String>();
 
@@ -28,8 +30,7 @@ public class UnionPayStrategy implements PayStrategy {
 		requestData.put("txnType", "01"); // 交易类型 ，01：消费
 		requestData.put("txnSubType", "01"); // 交易子类型， 01：自助消费
 		requestData.put("bizType", "000201"); // 业务类型，B2C网关支付，手机wap支付
-		requestData.put("channelType", "07"); // 渠道类型，这个字段区分B2C网关支付和手机wap支付；07：PC,平板
-												// 08：手机
+		requestData.put("channelType", "07"); // 渠道类型，这个字段区分B2C网关支付和手机wap支付；07：PC,平板// 08：手机
 
 		/*** 商户接入参数 ***/
 		String merchantId = paymentChannel.getMerchantId();
@@ -38,7 +39,7 @@ public class UnionPayStrategy implements PayStrategy {
 		String paymentId = payMentTransacDTO.getPaymentId();
 		// 在微服务电商项目中 订单系统(orderId)   支付系统 支付id
 		requestData.put("orderId", paymentId); // 商户订单号，8-40位数字字母，不能含“-”或“_”，可以自行定制规则
-		requestData.put("txnTime", format(payMentTransacDTO.getCreatedTime())); // 订单发送时间，取系统时间，格式为YYYYMMDDhhmmss，必须取当前时间，否则会报txnTime无效
+		requestData.put("txnTime", UnionPayUtil.formatTxnTime(payMentTransacDTO.getCreatedTime())); // 订单发送时间，取系统时间，格式为YYYYMMDDhhmmss，必须取当前时间，否则会报txnTime无效
 		requestData.put("currencyCode", "156"); // 交易币种（境内商户一般是156 人民币）
 		Long payAmount = payMentTransacDTO.getPayAmount();
 		requestData.put("txnAmt", payAmount + ""); // 交易金额，单位分，不要带小数点
@@ -70,8 +71,7 @@ public class UnionPayStrategy implements PayStrategy {
 		// 跳转银行网银交易如果超时后交易成功，会自动退款，大约5个工作日金额返还到持卡人账户。
 		// 此时间建议取支付时的北京时间加15分钟。
 		// 超过超时时间调查询接口应答origRespCode不是A6或者00的就可以判断为失败。
-		requestData.put("payTimeout",
-				new SimpleDateFormat("yyyyMMddHHmmss").format(new Date().getTime() + 15 * 60 * 1000));
+		requestData.put("payTimeout", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date().getTime() + 15 * 60 * 1000));
 
 		//////////////////////////////////////////////////
 		//
@@ -88,11 +88,6 @@ public class UnionPayStrategy implements PayStrategy {
 		LogUtil.writeLog("打印请求HTML，此为请求报文，为联调排查问题的依据：" + html);
 		// 将生成的html写到浏览器中完成自动跳转打开银联支付页面；这里调用signData之后，将html写到浏览器跳转到银联页面之前均不能对html中的表单项的名称和值进行修改，如果修改会导致验签不通过
 		return html;
-	}
-
-	private String format(Date timeDate) {
-		String date = new SimpleDateFormat("yyyyMMddHHmmss").format(timeDate);
-		return date;
 	}
 
 }

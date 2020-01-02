@@ -2,7 +2,7 @@ package com.lipeng.pay.mq.producer;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lipeng.constants.Constants;
-import com.lipeng.pay.config.RabbitmqConfig;
+import com.lipeng.pay.common.config.RabbitmqConfig;
 import com.lipeng.pay.mapper.BrokerMessageLogMapper;
 import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
