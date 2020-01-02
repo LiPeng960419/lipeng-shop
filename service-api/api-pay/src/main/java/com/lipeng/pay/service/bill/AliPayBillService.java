@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
  * @Author: lipeng 910138
  * @Date: 2019/12/30 16:13
  */
-public interface BillService {
+public interface AliPayBillService {
 
     void downloadBill(String billType, String billDate, HttpServletResponse response);
 

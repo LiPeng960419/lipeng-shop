@@ -20,7 +20,7 @@ import com.lipeng.base.BaseApiService;
 import com.lipeng.base.BaseResponse;
 import com.lipeng.pay.dto.BillAccountlogQueryModel;
 import com.lipeng.pay.dto.BillSellQueryModel;
-import com.lipeng.pay.service.bill.BillService;
+import com.lipeng.pay.service.bill.AliPayBillService;
 import com.lipeng.pay.utils.BillUtil;
 import com.lipeng.pay.utils.PayUtil;
 import java.io.UnsupportedEncodingException;
@@ -45,9 +45,9 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@RequestMapping("/bill")
-public class BillServiceImpl extends BaseApiService<JSONObject>
-        implements BillService {
+@RequestMapping("/alipay/bill")
+public class AliPayBillServiceImpl extends BaseApiService<JSONObject>
+        implements AliPayBillService {
 
     @Override
     @GetMapping("/downloadBill")

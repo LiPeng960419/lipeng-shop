@@ -28,7 +28,7 @@ import com.lipeng.core.bean.MeiteBeanUtils;
 import com.lipeng.pay.dto.PayMentTransacDTO;
 import com.lipeng.pay.mapper.PaymentTransactionMapper;
 import com.lipeng.pay.mapper.entity.PaymentTransactionEntity;
-import com.lipeng.pay.service.pay.PayService;
+import com.lipeng.pay.service.pay.AliPayService;
 import com.lipeng.pay.utils.PayUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +36,7 @@ import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -44,24 +45,26 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-public class PayServiceImpl extends BaseApiService<JSONObject>
-        implements PayService {
+public class AliPayServiceImpl extends BaseApiService<JSONObject>
+        implements AliPayService {
 
     @Autowired
     private PaymentTransactionMapper paymentTransactionMapper;
 
     //trade_no是支付宝支付id对应partyPayId
     //out_trade_no对应我本地的paymentId
-    //查询订单信息http://127.0.0.1:8600/pay/queryPayment?paymentId=371553545205452800
+    //查询订单信息http://127.0.0.1:8600/aliPay/queryPayment?paymentId=371553545205452800
     @Override
-    public BaseResponse<JSONObject> queryF2F(String paymentId) {
+    public BaseResponse<JSONObject> queryF2F(@RequestParam("id") Long id) {
+        PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectById(id);
+        PayMentTransacDTO dto = MeiteBeanUtils.doToDto(paymentTransaction, PayMentTransacDTO.class);
         // 获得初始化的AlipayClient
         AlipayClient alipayClient = PayUtil.getAlipayClient();
         AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
         AlipayTradeQueryModel model = new AlipayTradeQueryModel();
         //通过trade_no或者out_trade_no可以查询到订单信息
         //model.setTradeNo(orderNo);
-        model.setOutTradeNo(paymentId);
+        model.setOutTradeNo(dto.getPaymentId());
         request.setBizModel(model);
         try {
             AlipayTradeQueryResponse response = alipayClient.execute(request);
@@ -81,7 +84,7 @@ public class PayServiceImpl extends BaseApiService<JSONObject>
     当交易发生之后一段时间内，由于买家或者卖家的原因需要退款时，卖家可以通过退款接口将支付款退还给买家
      */
     @Override
-    public BaseResponse<JSONObject> refund(Long id) {
+    public BaseResponse<JSONObject> refund(@RequestParam("id") Long id) {
         PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectById(id);
         PayMentTransacDTO dto = MeiteBeanUtils.doToDto(paymentTransaction, PayMentTransacDTO.class);
 
@@ -115,7 +118,7 @@ public class PayServiceImpl extends BaseApiService<JSONObject>
     统一收单交易退款查询
      */
     @Override
-    public BaseResponse<JSONObject> refundQuery(Long id) {
+    public BaseResponse<JSONObject> refundQuery(@RequestParam("id") Long id) {
         PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectById(id);
         PayMentTransacDTO dto = MeiteBeanUtils.doToDto(paymentTransaction, PayMentTransacDTO.class);
         AlipayClient alipayClient = PayUtil.getAlipayClient();
@@ -143,7 +146,7 @@ public class PayServiceImpl extends BaseApiService<JSONObject>
     支付交易返回失败或支付系统超时，调用该接口撤销交易
      */
     @Override
-    public BaseResponse<JSONObject> cancel(Long id) {
+    public BaseResponse<JSONObject> cancel(@RequestParam("id") Long id) {
         PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectById(id);
         PayMentTransacDTO dto = MeiteBeanUtils.doToDto(paymentTransaction, PayMentTransacDTO.class);
         AlipayClient alipayClient = PayUtil.getAlipayClient();
@@ -170,7 +173,7 @@ public class PayServiceImpl extends BaseApiService<JSONObject>
     用于交易创建后，用户在一定时间内未进行支付，可调用该接口直接将未付款的交易进行关闭。
      */
     @Override
-    public BaseResponse<JSONObject> close(Long id) {
+    public BaseResponse<JSONObject> close(@RequestParam("id") Long id) {
         PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectById(id);
         PayMentTransacDTO dto = MeiteBeanUtils.doToDto(paymentTransaction, PayMentTransacDTO.class);
         AlipayClient alipayClient = PayUtil.getAlipayClient();
@@ -197,7 +200,7 @@ public class PayServiceImpl extends BaseApiService<JSONObject>
     用于在线下场景交易支付后，进行卖家与第三方（如供应商或平台商）基于交易金额的结算。
      */
     @Override
-    public BaseResponse<JSONObject> settle(Long id) {
+    public BaseResponse<JSONObject> settle(@RequestParam("id") Long id) {
         PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectById(id);
         PayMentTransacDTO dto = MeiteBeanUtils.doToDto(paymentTransaction, PayMentTransacDTO.class);
         AlipayClient alipayClient = PayUtil.getAlipayClient();

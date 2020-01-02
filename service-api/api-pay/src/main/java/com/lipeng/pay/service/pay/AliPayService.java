@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @Date: 2019/12/30 16:13
  */
 @Controller
-@RequestMapping("/pay")
-public interface PayService {
+@RequestMapping("/aliPay/pay")
+public interface AliPayService {
 
     @GetMapping("/queryPayment")
-    BaseResponse<JSONObject> queryF2F(@RequestParam("paymentId") String paymentId);
+    BaseResponse<JSONObject> queryF2F(@RequestParam("id") Long id);
 
     @GetMapping("/refund")
     BaseResponse<JSONObject> refund(@RequestParam("id") Long id);
