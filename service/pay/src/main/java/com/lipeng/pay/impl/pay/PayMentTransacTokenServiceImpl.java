@@ -27,7 +27,7 @@ public class PayMentTransacTokenServiceImpl extends BaseApiService<JSONObject> i
 	private UidGenerator cachedUidGenerator;
 
 	@Override
-	public BaseResponse<JSONObject> cratePayToken(PayCratePayTokenDto payCratePayTokenDto) {
+	public BaseResponse<JSONObject> createPayToken(PayCratePayTokenDto payCratePayTokenDto) {
 		String orderId = payCratePayTokenDto.getOrderId();
 		if (StringUtils.isEmpty(orderId)) {
 			return setResultError("订单号码不能为空!");

@@ -5,19 +5,13 @@ import com.lipeng.pay.constant.PayConstant;
 import com.lipeng.pay.mapper.PaymentTransactionMapper;
 import com.lipeng.pay.mapper.entity.PaymentTransactionEntity;
 import com.lipeng.pay.strategy.PayStrategy;
+import com.lipeng.pay.utils.UnionPayUtil;
 import com.lipeng.unionpay.acp.sdk.AcpService;
 import com.lipeng.unionpay.acp.sdk.LogUtil;
 import com.lipeng.unionpay.acp.sdk.SDKConstants;
-import com.lipeng.unionpay.acp.sdk.UnionPayBase;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,60 +22,6 @@ public class UnionF2FPayCallbackTemplate extends AbstractPayCallbackTemplate {
     @Autowired
     private PaymentTransactionMapper paymentTransactionMapper;
 
-    /**
-     * 获取请求参数中所有的信息 当商户上送frontUrl或backUrl地址中带有参数信息的时候， 这种方式会将url地址中的参数读到map中，会导多出来这些信息从而致验签失败，
-     * 这个时候可以自行修改过滤掉url中的参数或者使用getAllRequestParamStream方法。
-     */
-    public static Map<String, String> getAllRequestParam(final HttpServletRequest request) {
-        Map<String, String> res = new HashMap<String, String>();
-        Enumeration<?> temp = request.getParameterNames();
-        if (null != temp) {
-            while (temp.hasMoreElements()) {
-                String en = (String) temp.nextElement();
-                String value = request.getParameter(en);
-                res.put(en, value);
-                // 在报文上送时，如果字段的值为空，则不上送<下面的处理为在获取所有参数数据时，判断若值为空，则删除这个字段>
-                if (res.get(en) == null || "".equals(res.get(en))) {
-                    // System.out.println("======为空的字段名===="+en);
-                    res.remove(en);
-                }
-            }
-        }
-        return res;
-    }
-
-    /**
-     * 获取请求参数中所有的信息。 非struts可以改用此方法获取，好处是可以过滤掉request.getParameter方法过滤不掉的url中的参数。
-     * struts可能对某些content-type会提前读取参数导致从inputstream读不到信息，所以可能用不了这个方法。 理论应该可以调整struts配置使不影响，但请自己去研究。
-     * 调用本方法之前不能调用req.getParameter("key");这种方法，否则会导致request取不到输入流。
-     */
-    public static Map<String, String> getAllRequestParamStream(final HttpServletRequest request) {
-        Map<String, String> res = new HashMap<String, String>();
-        try {
-            String notifyStr = new String(IOUtils.toByteArray(request.getInputStream()),
-                    UnionPayBase.encoding);
-            LogUtil.writeLog("收到通知报文：" + notifyStr);
-            String[] kvs = notifyStr.split("&");
-            for (String kv : kvs) {
-                String[] tmp = kv.split("=");
-                if (tmp.length >= 2) {
-                    String key = tmp[0];
-                    String value = URLDecoder.decode(tmp[1], UnionPayBase.encoding);
-                    res.put(key, value);
-                }
-            }
-        } catch (UnsupportedEncodingException e) {
-            LogUtil.writeLog(
-                    "getAllRequestParamStream.UnsupportedEncodingException error: " + e.getClass()
-                            + ":"
-                            + e.getMessage());
-        } catch (IOException e) {
-            LogUtil.writeLog("getAllRequestParamStream.IOException error: " + e.getClass() + ":" + e
-                    .getMessage());
-        }
-        return res;
-    }
-
     @Override
     public Map<String, String> verifySignature(HttpServletRequest req, HttpServletResponse resp) {
 
@@ -89,7 +29,7 @@ public class UnionF2FPayCallbackTemplate extends AbstractPayCallbackTemplate {
 
         String encoding = req.getParameter(SDKConstants.param_encoding);
         // 获取银联通知服务器发送的后台通知参数
-        Map<String, String> reqParam = getAllRequestParam(req);
+        Map<String, String> reqParam = UnionPayUtil.getAllRequestParam(req);
         LogUtil.printRequestLog(reqParam);
 
         // 重要！验证签名前不要修改reqParam中的键值对的内容，否则会验签不过
@@ -146,8 +86,5 @@ public class UnionF2FPayCallbackTemplate extends AbstractPayCallbackTemplate {
     public String successResult() {
         return PayConstant.YINLIAN_RESULT_SUCCESS;
     }
-    /**
-     * 回调机制 必须遵循规范 重试机制都是采用间隔新 错开的话 必须
-     */
 
 }

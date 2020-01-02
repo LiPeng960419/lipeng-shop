@@ -29,7 +29,7 @@ import com.lipeng.pay.dto.PayMentTransacDTO;
 import com.lipeng.pay.mapper.PaymentTransactionMapper;
 import com.lipeng.pay.mapper.entity.PaymentTransactionEntity;
 import com.lipeng.pay.service.pay.AliPayService;
-import com.lipeng.pay.utils.PayUtil;
+import com.lipeng.pay.utils.AliPayUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -59,7 +59,7 @@ public class AliPayServiceImpl extends BaseApiService<JSONObject>
         PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectById(id);
         PayMentTransacDTO dto = MeiteBeanUtils.doToDto(paymentTransaction, PayMentTransacDTO.class);
         // 获得初始化的AlipayClient
-        AlipayClient alipayClient = PayUtil.getAlipayClient();
+        AlipayClient alipayClient = AliPayUtil.getAlipayClient();
         AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
         AlipayTradeQueryModel model = new AlipayTradeQueryModel();
         //通过trade_no或者out_trade_no可以查询到订单信息
@@ -93,12 +93,12 @@ public class AliPayServiceImpl extends BaseApiService<JSONObject>
             return setResultError(msg);
         }
 
-        AlipayClient alipayClient = PayUtil.getAlipayClient();
+        AlipayClient alipayClient = AliPayUtil.getAlipayClient();
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
         AlipayTradeRefundModel model = new AlipayTradeRefundModel();
         model.setTradeNo(dto.getPartyPayId());
         model.setOutTradeNo(dto.getPaymentId());
-        model.setRefundAmount(PayUtil.changeF2Y(dto.getPayAmount().toString()));
+        model.setRefundAmount(AliPayUtil.changeF2Y(dto.getPayAmount().toString()));
         request.setBizModel(model);
         try {
             AlipayTradeRefundResponse response = alipayClient.execute(request);
@@ -121,7 +121,7 @@ public class AliPayServiceImpl extends BaseApiService<JSONObject>
     public BaseResponse<JSONObject> refundQuery(@RequestParam("id") Long id) {
         PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectById(id);
         PayMentTransacDTO dto = MeiteBeanUtils.doToDto(paymentTransaction, PayMentTransacDTO.class);
-        AlipayClient alipayClient = PayUtil.getAlipayClient();
+        AlipayClient alipayClient = AliPayUtil.getAlipayClient();
 
         AlipayTradeFastpayRefundQueryRequest request = new AlipayTradeFastpayRefundQueryRequest();
         AlipayTradeFastpayRefundQueryModel model = new AlipayTradeFastpayRefundQueryModel();
@@ -149,7 +149,7 @@ public class AliPayServiceImpl extends BaseApiService<JSONObject>
     public BaseResponse<JSONObject> cancel(@RequestParam("id") Long id) {
         PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectById(id);
         PayMentTransacDTO dto = MeiteBeanUtils.doToDto(paymentTransaction, PayMentTransacDTO.class);
-        AlipayClient alipayClient = PayUtil.getAlipayClient();
+        AlipayClient alipayClient = AliPayUtil.getAlipayClient();
 
         AlipayTradeCancelRequest request = new AlipayTradeCancelRequest ();
         AlipayTradeCancelModel model = new AlipayTradeCancelModel();
@@ -176,7 +176,7 @@ public class AliPayServiceImpl extends BaseApiService<JSONObject>
     public BaseResponse<JSONObject> close(@RequestParam("id") Long id) {
         PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectById(id);
         PayMentTransacDTO dto = MeiteBeanUtils.doToDto(paymentTransaction, PayMentTransacDTO.class);
-        AlipayClient alipayClient = PayUtil.getAlipayClient();
+        AlipayClient alipayClient = AliPayUtil.getAlipayClient();
 
         AlipayTradeCloseRequest request = new AlipayTradeCloseRequest();
         AlipayTradeCloseModel model = new AlipayTradeCloseModel();
@@ -203,7 +203,7 @@ public class AliPayServiceImpl extends BaseApiService<JSONObject>
     public BaseResponse<JSONObject> settle(@RequestParam("id") Long id) {
         PaymentTransactionEntity paymentTransaction = paymentTransactionMapper.selectById(id);
         PayMentTransacDTO dto = MeiteBeanUtils.doToDto(paymentTransaction, PayMentTransacDTO.class);
-        AlipayClient alipayClient = PayUtil.getAlipayClient();
+        AlipayClient alipayClient = AliPayUtil.getAlipayClient();
 
         AlipayTradeOrderSettleRequest request = new AlipayTradeOrderSettleRequest();
         AlipayTradeOrderSettleModel model = new AlipayTradeOrderSettleModel();

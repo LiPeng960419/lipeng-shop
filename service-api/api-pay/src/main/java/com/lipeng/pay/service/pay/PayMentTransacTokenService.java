@@ -11,7 +11,7 @@ public interface PayMentTransacTokenService {
     /**
      * 创建支付令牌
      */
-    @GetMapping("/cratePayToken")
-    BaseResponse<JSONObject> cratePayToken(@Validated PayCratePayTokenDto payCratePayTokenDto);
+    @GetMapping("/createPayToken")
+    BaseResponse<JSONObject> createPayToken(@Validated PayCratePayTokenDto payCratePayTokenDto);
 
 }

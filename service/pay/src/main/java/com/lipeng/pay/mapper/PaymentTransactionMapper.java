@@ -22,4 +22,6 @@ public interface PaymentTransactionMapper {
             @Param("tradeNo") String tradeNo,
             @Param("paymentId") String paymentId, @Param("paymentChannel") String paymentChannel);
 
+    int updatePaymentStatusByPaymentId(@Param("paymentStatus") String paymentStatus, @Param("paymentId") String paymentId);
+
 }

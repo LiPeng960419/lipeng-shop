@@ -2,11 +2,10 @@ package com.lipeng.pay.callback.template;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lipeng.constants.Constants;
+import com.lipeng.pay.callback.template.thread.PayLogThread;
 import com.lipeng.pay.mapper.BrokerMessageLogMapper;
-import com.lipeng.pay.mapper.PaymentTransactionLogMapper;
 import com.lipeng.pay.mapper.entity.BrokerMessageLog;
 import com.lipeng.pay.mapper.entity.PaymentTransactionEntity;
-import com.lipeng.pay.mapper.entity.PaymentTransactionLogEntity;
 import com.lipeng.pay.mq.producer.IntegralProducer;
 import com.lipeng.pay.mq.producer.PayCheckProducer;
 import com.lipeng.pay.strategy.PayStrategy;
@@ -26,9 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Component
 public abstract class AbstractPayCallbackTemplate {
-
-    @Autowired
-    private PaymentTransactionLogMapper paymentTransactionLogMapper;
 
     @Autowired
     private IntegralProducer integralProducer;
@@ -118,37 +114,6 @@ public abstract class AbstractPayCallbackTemplate {
         brokerMessageLogMapper.insert(brokerMessageLog);
         integralProducer.send(jsonObject);
         payCheckProducer.send(jsonObject);
-    }
-
-    /**
-     * 采用多线程技术或者MQ形式进行存放到数据库中
-     */
-    private void payLog(String paymentId, String verifySignature, String channelId) {
-        log.info("PayLog>>>>>paymentId:{},verifySignature:{}", paymentId, verifySignature);
-        PaymentTransactionLogEntity paymentTransactionLog = new PaymentTransactionLogEntity();
-        paymentTransactionLog.setTransactionId(paymentId);
-        paymentTransactionLog.setAsyncLog(verifySignature);
-        paymentTransactionLog.setChannelId(channelId);
-        paymentTransactionLogMapper.insertTransactionLog(paymentTransactionLog);
-    }
-
-    class PayLogThread implements Runnable {
-
-        private String paymentId;
-        private String channelId;
-        private String verifySignature;
-
-        public PayLogThread(String paymentId, String verifySignature, String channelId) {
-            this.paymentId = paymentId;
-            this.verifySignature = verifySignature;
-            this.channelId = channelId;
-        }
-
-        @Override
-        public void run() {
-            payLog(paymentId, verifySignature, channelId);
-        }
-
     }
 
 }

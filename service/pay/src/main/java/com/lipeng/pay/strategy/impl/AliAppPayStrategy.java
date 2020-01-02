@@ -7,7 +7,7 @@ import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.lipeng.pay.dto.PayMentTransacDTO;
 import com.lipeng.pay.mapper.entity.PaymentChannelEntity;
 import com.lipeng.pay.strategy.PayStrategy;
-import com.lipeng.pay.utils.PayUtil;
+import com.lipeng.pay.utils.AliPayUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /*
@@ -23,7 +23,7 @@ public class AliAppPayStrategy implements PayStrategy {
 		log.info(">>>>>支付宝app支付参数封装开始<<<<<<<<");
 
 		// 获得初始化的AlipayClient
-        AlipayClient alipayClient = PayUtil.getAlipayClient();
+        AlipayClient alipayClient = AliPayUtil.getAlipayClient();
 
 		// 设置请求参数
         AlipayTradeAppPayRequest alipayRequest = new AlipayTradeAppPayRequest();
@@ -36,7 +36,7 @@ public class AliAppPayStrategy implements PayStrategy {
         // 商户订单号，商户网站订单系统中唯一订单号，必填
         String outTradeNo = payMentTransacDTO.getPaymentId();
         // 付款金额，必填
-        String totalAmount = PayUtil.changeF2Y(payMentTransacDTO.getPayAmount().toString());
+        String totalAmount = AliPayUtil.changeF2Y(payMentTransacDTO.getPayAmount().toString());
         // 订单名称，必填
         String subject = "手机端APP上李鹏QB充值业务";
         // 商品描述，可空

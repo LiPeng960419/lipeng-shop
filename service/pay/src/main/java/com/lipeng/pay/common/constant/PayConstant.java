@@ -12,6 +12,21 @@ public interface PayConstant {
      * 已经支付成功状态
      */
     Integer PAY_STATUS_SUCCESS = 1;
+
+    /**
+     * 支付失败状态
+     */
+    Integer PAY_STATUS_FAIL = 2;
+
+    /**
+     * 退款成功
+     */
+    Integer PAY_STATUS_REFUND_SUCCESS = 3;
+
+    /**
+     * 退款失败
+     */
+    Integer PAY_STATUS_REFUND_FAIL = 4;
     /**
      * 返回银联通知成功
      */

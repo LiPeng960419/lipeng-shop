@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.lipeng.base.BaseApiService;
 import com.lipeng.base.BaseResponse;
+import com.lipeng.pay.common.constant.UrlConstant;
 import com.lipeng.pay.mapper.PaymentChannelMapper;
 import com.lipeng.pay.mapper.PaymentTransactionMapper;
 import com.lipeng.pay.mapper.entity.PaymentChannelEntity;
@@ -16,6 +17,7 @@ import com.lipeng.unionpay.acp.sdk.UnionPayBase;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.codehaus.commons.compiler.samples.DemoBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -86,6 +88,7 @@ public class UnionPayServiceImpl extends BaseApiService<JSONObject>
         requestData.put("txnAmt", String.valueOf(paymentTransaction.getPayAmount()));
         //原消费交易返回的的queryId，可以从消费交易后台通知接口中或者交易状态查询接口中获取
         requestData.put("origQryId", paymentTransaction.getPartyPayId());
+        requestData.put("backUrl", UrlConstant.UNION_PAY_REFUND_NOTIFY_URL);
         Map<String, String> reqData = AcpService.sign(requestData, UnionPayBase.encoding);
         try {
             Map<String, String> checkedResponse = UnionPayUtil.checkResponse(AcpService

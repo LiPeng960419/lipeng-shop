@@ -9,14 +9,14 @@ import java.math.BigDecimal;
  * @Author: lipeng 910138
  * @Date: 2019/12/30 16:32
  */
-public class PayUtil {
+public class AliPayUtil {
 
     /**
      * 金额为分的格式
      */
     public static final String CURRENCY_FEN_REGEX = "\\-?[0-9]+";
 
-    private PayUtil() {
+    private AliPayUtil() {
     }
 
     /**

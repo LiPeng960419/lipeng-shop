@@ -22,7 +22,7 @@ import com.lipeng.pay.dto.BillAccountlogQueryModel;
 import com.lipeng.pay.dto.BillSellQueryModel;
 import com.lipeng.pay.service.bill.AliPayBillService;
 import com.lipeng.pay.utils.BillUtil;
-import com.lipeng.pay.utils.PayUtil;
+import com.lipeng.pay.utils.AliPayUtil;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
@@ -75,7 +75,7 @@ public class AliPayBillServiceImpl extends BaseApiService<JSONObject>
     @GetMapping("/queryBill")
     public BaseResponse<JSONObject> queryBill(@RequestParam("billType") String billType,
             @RequestParam("billDate") String billDate) {
-        AlipayClient alipayClient = PayUtil.getAlipayClient();
+        AlipayClient alipayClient = AliPayUtil.getAlipayClient();
         AlipayDataDataserviceBillDownloadurlQueryRequest request = new AlipayDataDataserviceBillDownloadurlQueryRequest();
         AlipayDataDataserviceBillDownloadurlQueryModel model = new AlipayDataDataserviceBillDownloadurlQueryModel();
         model.setBillType(billType);
@@ -99,7 +99,7 @@ public class AliPayBillServiceImpl extends BaseApiService<JSONObject>
     @Override
     @PostMapping("/querySell")
     public BaseResponse<JSONObject> querySell(@RequestBody @Valid BillSellQueryModel queryModel) {
-        AlipayClient alipayClient = PayUtil.getAlipayClient();
+        AlipayClient alipayClient = AliPayUtil.getAlipayClient();
         AlipayDataBillSellQueryRequest request = new AlipayDataBillSellQueryRequest();
         AlipayDataBillSellQueryModel model = new AlipayDataBillSellQueryModel();
         BeanCopier copier = BeanCopier.create(BillSellQueryModel.class, AlipayDataBillSellQueryModel.class, false);
@@ -124,7 +124,7 @@ public class AliPayBillServiceImpl extends BaseApiService<JSONObject>
     @Override
     @PostMapping("/queryAccountLog")
     public BaseResponse<JSONObject> queryAccountLog(@RequestBody @Valid BillAccountlogQueryModel queryModel) {
-        AlipayClient alipayClient = PayUtil.getAlipayClient();
+        AlipayClient alipayClient = AliPayUtil.getAlipayClient();
         AlipayDataBillAccountlogQueryRequest request = new AlipayDataBillAccountlogQueryRequest();
         AlipayDataBillAccountlogQueryModel model = new AlipayDataBillAccountlogQueryModel();
         BeanCopier copier = BeanCopier.create(BillAccountlogQueryModel.class, AlipayDataBillAccountlogQueryModel.class, false);
@@ -149,7 +149,7 @@ public class AliPayBillServiceImpl extends BaseApiService<JSONObject>
     @Override
     @GetMapping("/queryBalance")
     public BaseResponse<JSONObject> queryBalance() {
-        AlipayClient alipayClient = PayUtil.getAlipayClient();
+        AlipayClient alipayClient = AliPayUtil.getAlipayClient();
         AlipayDataBillBalanceQueryRequest request = new AlipayDataBillBalanceQueryRequest();
         try {
             AlipayDataBillBalanceQueryResponse response = alipayClient.execute(request);

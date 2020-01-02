@@ -6,11 +6,17 @@
 
     <update id="updatePaymentStatus">
         update payment_transaction
-        SET PAYMENT_STATUS=#{paymentStatus},
-        PAYMENT_CHANNEL=#{paymentChannel}
+        SET PAYMENT_STATUS = #{paymentStatus},
+        PAYMENT_CHANNEL = #{paymentChannel}
         <if test="tradeNo!=null and tradeNo !='' ">
             ,PARTY_PAYID = #{tradeNo}
         </if>
+        WHERE PAYMENT_ID = #{paymentId}
+    </update>
+
+    <update id="updatePaymentStatusByPaymentId">
+        update payment_transaction
+        SET PAYMENT_STATUS = #{paymentStatus}
         WHERE PAYMENT_ID = #{paymentId}
     </update>
 
