@@ -8,4 +8,6 @@ public class UrlConstant {
 
     public static final String UNION_PAY_REFUND_NOTIFY_URL = "http://3d5955fe.ngrok.io/unionPay/refund";
 
+    public static final String UNION_PAY_CANCEL_NOTIFY_URL = "http://3d5955fe.ngrok.io/unionPay/cancel";
+
 }

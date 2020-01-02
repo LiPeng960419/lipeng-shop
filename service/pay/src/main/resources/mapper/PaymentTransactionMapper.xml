@@ -7,6 +7,7 @@
     <update id="updatePaymentStatus">
         update payment_transaction
         SET PAYMENT_STATUS = #{paymentStatus},
+        UPDATED_TIME = NOW(),
         PAYMENT_CHANNEL = #{paymentChannel}
         <if test="tradeNo!=null and tradeNo !='' ">
             ,PARTY_PAYID = #{tradeNo}
@@ -16,7 +17,8 @@
 
     <update id="updatePaymentStatusByPaymentId">
         update payment_transaction
-        SET PAYMENT_STATUS = #{paymentStatus}
+        SET PAYMENT_STATUS = #{paymentStatus},
+            UPDATED_TIME   = NOW()
         WHERE PAYMENT_ID = #{paymentId}
     </update>
 

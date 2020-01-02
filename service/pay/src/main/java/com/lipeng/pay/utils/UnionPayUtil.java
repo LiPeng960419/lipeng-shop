@@ -91,11 +91,12 @@ public class UnionPayUtil {
             if (AcpService.validate(rspData, encode)) {
                 LogUtil.writeLog("验证签名成功");
                 String respCode = rspData.get("respCode");
+                String respMsg = rspData.get("respMsg");
                 if (("00").equals(respCode)) {
                     return rspData;
                 } else {
-                    LogUtil.writeErrorLog("接口调用返回异常 respCode:" + respCode);
-                    throw new CommonPayException("接口调用返回异常 respCode:" + respCode);
+                    LogUtil.writeErrorLog("接口调用返回异常 respCode:" + respCode + ",respMsg:" + respMsg);
+                    throw new CommonPayException("接口调用返回异常 respCode:" + respCode + ",respMsg:" + respMsg);
                 }
             } else {
                 LogUtil.writeErrorLog("验证签名失败");

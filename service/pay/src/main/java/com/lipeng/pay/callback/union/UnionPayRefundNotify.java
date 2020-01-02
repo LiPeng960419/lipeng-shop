@@ -1,4 +1,4 @@
-package com.lipeng.pay.callback.refund;
+package com.lipeng.pay.callback.union;
 
 import com.lipeng.pay.callback.template.thread.PayLogThread;
 import com.lipeng.pay.common.exception.CommonPayException;
@@ -50,6 +50,31 @@ public class UnionPayRefundNotify {
             paymentTransactionMapper.updatePaymentStatusByPaymentId(String.valueOf(PayConstant.PAY_STATUS_REFUND_SUCCESS), entity.getPaymentId());
             taskExecutor.execute(new PayLogThread(entity.getPaymentId(), reqParam.toString(), entity.getPaymentChannel()));
             LogUtil.writeLog("unionPay refund接收后台通知结束");
+            //返回给银联服务器http 200  状态码
+            resp.getWriter().print("ok");
+        } catch (Exception e) {
+            if (StringUtils.isNotEmpty(paymentId)) {
+                paymentTransactionMapper.updatePaymentStatusByPaymentId(String.valueOf(PayConstant.PAY_STATUS_REFUND_FAIL), paymentId);
+            }
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    @PostMapping("/cancel")
+    public void cancelNotify(HttpServletRequest req, HttpServletResponse resp) {
+        String paymentId = null;
+        try {
+            LogUtil.writeLog("unionPay cancel接收后台通知开始");
+            String encoding = req.getParameter(SDKConstants.param_encoding);
+            Map<String, String> reqParam = UnionPayUtil.checkResponse(UnionPayUtil.getAllRequestParam(req), encoding);
+            paymentId = reqParam.get("orderId"); //获取后台通知的数据，其他字段也可用类似方式获取
+            PaymentTransactionEntity entity = paymentTransactionMapper.selectByPaymentId(paymentId);
+            if (Objects.isNull(entity)) {
+                throw new CommonPayException("银联退款未找到对应的订单信息");
+            }
+            paymentTransactionMapper.updatePaymentStatusByPaymentId(String.valueOf(PayConstant.PAY_STATUS_REFUND_SUCCESS), entity.getPaymentId());
+            taskExecutor.execute(new PayLogThread(entity.getPaymentId(), reqParam.toString(), entity.getPaymentChannel()));
+            LogUtil.writeLog("unionPay cancel接收后台通知结束");
             //返回给银联服务器http 200  状态码
             resp.getWriter().print("ok");
         } catch (Exception e) {
