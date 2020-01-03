@@ -21,6 +21,13 @@ public class IdGeneratorConfiguration {
     @Bean
     public UidGenerator cachedUidGenerator(DisposableWorkerIdAssigner disposableWorkerIdAssigner) {
         CachedUidGenerator cachedUidGenerator = new CachedUidGenerator();
+        cachedUidGenerator.setTimeBits(29);
+        cachedUidGenerator.setWorkerBits(21);
+        cachedUidGenerator.setSeqBits(13);
+        cachedUidGenerator.setEpochStr("2020-01-01");
+        cachedUidGenerator.setBoostPower(3);
+        cachedUidGenerator.setScheduleInterval(60);
+        cachedUidGenerator.setPaddingFactor(50);
         cachedUidGenerator.setWorkerIdAssigner(disposableWorkerIdAssigner);
         return cachedUidGenerator;
     }
