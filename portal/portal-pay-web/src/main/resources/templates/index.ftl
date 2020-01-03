@@ -148,10 +148,10 @@
           <span>支付订单：${data.paymentId}</span>
         </div>
         <div class="scent-order-info-desc">
-          <span>应付金额： ￥${(data.payAmount/100)?string('0.00')} </span>
+          <span>应付金额：￥${(data.payAmount/100)?string('0.00')}</span>
         </div>
         <div class="scent-order-info-desc">
-          <span>购买时间：2019-3-23</span>
+          <span>购买时间：${data.createdTime?string('yyyy-MM-dd HH:mm:ss')}</span>
         </div>
       </div>
     </div>
@@ -175,7 +175,7 @@
     </div>
   </div>
 
-  <div class="footer">Copyright © 2016 - 2018 MeiTedu. All Rights Reserved 李鹏 版权所有</div>
+  <div class="footer">Copyright © 2016 - 2020. All Rights Reserved 李鹏 版权所有</div>
 </div>
 </body>
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>

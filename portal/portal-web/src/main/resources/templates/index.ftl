@@ -3,8 +3,8 @@
 <div class="layui-fulid">
   <div class="layui-carousel house-carousel" id="house-carousel">
     <div carousel-item>    
-      <div ><a href="http://www.mayikt.com" target="_blank" ><img src="http://static.itmayiedu.com/9894648946.jpg"></a></div>
-      <div><a href="http://www.mayikt.com" target="_blank" ><img src="http://static.itmayiedu.com/498496464165.jpg"></a></div>
+      <div ><a href="http://www.mayikt.com" target="_blank" ><img src="../res/static/img/lunbo1.png"></a></div>
+      <div><a href="http://www.mayikt.com" target="_blank" ><img src="../res/static/img/lunbo2.png"></a></div>
     </div>
   </div>
 </div>

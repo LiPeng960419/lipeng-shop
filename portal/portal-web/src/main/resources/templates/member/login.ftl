@@ -27,7 +27,7 @@
 			</div>
 			<div class="house-banner layui-form">
 				<a class="banner" href="index.html"> <img
-					src="http://static.itmayiedu.com/12312312312312da.png" alt="家居商城">
+					<img src="../res/static/img/tm.png" alt="家居商城">
 				</a>
 				<div class="layui-input-inline">
 					<input type="text" placeholder="搜索好物" class="layui-input"><i
@@ -78,10 +78,10 @@
 						style="border: 1px solid #e2e2e2;font-size: 18px;height: 48px;margin-top: -93px;width: 44%;background-color: #e8d6c0;margin-left: 166px;">
 				</div>
 
-				<div>
-					<img alt="" src="data:image/png;base64,${backImage}"/>
-					<img alt="" src="data:image/png;base64,${slidingImage}"/>
-				</div>
+				<#--<div>-->
+					<#--<img alt="" src="data:image/png;base64,${backImage}"/>-->
+					<#--<img alt="" src="data:image/png;base64,${slidingImage}"/>-->
+				<#--</div>-->
 				<span
 					style="color: red; font-size: 20px; font-weight: bold; font-family: '楷体', '楷体_GB2312';">${error!''}</span>
 				<button class="layui-btn"  style="margin-top: 5px;" lay-submit lay-com.lipeng.zuul.filter="user-login">登录</button>
