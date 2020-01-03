@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.lipeng.alipay.config.AlipayConfig;
 import com.lipeng.base.BaseApiService;
-import com.lipeng.pay.service.pay.PayMobileCallBackSyncService;
+import com.lipeng.pay.service.pay.AliPayMobileCallBackSyncService;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 public class AliMobilePayCallBackSyncServiceImpl extends BaseApiService implements
-        PayMobileCallBackSyncService {
+        AliPayMobileCallBackSyncService {
 
     @Override
     public String synMobileCallBack(@RequestParam Map<String, String> params) {
         try {
-            log.info("####同步回调开始####{}:", params);
+            log.info("####AliMOBILE同步回调开始####{}:", params);
             boolean signVerified = AlipaySignature
                     .rsaCheckV1(params, AlipayConfig.alipay_public_key,
                             AlipayConfig.charset, AlipayConfig.sign_type); // 调用SDK验证签名
@@ -57,10 +57,10 @@ public class AliMobilePayCallBackSyncServiceImpl extends BaseApiService implemen
                     + "</form><script>document.forms[0].submit();" + "</script>";
             return htmlFrom;
         } catch (Exception e) {
-            log.error("######PayCallBackServiceImpl synCallBack##ERROR:#####{}", e);
+            log.error("######AliMobilePayCallBackSyncServiceImpl synMobileCallBack##ERROR:#####{}", e);
             return null;
         } finally {
-            log.info("####同步回调结束####{}:", params);
+            log.info("####AliMOBILE同步回调结束####{}:", params);
         }
     }
 

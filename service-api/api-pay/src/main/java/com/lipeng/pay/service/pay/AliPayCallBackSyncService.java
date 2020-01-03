@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @Date: 2019/11/15 10:17
  */
 @Controller
-public interface PayMobileCallBackSyncService {
+public interface AliPayCallBackSyncService {
 
-    @RequestMapping("/synMobileCallBack")
-    String synMobileCallBack(@RequestParam Map<String, String> params);
+    @RequestMapping("/synCallBack")
+    String synCallBack(@RequestParam Map<String, String> map);
 
 }

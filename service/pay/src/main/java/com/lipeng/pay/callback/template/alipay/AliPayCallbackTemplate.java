@@ -7,8 +7,7 @@ import com.lipeng.pay.constant.PayConstant;
 import com.lipeng.pay.mapper.PaymentTransactionMapper;
 import com.lipeng.pay.mapper.entity.PaymentTransactionEntity;
 import com.lipeng.pay.strategy.PayStrategy;
-import java.util.HashMap;
-import java.util.Iterator;
+import com.lipeng.pay.utils.AliPayUtil;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,21 +29,7 @@ public class AliPayCallbackTemplate extends AbstractPayCallbackTemplate {
 
     @Override
     public Map<String, String> verifySignature(HttpServletRequest req, HttpServletResponse resp) {
-        Map<String, String[]> requestParams = req.getParameterMap();
-        Map<String, String> params = new HashMap<String, String>();
-        for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext(); ) {
-            String name = iter.next();
-            String[] values = requestParams.get(name);
-            String valueStr = "";
-            for (int i = 0; i < values.length; i++) {
-                valueStr = (i == values.length - 1) ? valueStr + values[i]
-                        : valueStr + values[i] + ",";
-            }
-            // 乱码解决，这段代码在出现乱码时使用
-            //valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
-            params.put(name, valueStr);
-        }
-        return params;
+        return AliPayUtil.verifySignature(req);
     }
 
     @Override

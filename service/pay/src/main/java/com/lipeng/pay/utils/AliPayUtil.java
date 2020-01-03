@@ -4,6 +4,10 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.lipeng.alipay.config.AlipayConfig;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Author: lipeng 910138
@@ -36,6 +40,24 @@ public class AliPayUtil {
                 AlipayConfig.alipay_public_key,
                 AlipayConfig.sign_type);
         return alipayClient;
+    }
+
+    public static Map<String, String> verifySignature(HttpServletRequest request) {
+        Map<String, String[]> requestParams = request.getParameterMap();
+        Map<String, String> params = new HashMap<String, String>();
+        for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext(); ) {
+            String name = iter.next();
+            String[] values = requestParams.get(name);
+            String valueStr = "";
+            for (int i = 0; i < values.length; i++) {
+                valueStr = (i == values.length - 1) ? valueStr + values[i]
+                        : valueStr + values[i] + ",";
+            }
+            // 乱码解决，这段代码在出现乱码时使用
+            //valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+            params.put(name, valueStr);
+        }
+        return params;
     }
 
 }

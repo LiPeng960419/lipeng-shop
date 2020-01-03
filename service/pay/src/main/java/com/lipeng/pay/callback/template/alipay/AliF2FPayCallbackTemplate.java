@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Component
 @Slf4j
-public class AliMobilePayCallbackTemplate extends AbstractPayCallbackTemplate {
+public class AliF2FPayCallbackTemplate extends AbstractPayCallbackTemplate {
 
     @Autowired
     private PaymentTransactionMapper paymentTransactionMapper;
@@ -36,7 +36,7 @@ public class AliMobilePayCallbackTemplate extends AbstractPayCallbackTemplate {
     @Transactional
     public String asyncService(Map<String, String> params) throws Exception {
         // 获取支付宝GET过来反馈信息
-        log.info("####Alipay手机支付异步回调开始####{}:", params);
+        log.info("####AliF2Fpay异步回调开始####{}:", params);
         boolean signVerified = AlipaySignature.rsaCheckV1(params, AlipayConfig.alipay_public_key,
                 AlipayConfig.charset, AlipayConfig.sign_type); // 调用SDK验证签名
         // ——请在这里编写您的程序（以下代码仅作参考）——
@@ -59,12 +59,12 @@ public class AliMobilePayCallbackTemplate extends AbstractPayCallbackTemplate {
         String trade_status = params.get("trade_status");
         if ("TRADE_SUCCESS".equals(trade_status)) {
             paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS.toString(), tradeNo,
-                            outTradeNo, PayStrategy.ALI_MOBILE_PAY_CHANNEL_ID);
+                            outTradeNo, PayStrategy.ALI_F2F_PAY_CHANNEL_ID);
         } else {
             return PayConstant.ALI_RESULT_FAIL;
         }
         // 3.使用MQ调用积分服务接口增加积分(处理幂等性问题)
-        paymentTransaction.setPaymentChannel(PayStrategy.ALI_MOBILE_PAY_CHANNEL_ID);
+        paymentTransaction.setPaymentChannel(PayStrategy.ALI_F2F_PAY_CHANNEL_ID);
         addMQIntegral(paymentTransaction);
 
         return PayConstant.ALI_RESULT_SUCCESS;

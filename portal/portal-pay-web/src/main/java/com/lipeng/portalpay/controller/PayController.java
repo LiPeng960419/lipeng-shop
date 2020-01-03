@@ -5,8 +5,9 @@ import com.lipeng.base.BaseResponse;
 import com.lipeng.base.BaseWebController;
 import com.lipeng.pay.dto.PayMentTransacDTO;
 import com.lipeng.pay.dto.PaymentChannelDTO;
+import com.lipeng.portalpay.feign.AliF2FPayCallBackFeign;
 import com.lipeng.portalpay.feign.AliMobilePayCallBackFeign;
-import com.lipeng.portalpay.feign.PayCallBackFeign;
+import com.lipeng.portalpay.feign.AliPayCallBackFeign;
 import com.lipeng.portalpay.feign.PayContextFeign;
 import com.lipeng.portalpay.feign.PayMentTransacInfoFeign;
 import com.lipeng.portalpay.feign.PaymentChannelFeign;
@@ -55,10 +56,13 @@ public class PayController extends BaseWebController {
     private PayContextFeign payContextFeign;
 
     @Autowired
-    private PayCallBackFeign payCallBackFeign;
+    private AliPayCallBackFeign payCallBackFeign;
 
     @Autowired
     private AliMobilePayCallBackFeign aliMobilePayCallBackFeign;
+
+    @Autowired
+    private AliF2FPayCallBackFeign aliF2FPayCallBackFeign;
 
     @RequestMapping("/pay")
     public String pay(String payToken, Model model) {
@@ -173,6 +177,18 @@ public class PayController extends BaseWebController {
         response.setContentType("text/html;charset=utf-8");
         PrintWriter writer = response.getWriter();
         String html = aliMobilePayCallBackFeign.synMobileCallBack(verifyRequest(request));
+        if (StringUtils.isNotEmpty(html)) {
+            writer.println(html);
+            writer.close();
+        }
+    }
+
+    @RequestMapping("/alipay/callBack/synF2FCallBack")
+    public void synF2FCallBack(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter writer = response.getWriter();
+        String html = aliF2FPayCallBackFeign.synF2FCallBack(verifyRequest(request));
         if (StringUtils.isNotEmpty(html)) {
             writer.println(html);
             writer.close();

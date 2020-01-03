@@ -8,7 +8,7 @@
         <artifactId>portal</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>meite-shop-portal-web</artifactId>
+    <artifactId>portal-web</artifactId>
     <dependencies>
         <!-- SpringBoot整合eureka客户端 -->
         <dependency>

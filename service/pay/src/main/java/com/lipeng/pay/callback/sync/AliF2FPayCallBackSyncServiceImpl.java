@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.lipeng.alipay.config.AlipayConfig;
 import com.lipeng.base.BaseApiService;
-import com.lipeng.pay.service.pay.AliPayCallBackSyncService;
+import com.lipeng.pay.service.pay.AliF2FPayCallBackSyncService;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-public class AliPayCallBackSyncServiceImpl extends BaseApiService implements
-        AliPayCallBackSyncService {
+public class AliF2FPayCallBackSyncServiceImpl extends BaseApiService implements
+        AliF2FPayCallBackSyncService {
 
     @Override
-    public String synCallBack(@RequestParam Map<String, String> params) {
+    public String synF2FCallBack(@RequestParam Map<String, String> params) {
         try {
-            log.info("####ALI网关支付同步回调开始####{}:", params);
+            log.info("####ALIF2F同步回调开始####{}:", params);
             boolean signVerified = AlipaySignature
                     .rsaCheckV1(params, AlipayConfig.alipay_public_key,
                             AlipayConfig.charset, AlipayConfig.sign_type); // 调用SDK验证签名
@@ -45,22 +45,13 @@ public class AliPayCallBackSyncServiceImpl extends BaseApiService implements
             Assert.notNull(data.get("out_trade_no"), "缺少参数out_trade_no");
             Assert.notNull(data.get("trade_no"), "缺少参数trade_no");
             Assert.notNull(data.get("total_amount"), "缺少参数total_amount");
-            //成功回调的返回页面
-            String htmlFrom = "<form name='punchout_form'"
-                    + " method='post' action='http://127.0.0.1:8050/alipay/callBack/synSuccessPage' >"
-                    + "<input type='hidden' name='outTradeNo' value='" + data.get("out_trade_no")
-                    + "'>"
-                    + "<input type='hidden' name='tradeNo' value='" + data.get("trade_no") + "'>"
-                    + "<input type='hidden' name='totalAmount' value='" + data.get("total_amount")
-                    + "'>"
-                    + "<input type='submit' value='立即支付' style='display:none'>"
-                    + "</form><script>document.forms[0].submit();" + "</script>";
-            return htmlFrom;
+            //成功回调的返回
+            return "success";
         } catch (Exception e) {
-            log.error("######PayCallBackServiceImpl synCallBack##ERROR:#####{}", e);
+            log.error("######AliF2FPayCallBackSyncServiceImpl synF2FCallBack##ERROR:#####{}", e);
             return null;
         } finally {
-            log.info("####同步回调结束####{}:", params);
+            log.info("####ALIF2F同步回调结束####{}:", params);
         }
     }
 

@@ -21,6 +21,8 @@ public class PayAsynCallbackService {
 
     private static final String ALIMOBILEPAYCALLBACK_TEMPLATE = "aliMobilePayCallbackTemplate";
 
+    private static final String ALIF2FPAYCALLBACK_TEMPLATE = "aliF2FPayCallbackTemplate";
+
     /**
      * 银联异步回调接口执行代码
      */
@@ -67,7 +69,7 @@ public class PayAsynCallbackService {
     }
 
     /**
-     * 支付宝异步回调接口执行代码
+     * 支付宝MOBILE异步回调接口执行代码
      */
     @RequestMapping("/aliMobilePayAsynCallback")
     public String aliMobilePayAsynCallback(HttpServletRequest req, HttpServletResponse resp) {
@@ -75,6 +77,21 @@ public class PayAsynCallbackService {
                 .getPayCallbackTemplate(ALIMOBILEPAYCALLBACK_TEMPLATE);
         try {
             return abstractPayCallbackTemplate.asyncCallBack(req, resp, PayStrategy.ALI_MOBILE_PAY_CHANNEL_ID);
+        } catch (Exception e) {
+            log.error("aliMobilePayAsynCallback Exception", e);
+        }
+        return null;
+    }
+
+    /**
+     * 支付宝F2F异步回调接口执行代码
+     */
+    @RequestMapping("/aliPayF2FAsynCallback")
+    public String aliPayF2FAsynCallback(HttpServletRequest req, HttpServletResponse resp) {
+        AbstractPayCallbackTemplate abstractPayCallbackTemplate = TemplateFactory
+                .getPayCallbackTemplate(ALIF2FPAYCALLBACK_TEMPLATE);
+        try {
+            return abstractPayCallbackTemplate.asyncCallBack(req, resp, PayStrategy.ALI_F2F_PAY_CHANNEL_ID);
         } catch (Exception e) {
             log.error("aliMobilePayAsynCallback Exception", e);
         }
