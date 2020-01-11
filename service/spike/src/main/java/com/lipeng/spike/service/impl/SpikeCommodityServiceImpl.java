@@ -34,7 +34,7 @@ public class SpikeCommodityServiceImpl extends BaseApiService<JSONObject> implem
 
     @Override
     @HystrixCommand(fallbackMethod = "spikeFallback")
-    @RateLimitAspect()
+    @RateLimitAspect
     public BaseResponse<JSONObject> spike(String phone, Long seckillId) {
         log.info(">>>>>>秒杀服务接口:spike()线程名称:" + Thread.currentThread().getName());
         // 1.参数验证
@@ -59,7 +59,7 @@ public class SpikeCommodityServiceImpl extends BaseApiService<JSONObject> implem
         return setResultSuccess("正在排队中.......");
     }
 
-    private BaseResponse<JSONObject> spikeFallback(String phone, Long seckillId) {
+    public BaseResponse<JSONObject> spikeFallback(String phone, Long seckillId) {
         return setResultError("服务器忙,请稍后重试!");
     }
 
