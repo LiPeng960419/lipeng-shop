@@ -212,9 +212,9 @@
         $("#weixin").hide();
         $("#wx").css("margin-top", "-32px");
         $(".footer").css("font-size", "14px");
-        console.log("蚂蚁课堂PC手机版本充值...");
+        //console.log("蚂蚁课堂PC手机版本充值...");
     } else {
-        console.log("蚂蚁课堂PC电脑版本充值...");
+        //console.log("蚂蚁课堂PC电脑版本充值...");
     }
 
     /* 	function orderStatus(){
