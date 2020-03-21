@@ -53,15 +53,15 @@ public class UserInpDTO {
 	 * 用户关联 QQ 开放ID
 	 */
 	@ApiModelProperty(value = "用户关联 QQ 开放ID")
-	private String qqOpenId;
+	private String qqOpenid;
 	/**
 	 * 用户关联 微信 开放ID
 	 */
 	@ApiModelProperty(value = "用户关联 微信 开放ID")
-	private String wxOpenId;
+	private String wxOpenid;
 
 	@ApiModelProperty(value = "用户关联 微博 开放ID")
-	private String wbOpenId;
+	private String wbOpenid;
 
 	// 目前存在的问题： 接口层传递实体类→数据库传递实体类 都是相同的。
 	// 注册的时候不需要传递isAvalible updateTime createTime

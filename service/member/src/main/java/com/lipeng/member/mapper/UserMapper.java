@@ -37,6 +37,9 @@ public interface UserMapper {
     @Update("update meite_user set WX_OPENID =#{weixinOpenId}, UPDATE_TIME=now() WHERE USER_ID=#{userId}")
     void updateUserWeixinOpenId(@Param("weixinOpenId") String weixinOpenId, @Param("userId") Long userId);
 
+    @Update("update meite_user set WB_OPENID =#{weixinOpenId}, UPDATE_TIME=now() WHERE USER_ID=#{userId}")
+    void updateUserWeiboOpenId(@Param("weiboOpenId") String weiboOpenId, @Param("userId") Long userId);
+
     int updateUserInfo(UserDo userDo);
 
 }

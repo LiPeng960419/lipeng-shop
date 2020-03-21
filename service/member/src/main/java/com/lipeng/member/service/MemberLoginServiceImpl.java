@@ -107,10 +107,13 @@ public class MemberLoginServiceImpl extends BaseApiService<JSONObject> implement
             // 如果有传递openid参数，修改到数据中
             String qqOpenId = userLoginInpDTO.getQqOpenId();
             String weixinOpenId = userLoginInpDTO.getWeixinOpenId();
+            String weiboOpenId = userLoginInpDTO.getWeiboOpenId();
             if (!StringUtils.isEmpty(qqOpenId)) {
                 userMapper.updateUserQQOpenId(qqOpenId, userId);
             } else if (!StringUtils.isEmpty(weixinOpenId)) {
                 userMapper.updateUserWeixinOpenId(weixinOpenId, userId);
+            } else if (!StringUtils.isEmpty(weiboOpenId)) {
+                userMapper.updateUserWeiboOpenId(weiboOpenId, userId);
             }
             JSONObject data = new JSONObject();
             data.put(Constants.TOKEN, newToken);
