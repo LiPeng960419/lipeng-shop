@@ -8,4 +8,6 @@ public interface WebConstants {
 
 	String LOGIN_WEIXIN_OPENID = "weixin_openid";
 
+	String LOGIN_WEIBO_OPENID = "weibo_openid";
+
 }

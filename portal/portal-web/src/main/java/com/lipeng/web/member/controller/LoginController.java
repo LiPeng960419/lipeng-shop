@@ -56,6 +56,7 @@ public class LoginController extends BaseWebController {
             int width = RandomUtil.getRandomRange(30, 180);
             int height = RandomUtil.getRandomRange(10, 60);
             localtion.put(sessionId, new Localtion(width, height));
+            mylocation = localtion.get(sessionId);
         }
 
         Map<String, String> images = null;

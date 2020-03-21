@@ -16,12 +16,14 @@ import com.lipeng.web.member.feign.MemberLoginServiceFeign;
 import com.lipeng.web.member.feign.QQAuthoriFeign;
 import com.lipeng.web.utils.HttpClientUtil;
 import com.lipeng.web.utils.QQUserInfoUtil;
+
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +76,7 @@ public class QQAuthoriController extends BaseWebController {
      */
     @RequestMapping("/qqLoginBack")
     public String qqLoginBack(String code, HttpServletRequest request,
-            HttpServletResponse response) {
+                              HttpServletResponse response) {
         try {
             // 获取授权码COde 2.使用授权码Code获取accessToken
             Map<String, Object> qqProperties = getToken(code);
@@ -128,7 +130,7 @@ public class QQAuthoriController extends BaseWebController {
      */
     @RequestMapping("/qqJointLogin")
     public String qqJointLogin(@ModelAttribute("loginVo") LoginVo loginVo, Model model,
-            HttpServletRequest request, HttpServletResponse response) {
+                               HttpServletRequest request, HttpServletResponse response) {
         //kapcha验证码校验
         String kaptchaReceived = loginVo.getGraphicCode();
         String kaptchaExpected = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);

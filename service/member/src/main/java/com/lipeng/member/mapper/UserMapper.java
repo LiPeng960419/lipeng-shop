@@ -28,6 +28,9 @@ public interface UserMapper {
     @Select("SELECT * FROM meite_user WHERE WX_OPENID=#{weixinOpenId};")
     UserDo findByWeixinOpenId(@Param("weixinOpenId") String weixinOpenId);
 
+    @Select("SELECT * FROM meite_user WHERE WB_OPENID=#{weiboOpenId};")
+    UserDo findByWeiBoOpenId(@Param("weiboOpenId") String weiboOpenId);
+
     @Update("update meite_user set QQ_OPENID =#{qqOpenId}, UPDATE_TIME=now() WHERE USER_ID=#{userId}")
     void updateUserQQOpenId(@Param("qqOpenId") String qqOpenId, @Param("userId") Long userId);
 

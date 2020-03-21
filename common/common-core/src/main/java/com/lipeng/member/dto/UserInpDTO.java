@@ -60,6 +60,9 @@ public class UserInpDTO {
 	@ApiModelProperty(value = "用户关联 微信 开放ID")
 	private String wxOpenId;
 
+	@ApiModelProperty(value = "用户关联 微博 开放ID")
+	private String wbOpenId;
+
 	// 目前存在的问题： 接口层传递实体类→数据库传递实体类 都是相同的。
 	// 注册的时候不需要传递isAvalible updateTime createTime
 	// 查询的用户相关信息的时候，是不需要将密码返回给客户端

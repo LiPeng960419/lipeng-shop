@@ -59,4 +59,5 @@ public class UserDo {
      */
     private String wxOpenid;
 
+    private String wbOpenid;
 }

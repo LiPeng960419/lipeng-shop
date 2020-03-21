@@ -14,7 +14,7 @@ spring:
   application:
     name: app-portal-web
   redis:
-    host: 10.9.216.1
+    host: 39.97.99.155
     port: 6379
     pool:
       max-idle: 100
@@ -31,6 +31,10 @@ server:
   port: 80
   tomcat:
     max-http-header-size: 10000000
+weibo:
+  appkey: 506610992
+  secret: 61c5a7fd2cfe07bcc0badb4f5b40f683
+  reDirectUri: http://127.0.0.1:80/weibo/getAccessToken
 wechat:
   appid: wx470a2431b9b88785
   secret: 67abdde46af2431d2545de16c1291336

@@ -32,6 +32,9 @@
             <if test="wxOpenid!=null and wxOpenid !='' ">
                 wxOpenid = #{wxOpenid},
             </if>
+            <if test="wbOpenid!=null and wbOpenid !='' ">
+                wbOpenid = #{wbOpenid},
+            </if>
         </set>
         WHERE USER_ID = #{userId}
     </update>

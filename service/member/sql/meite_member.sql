@@ -34,6 +34,7 @@ CREATE TABLE `meite_user`
   `PIC_IMG`     varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
   `QQ_OPENID`   varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
   `WX_OPENID`   varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `WB_OPENID`   varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`USER_ID`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 2

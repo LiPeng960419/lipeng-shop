@@ -60,6 +60,8 @@ public interface Constants {
 
     String MEMBER_LOGIN_TYPE_WEIXIN = "WEIXIN_LOGIN";
 
+    String MEMBER_LOGIN_TYPE_WEIBO = "WEIBO_LOGIN";
+
     // 登陆超时时间 有效期 90天
     Long MEMBRE_LOGIN_TOKEN_TIME = 77776000L;
 
@@ -75,6 +77,8 @@ public interface Constants {
     int MAN = 0;
 
     int FEMALE = 1;
+
+    int UNKONW = 2;
 
     Long PAY_TOKEN_TIME = 15 * 60L;
 
