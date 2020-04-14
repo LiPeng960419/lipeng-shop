@@ -26,11 +26,19 @@ public class AliPayUtil {
     /**
      * 将分为单位的转换为元 （除100）
      */
+//    public static String changeF2Y(String amount) {
+//        if (!amount.matches(CURRENCY_FEN_REGEX)) {
+//            return null;
+//        }
+//        return BigDecimal.valueOf(Long.valueOf(amount)).divide(new BigDecimal(100)).toString();
+//    }
+
     public static String changeF2Y(String amount) {
         if (!amount.matches(CURRENCY_FEN_REGEX)) {
             return null;
         }
-        return BigDecimal.valueOf(Long.valueOf(amount)).divide(new BigDecimal(100)).toString();
+        return new BigDecimal(amount).divide(new BigDecimal("100"), 2, BigDecimal.ROUND_HALF_UP)
+                .toString();
     }
 
     public static AlipayClient getAlipayClient() {
