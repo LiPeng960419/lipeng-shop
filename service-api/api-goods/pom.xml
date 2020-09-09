@@ -8,10 +8,10 @@
         <artifactId>service-api</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>goods-service</artifactId>
+    <artifactId>api-goods</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>goods-service</name>
-    <description>goods-service</description>
+    <name>api-goods</name>
+    <description>api-goods</description>
 
     <dependencies>
         <dependency>

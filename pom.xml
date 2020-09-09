@@ -15,6 +15,7 @@
         <module>common</module>
         <module>portal</module>
         <module>pay-plugins</module>
+        <module>ds-job</module>
     </modules>
 
     <parent>

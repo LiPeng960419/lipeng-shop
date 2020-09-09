@@ -9,11 +9,16 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>service</artifactId>
+    <packaging>pom</packaging>
 
     <modules>
         <module>member</module>
-        <module>weixin</module>
         <module>goods</module>
+        <module>auth</module>
+        <module>integral</module>
+        <module>pay</module>
+        <module>spike</module>
+        <module>weixin</module>
     </modules>
 
 </project>

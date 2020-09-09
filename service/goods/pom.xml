@@ -21,7 +21,7 @@
         </dependency>
         <dependency>
             <groupId>com.lipeng</groupId>
-            <artifactId>goods-service</artifactId>
+            <artifactId>api-goods</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <!-- SpringBoot整合eureka客户端 -->

@@ -9,6 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>ds-job</artifactId>
+    <packaging>pom</packaging>
 
     <dependencies>
         <!-- xxl-job-core -->
