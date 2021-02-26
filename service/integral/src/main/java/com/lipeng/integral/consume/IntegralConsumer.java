@@ -29,7 +29,7 @@ public class IntegralConsumer {
     //@RabbitListener(queues = "integral_queue")
     @RabbitListener(bindings = @QueueBinding(
             value = @Queue(name = "integral_queue", durable = "true"),
-            exchange = @Exchange(value = "integral_exchange_name", type = "topic", ignoreDeclarationExceptions = "true"),
+            exchange = @Exchange(value = "integral_exchange_name", type = "direct", ignoreDeclarationExceptions = "true"),
             key = "integralRoutingKey"))
     @RabbitHandler
     public void process(Message message, @Headers Map<String, Object> headers, Channel channel)

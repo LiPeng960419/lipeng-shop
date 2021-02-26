@@ -28,7 +28,7 @@ public class PayCheckStateConsumer {
 
 	@RabbitListener(bindings = @QueueBinding(
 			value = @Queue(name = "pay_queue", durable = "true"),
-			exchange = @Exchange(value = "pay_exchange_name", type = "topic", ignoreDeclarationExceptions = "true"),
+			exchange = @Exchange(value = "pay_exchange_name", type = "direct", ignoreDeclarationExceptions = "true"),
 			key = "payRoutingKey"))
 	@RabbitHandler
 	public void process(Message message, @Headers Map<String, Object> headers, Channel channel) throws IOException {
