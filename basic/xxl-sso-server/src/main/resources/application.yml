@@ -25,6 +25,6 @@ server:
 xxl:
   sso:
     redis:
-      address: redis://192.168.199.254:6379
+      address: redis://192.168.7.1:6379
       expire:
         minite: 1440

@@ -14,7 +14,7 @@ spring:
   application:
     name: app-portal-web
   redis:
-    host: 39.97.99.155
+    host: 192.168.7.1
     port: 6379
     pool:
       max-idle: 100
@@ -28,29 +28,29 @@ eureka:
     service-url:
       defaultZone: http://localhost:8100/eureka
 server:
-  port: 80
+  port: 9090
   tomcat:
     max-http-header-size: 10000000
 weibo:
   appkey: 506610992
   secret: 61c5a7fd2cfe07bcc0badb4f5b40f683
-  reDirectUri: http://127.0.0.1:80/weibo/getAccessToken
+  reDirectUri: http://1e646739643a.ngrok.io/weibo/getAccessToken
 wechat:
   appid: wx470a2431b9b88785
   secret: 67abdde46af2431d2545de16c1291336
-  reDirectUri: http://127.0.0.1:80/wx/getAccessToken
+  reDirectUri: http://127.0.0.1:9090/wx/getAccessToken
 qq:
   appid: 101820705
   appkey: 29f89de0c6d05d8761385a004e0e5ca9
-  reDirectUri: http://9b009f9b.ngrok.io/qqLoginBack
-  defaultPicUrl: http://t-1.tuzhan.com/d1bf9b24b13e/c-1/m/2012/09/21/17/0772844269934cce8980bebcc76ce396.jpg
+  reDirectUri: http://1e646739643a.ngrok.io/qqLoginBack
+  defaultPicUrl: https://gw.alicdn.com/imgextra/i2/O1CN019QwrV11EUAr12MFvu_!!6000000000354-2-tps-63-63.png
 ###设置feign客户端超时时间
 ###SpringCloud feign 默认开启支持ribbon
 ribbon:
   ###指的是建立连接后从服务器读取到可用资源所用的时间。
-  ReadTimeout: 3000
+  ReadTimeout: 30000
   ###指的是建立连接所用的时间，适用于网络状况正常的情况下，两端连接所用的时间。
-  ConnectTimeout: 3000
+  ConnectTimeout: 30000
 ###开启Hystrix断路器
 feign:
   hystrix:
@@ -76,4 +76,4 @@ xxl:
     logout:
       path: /logout
     redis:
-      address: 10.9.216.1:6379
+      address: 192.168.7.1
